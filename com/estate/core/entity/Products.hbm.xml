@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 9, 2021, 8:36:41 PM by Hibernate Tools 4.3.5.Final -->
+<hibernate-mapping>
+    <class name="com.estate.core.entity.Products" table="products" schema="public" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="productId" type="string">
+            <column name="product_id" not-null="true" />
+        </property>
+        <property name="categoryId" type="java.lang.Integer">
+            <column name="category_id" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="11255" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="11255" />
+        </property>
+        <property name="slug" type="string">
+            <column name="slug" length="11255" not-null="true" />
+        </property>
+        <property name="metakey" type="string">
+            <column name="metakey" length="11255" />
+        </property>
+        <property name="metadesc" type="string">
+            <column name="metadesc" length="11255" />
+        </property>
+        <property name="price" type="big_decimal">
+            <column name="price" precision="131089" scale="0" not-null="true" />
+        </property>
+        <property name="pricesale" type="big_decimal">
+            <column name="pricesale" precision="131089" scale="0" />
+        </property>
+        <property name="discount" type="big_decimal">
+            <column name="discount" precision="131089" scale="0" />
+        </property>
+        <property name="position" type="string">
+            <column name="position" length="11255" not-null="true" />
+        </property>
+        <property name="direction" type="string">
+            <column name="direction" not-null="true" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="29" />
+        </property>
+        <property name="image" type="string">
+            <column name="image" not-null="true" />
+        </property>
+        <property name="area" type="string">
+            <column name="area" length="11255" not-null="true" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="1255" not-null="true" />
+        </property>
+        <property name="phone" type="string">
+            <column name="phone" not-null="true" />
+        </property>
+        <property name="customer" type="string">
+            <column name="customer" not-null="true" />
+        </property>
+        <property name="room" type="big_decimal">
+            <column name="room" precision="131089" scale="0" />
+        </property>
+        <property name="maincontainer" type="boolean">
+            <column name="maincontainer" not-null="true" />
+        </property>
+        <property name="dealcontainer" type="boolean">
+            <column name="dealcontainer" not-null="true" />
+        </property>
+        <property name="container1" type="boolean">
+            <column name="container1" not-null="true" />
+        </property>
+        <property name="container2" type="boolean">
+            <column name="container2" not-null="true" />
+        </property>
+        <property name="requestcontainer" type="boolean">
+            <column name="requestcontainer" not-null="true" />
+        </property>
+        <property name="itemcontainer" type="boolean">
+            <column name="itemcontainer" not-null="true" />
+        </property>
+        <property name="servicecontainer" type="boolean">
+            <column name="servicecontainer" not-null="true" />
+        </property>
+        <property name="regioncontainer" type="boolean">
+            <column name="regioncontainer" not-null="true" />
+        </property>
+        <property name="status" type="int">
+            <column name="status" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
