@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.estate.core.entity.Product;
@@ -26,6 +27,11 @@ public interface ProductRepository extends JpaRepository<Product,Long>{
 	List<Product> getListRent();
 	@Query("FROM Product WHERE dealcontainer = true AND status = 1")
 	List<Product> getListDeal();
+	@Query(value = "SELECT * FROM products ORDER BY id asc limit :limit", nativeQuery = true)
+	List<Product> findTopN(@Param("limit") int limit);
+//	@Query(value = "SELECT	* FROM products " + "INNER JOIN categorys USING (category_id)", nativeQuery = true)
+//	List<Product> findByCategory();
+	List<Product> findByCategoryidLong(Long categoryidLong);
 	
 
 }

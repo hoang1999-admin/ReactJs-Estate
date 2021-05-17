@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
-
+import NumberFormat from 'react-number-format';
 class ProductDetailContainer extends Component {
     constructor(props) {
         super(props);
@@ -11,6 +11,7 @@ class ProductDetailContainer extends Component {
 
         this.productService = new HomeServices();
         this.photoService = new HomeServices();
+        this.changeimage = this.changeimage.bind(this);
     }
 
     componentDidMount() {
@@ -20,25 +21,30 @@ class ProductDetailContainer extends Component {
             this.setState({ product: response });
         });
 
-        this.photoService.getAllPhotos().then(response => {
+        this.photoService.getAllPhotosId(id).then(response => {
             this.setState({ photo: response });
         });
 
     }
 
+    changeimage(change){
+        this.setState ({
+           product : change
+        });
+    }
     renderphoto = () => {
         return this.state.photo.map((photos, key) => {
             return (
-                <a href="#" class="item-thumb" key = {key}> 
-                <img src={`/resources/images/items/${photos.imageString}`} />
-                </a>
+                
+                    <img class="item-thumb" key={key} onClick={()=>this.changeimage(photos.imageString)} src={`/resources/images/items/${photos.imageString}`} />
+               
 
             );
         });
     }
     render() {
         const product = this.state.product;
-
+      
         return (
             <div>
 
@@ -66,6 +72,7 @@ class ProductDetailContainer extends Component {
                                         {/* <!-- slider-product.// --> */}
                                         <div class="thumbs-wrap">
                                             {this.renderphoto()}
+
                                         </div>
                                         {/* <!-- slider-nav.// --> */}
                                     </article>
@@ -97,7 +104,7 @@ class ProductDetailContainer extends Component {
                                     {/* <!-- rating-wrap.// --> */}
 
                                     <div class="mb-3">
-                                        <var class="price h4" style={{ color: `red` }}>Giá: {product.pricesaleDouble} VND</var>
+                                        <var class="price h4" style={{ color: `red` }}>Giá: <NumberFormat value={this.state.product.priceDouble} displayType={'text'} thousandSeparator={true} /> VND</var>
                                         {/* <span class="text-muted">USD 562.65 incl. VAT</span> */}
                                     </div>
                                     {/* <!-- price-detail-wrap .// --> */}

@@ -38,14 +38,18 @@ public class CategoryController {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	@GetMapping("/category")
 	public List<Category> getListCategories()
 	{
 		return categoryRepository.findAll();
 	}
-
-	@GetMapping("/category/{categoryid}")
+	@GetMapping("/category-top")
+	public List<Category> getListCategories7()
+	{
+		return categoryRepository.findTopN(7);
+	}
+	@GetMapping("/category/index={categoryid}")
 	public ResponseEntity<Category> getCategory(@PathVariable long categoryid)
 	{
 		Category category = categoryRepository.findById(categoryid).orElseThrow(() -> new ResourceNotFoundException("Category not with id: "+categoryid));

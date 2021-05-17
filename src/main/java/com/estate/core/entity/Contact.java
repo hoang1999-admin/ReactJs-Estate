@@ -33,7 +33,7 @@ public class Contact {
 	private String imageString;@Column(name = "detail")
 	private String detailString;@Column(name = "created_at")
 	private Timestamp createdatTimestamp;@Column(name = "status")
-	private String statusString;
+	private Integer statusInteger;
 	public Long getIdLong() {
 		return idLong;
 	}
@@ -82,13 +82,12 @@ public class Contact {
 	public void setCreatedatTimestamp(Timestamp createdatTimestamp) {
 		this.createdatTimestamp = createdatTimestamp;
 	}
-	public String getStatusString() {
-		return statusString;
+	public Integer getStatusInteger() {
+		return statusInteger;
 	}
-	public void setStatusString(String statusString) {
-		this.statusString = statusString;
+	public void setStatusInteger(Integer statusInteger) {
+		this.statusInteger = statusInteger;
 	}
-	
 	
 	
 }

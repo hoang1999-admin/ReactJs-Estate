@@ -9,18 +9,23 @@
 
 package com.estate.core.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;	
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "categorys")
-public class Category {
+public class Category implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -33,6 +38,10 @@ public class Category {
 	private String metadescString;@Column(name = "created_at")
 	private Timestamp createdatTimestamp;@Column(name = "status")
 	private String statusString;
+	
+//	// product with category
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
+//	private Set<Product> products ;
 	
 	public Long getIdLong() {
 		return idLong;
@@ -89,6 +98,12 @@ public class Category {
 	public void setStatusString(String statusString) {
 		this.statusString = statusString;
 	}
+//	public Set<Product> getProducts() {
+//		return products;
+//	}
+//	public void setProducts(Set<Product> products) {
+//		this.products = products;
+//	}
 
 	
 	

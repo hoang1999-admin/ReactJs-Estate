@@ -14,7 +14,7 @@ class RequestContainer extends Component {
 
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="card-banner banner-quote overlay-gradient" style={{"backgroundimage":"url('/resources/images/items/1619797029-gah22.jpg')"}}>
+                        <div class="card-banner banner-quote overlay-gradient" style={{backgroundImage: `url("/resources/images/items/1619797029-gah22.jpg")`}}>
                             <div class="card-img-overlay white">
                                 <h3 class="card-title">Một cách dễ dàng để gửi yêu cầu đến nhà cung cấp</h3>
                                 <p class="card-text" style={{maxwidth: `400px`}}>“Cảm giác thoải mái nhất là khi biết rằng bạn đang đứng trên đất của chính bạn. Đất đai là điều duy nhất không thể bay đi. “- Anthony Trollope, tiểu thuyết gia.</p>

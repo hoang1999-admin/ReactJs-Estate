@@ -12,7 +12,6 @@ package com.estate.core.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.estate.core.entity.Photo;
@@ -20,7 +19,6 @@ import com.estate.core.entity.Photo;
 
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo,Long> {
-	
-	@Query("FROM Photo WHERE id = id_product")
-	List<Photo> getPhoto();
+
+	public List<Photo> findByProductidLong(Long productidLong);
 }

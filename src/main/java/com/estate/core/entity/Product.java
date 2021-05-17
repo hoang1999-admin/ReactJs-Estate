@@ -9,6 +9,7 @@
 
 package com.estate.core.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -20,7 +21,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -53,6 +59,11 @@ public class Product {
 	private Boolean servicecontainerBoolean;@Column(name = "regioncontainer")
 	private Boolean regioncontainerBoolean;@Column(name = "status")
 	private String statusString;
+	// category with product
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "category_id", nullable = false)
+//	private Category category;
+//	
 	public Long getIdLong() {
 		return idLong;
 	}
@@ -227,6 +238,12 @@ public class Product {
 	public void setStatusString(String statusString) {
 		this.statusString = statusString;
 	}
+//	public Category getCategory() {
+//		return category;
+//	}
+//	public void setCategory(Category category) {
+//		this.category = category;
+//	}
 
 	
 }

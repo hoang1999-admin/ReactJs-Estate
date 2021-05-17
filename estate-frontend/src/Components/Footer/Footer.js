@@ -9,13 +9,13 @@ export default function Footer() {
                 <section class="footer-top padding-y-lg text-white">
                     <div class="row">
                         <aside class="col-md col-6">
-                            <h6 class="title">Nhãn hiệu</h6>
-                            <ul class="list-unstyled">
-                                <li> <a href="#">Adidas</a></li>
-                                <li> <a href="#">Puma</a></li>
-                                <li> <a href="#">Reebok</a></li>
-                                <li> <a href="#">Nike</a></li>
-                            </ul>
+                        <a href="http://batdongsan.com" class="brand-wrap">
+                                <img class="logo" src="/resources/images/lgBDS-min.png" />
+                            </a><br/><br/>
+                            <h6 class="title">Công ty Cổ phần batdongsan.com Việt Nam</h6>
+                            <a href="#" class="brand-wrap">
+                                <img class="logo" src="/resources/images/avatars/da-dang-ki-bct.png" />
+                            </a><br/>
                         </aside>
                         <aside class="col-md col-6">
                             <h6 class="title">Công ty</h6>
@@ -64,7 +64,7 @@ export default function Footer() {
 
                     <p class="text-white">© 2021. Công ty cổ phần Bất Động Sản. GPDKKD: 0303217124 do sở KH & ĐT TP.HCM cấp ngày 01/01/2021. GPMXH: 258/GP-BTTTT do Bộ Thông Tin và Truyền Thông cấp ngày 05/05/2021. Địa chỉ: 114/67 Dương Quảng Hàm, P. 5, Q.GV, TP.Hồ Chí Minh. Điện thoại: (+84) 865 323 067. Email: cskh@batdongsan.com.
 Chịu trách nhiệm nội dung: Ngô Đình Hoàng. Xem chính sách sử dụng</p>
-                    <p class="text-muted"> &copy 2021 Company Bat Dong San, All rights reserved </p>
+                    <p class="text-muted"> &copy 2021 Công ty Bat Dong San, All rights reserved </p>
                     <br />
                 </section>
             </div>

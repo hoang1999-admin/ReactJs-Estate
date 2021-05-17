@@ -2,30 +2,70 @@ import React, { Component } from 'react';
 import HomeServices from '../../HomeServices/HomeServices';
 
 class MainContainer extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-          categorys: []
+            categorys: [],
+            categorytops: [],
+            producttops:[],
+            sliders: [],
+            activeIndex: 4
         };
-    
+        this.categoryTopService = new HomeServices();
         this.categoryService = new HomeServices();
-      }
-    
-      componentDidMount() {
+        this.sliderService = new HomeServices();
+        this.productService = new HomeServices();
+    }
+
+    componentDidMount() {
+        this.categoryTopService.getAllCategoryTops().then(response => {
+            this.setState({ categorytops: response });
+        });
         this.categoryService.getAllCategorys().then(response => {
-          this.setState({ categorys: response });
+            this.setState({ categorys: response });
         });
-      }
-    
-      renderCategorys = () => {
-        return this.state.categorys.map((category, key) => {
-          return (
-            <li key={key}>
-              <a href={`/loai-san-pham/${category.idLong}`}>{category.titleString}</a>
-            </li>
-          );
+        this.sliderService.getAllSliders().then(response => {
+            this.setState({ sliders: response });
         });
-      };
+        this.productService.getAllProductTops().then(response => {
+            this.setState({ producttops: response });
+        });
+    }
+    renderCategoryTops = () => {
+        return this.state.categorytops.map((category, key) => {
+            return (
+                <li key={key}>
+                    <a href={`/loai-san-pham/index=${category.idLong}`}>{category.titleString}</a>
+                </li>
+            );
+        });
+    };
+    renderProductTops = () => {
+        return this.state.producttops.map((product, key) => {
+            return (
+                <div class="card-banner border-bottom" key ={key}>
+                <div class="py-3" style={{ width: `100%` }}>
+                    <h6 class="card-title">{product.titleString}</h6>
+                    <a href={`/index=${product.idLong}`} class="btn btn-secondary btn-sm"> Chi tiết </a>
+                </div>
+                <img src={`/resources/images/items/${product.imageString}`}  height="60" class="img-bg" />
+            </div>
+
+            );
+        });
+    };
+    renderSliders = () => {
+        return this.state.sliders.map((slider, index) => {
+            return (
+
+                <div className={index === this.state.activeIndex ? 'carousel-item active' : 'carousel-item'}
+                    key={index}>
+                    <img src={`/resources/images/banners/${slider.imageString}`} alt="First slide" />
+                </div>
+
+            );
+        });
+    };
     render() {
         return (
 
@@ -40,7 +80,10 @@ class MainContainer extends React.Component {
                                 <nav class="nav-home-aside">
                                     <h6 class="title-category"> Loại Sản Phẩm <i class="d-md-none icon fa fa-chevron-down"></i></h6>
                                     <ul class="menu-category">
-                                        {this.renderCategorys()}
+                                        {this.renderCategoryTops()}
+                                        <li >
+                                            <a href="/loai-san-pham?All">Xem Thêm</a>
+                                        </li>
                                     </ul>
                                 </nav>
                             </aside>
@@ -53,17 +96,10 @@ class MainContainer extends React.Component {
                                         <li data-target="#carousel1_indicator" data-slide-to="0" class="active"></li>
                                         <li data-target="#carousel1_indicator" data-slide-to="1"></li>
                                         <li data-target="#carousel1_indicator" data-slide-to="2"></li>
+                                        <li data-target="#carousel1_indicator" data-slide-to="3"></li>
                                     </ol>
                                     <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <img src="/resources/images/banners/slide1.jpg" alt="First slide" />
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="/resources/images/banners/slide2.jpg" alt="Second slide" />
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="/resources/images/banners/slide3.jpg" alt="Third slide" />
-                                        </div>
+                                        {this.renderSliders()}
                                     </div>
                                     <a class="carousel-control-prev" href="#carousel1_indicator" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -82,30 +118,8 @@ class MainContainer extends React.Component {
                                 <aside class="special-home-right">
                                     <h6 class="bg-blue text-center text-white mb-0 p-2">Loại phổ biến</h6>
 
-                                    <div class="card-banner border-bottom">
-                                        <div class="py-3" style={{width:`80%`}}>
-                                            <h6 class="card-title">BÁN GẤP nhà đẹp 5 tầng Tung tâm HOÀNG MAI MT 4,5m- GIÁ chỉ 2,x Tỷ</h6>
-                                            <a href="/" class="btn btn-secondary btn-sm"> Chi tiết </a>
-                                        </div>
-                                        <img src="/resources/images/items/1.jpg" height="80" class="img-bg" />
-                                    </div>
-
-                                    <div class="card-banner border-bottom">
-                                        <div class="py-3" style={{width:`80%`}}>
-                                            <h6 class="card-title">Cho Thuê Nhà 247/3 Huỳnh Văn Bánh, 6.5X11M 1T 3L</h6>
-                                            <a href="/" class="btn btn-secondary btn-sm"> Chi tiết </a>
-                                        </div>
-                                        <img src="/resources/images/items/2.jpg" height="80" class="img-bg" />
-                                    </div>
-
-                                    <div class="card-banner border-bottom">
-                                        <div class="py-3" style={{width:`80%`}}>
-                                            <h6 class="card-title">Bán gấp nhà đẹp,HXH, Nguyễn Kiệm,P3.QGV.40m2.2 lầu. 3.599 tỷ</h6>
-                                            <a href="/" class="btn btn-secondary btn-sm"> Chi tiết </a>
-                                        </div>
-                                        <img src="/resources/images/items/6.jpg" height="80" class="img-bg" />
-                                    </div>
-
+                                    {this.renderProductTops()}
+                                   
                                 </aside>
                             </div>
                             {/* <!-- col.// --> */}

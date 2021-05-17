@@ -42,13 +42,22 @@ public class ProductController {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	@GetMapping("/product-count")
+	public Long getListProductsCount()
+	{
+		return productRepository.count();
+	}
 	
 	@GetMapping("/product")
-	public List<Product> getListCategories()
+	public List<Product> getListProducts()
 	{
 		return productRepository.findAll();
 	}
-	
+	@GetMapping("/product-top")
+	public List<Product> getListpProducts3()
+	{
+		return productRepository.findTopN(3);
+	}
 	@GetMapping("/productsale")
 	public List<Product> getListSale()
 	{
@@ -65,6 +74,11 @@ public class ProductController {
 	public List<Product> getListDeal()
 	{
 		return productRepository.getListDeal();
+	}
+	@GetMapping("/productbycategory/index={categoryid}")
+	public List<Product> getListCategoryProducts(@PathVariable long categoryid)
+	{
+		return productRepository.findByCategoryidLong(categoryid);
 	}
 	@GetMapping("/product/index={id}")
 	public ResponseEntity<Product> getProduct(@PathVariable long id)

@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ import com.estate.core.repository.PhotoRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "https://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -32,8 +33,13 @@ public class PhotoController {
 	private PhotoRepository photoRepository;
 	
 	@GetMapping("/photo")
-	public List<Photo> getPhoto()
+	public List<Photo> getPhoto( )
 	{
-		return photoRepository.getPhoto();
+		return photoRepository.findAll();
+	}
+	@GetMapping("/photo/index={id}")
+	public List<Photo> getPhotoId( @PathVariable long id)
+	{
+		return photoRepository.findByProductidLong(id);
 	}
 }
