@@ -49,6 +49,41 @@ public class CategoryController {
 	{
 		return categoryRepository.findTopN(7);
 	}
+	@GetMapping("/category-sale")
+	public List<Category> getListSale()
+	{
+		return categoryRepository.findSale();
+	}
+	@GetMapping("/category-rent")
+	public List<Category> getListRent()
+	{
+		return categoryRepository.findRent();
+	}
+	@GetMapping("/category-apply")
+	public List<Category> getListApply()
+	{
+		return categoryRepository.findApply();
+	}
+	@GetMapping("/category-furnitureandexterior")
+	public List<Category> getListFurnitureandexterior()
+	{
+		return categoryRepository.findFurnitureandexterior();
+	}
+	@GetMapping("/category-fengshui")
+	public List<Category> getListFengShui()
+	{
+		return categoryRepository.findFengShui();
+	}
+	@GetMapping("/category-recruitment")
+	public List<Category> getListRecruitment()
+	{
+		return categoryRepository.findRecruitment();
+	}
+	@GetMapping("/category-example")
+	public List<Category> getListExample()
+	{
+		return categoryRepository.findExample();
+	}
 	@GetMapping("/category/index={categoryid}")
 	public ResponseEntity<Category> getCategory(@PathVariable long categoryid)
 	{

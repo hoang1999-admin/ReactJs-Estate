@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,25 +33,39 @@ import org.springframework.web.bind.annotation.RestController;
 import com.estate.core.entity.Product;
 import com.estate.core.exception.ResourceNotFoundException;
 import com.estate.core.repository.ProductRepository;
-
-import lombok.RequiredArgsConstructor;
+import com.estate.core.services.ProductService;
 
 
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class ProductController {
 	
 	@Autowired
 	private ProductRepository productRepository;
-	@GetMapping("/product-count")
-	public Long getListProductsCount()
-	{
-		return productRepository.count();
+	@Autowired
+	private ProductService<Product> productService;
+
+	@GetMapping("/product/search/searchText={searchText}")
+	public ResponseEntity<Page<Product>> findAll(Pageable pageable,@PathVariable String searchText) {
+		return new ResponseEntity<>(productService.findAllProducts(pageable, searchText), HttpStatus.OK);
 	}
 	
+	@GetMapping("/product-page")
+	public ResponseEntity<Page<Product>> findAll(@PathVariable int pageNumber,@PathVariable int pageSize) {
+		return new ResponseEntity<>(productService.findAll(
+				PageRequest.of(
+						pageNumber, pageSize
+					
+				)
+		), HttpStatus.OK);
+	}
+	@GetMapping("/products")
+	public Page<Product> getListPageProducts()
+	{
+		return (Page<Product>) productRepository.findAll(PageRequest.of(0,6));
+	}
 	@GetMapping("/product")
 	public List<Product> getListProducts()
 	{
@@ -57,6 +75,11 @@ public class ProductController {
 	public List<Product> getListpProducts3()
 	{
 		return productRepository.findTopN(3);
+	}
+	@GetMapping("/product-top12")
+	public List<Product> getListpProducts12()
+	{
+		return productRepository.findTopN(12);
 	}
 	@GetMapping("/productsale")
 	public List<Product> getListSale()
@@ -75,11 +98,22 @@ public class ProductController {
 	{
 		return productRepository.getListDeal();
 	}
+	@GetMapping("/productrelations/index={id}")
+	public List<Product> getListProductRelation(@PathVariable long id)
+	{
+		return productRepository.getListProductRelation(id);
+	}
+	@GetMapping("/productphoto/index={id}")
+	public List<Product> getListProductPhoto(@PathVariable long id)
+	{
+		return productRepository.getListProductPhoto(id);
+	}
 	@GetMapping("/productbycategory/index={categoryid}")
 	public List<Product> getListCategoryProducts(@PathVariable long categoryid)
 	{
 		return productRepository.findByCategoryidLong(categoryid);
 	}
+	
 	@GetMapping("/product/index={id}")
 	public ResponseEntity<Product> getProduct(@PathVariable long id)
 	{

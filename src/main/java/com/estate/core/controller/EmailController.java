@@ -53,6 +53,7 @@ public class EmailController {
 	{
 		return emailRepository.save(email);
 	}
+	
 	@PutMapping("/email/index={id}")
 	public ResponseEntity<Email> updateEmail(@PathVariable long id,@RequestBody Email emailDetail)
 	{

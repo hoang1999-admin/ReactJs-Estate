@@ -1,57 +1,83 @@
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
+import { MapInteractionCSS } from 'react-map-interaction';
 class ProductDetailContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: this.props.match.params.id,
             product: {},
-            photo: []
+            photo: [],
+            productrelation: [],
+            image: [],
+            value: {
+                scale: 1,
+                translation: { x: 0, y: 0 }
+            }
         };
 
         this.productService = new HomeServices();
         this.photoService = new HomeServices();
+        this.productrelationService = new HomeServices();
         this.changeimage = this.changeimage.bind(this);
     }
 
     componentDidMount() {
         const id = this.props.match.params.id;
 
-        this.productService.getAllProductsId(id).then(response => {
-            this.setState({ product: response });
+        this.productService.getAllProductsId(this.state.id).then((res) => {
+            let product = res.data;
+            this.setState({ photo: product.photo, image: product.image, product: res.data });
         });
 
-        this.photoService.getAllPhotosId(id).then(response => {
-            this.setState({ photo: response });
+        this.productrelationService.getAllProductRelationId(id).then(response => {
+            this.setState({ productrelation: response });
+
         });
 
     }
 
-    changeimage(change){
-        this.setState ({
-           product : change
-        });
+    changeimage(change) {
+        this.setState({ image: change });
     }
     renderphoto = () => {
         return this.state.photo.map((photos, key) => {
             return (
-                
-                    <img class="item-thumb" key={key} onClick={()=>this.changeimage(photos.imageString)} src={`/resources/images/items/${photos.imageString}`} />
-               
 
+                <img class="item-thumb" key={key} onClick={() => this.changeimage(photos.imageString)} src={`/resources/images/items/${photos.imageString}`} />
+
+
+            );
+        });
+    }
+    renderproductrelation = () => {
+        return this.state.productrelation.map((productrelations, key) => {
+
+            return (
+
+                <li class="col-6 col-lg-4 col-md-3" key={key}>
+                    <a href={`/index=${productrelations.idLong}`} class="item">
+                        <div class="card-body">
+                            <h5 class="title">{productrelations.titleString}</h5>
+                            <img class="img-sm float-right" src={`/resources/images/items/${productrelations.imageString}`} />
+                            <p class="text-muted"><i class="fa fa-map-marker-alt"></i>{productrelations.positionString}</p>
+                        </div>
+                    </a>
+                </li>
             );
         });
     }
     render() {
         const product = this.state.product;
-      
+        const { scale, translation } = this.state;
         return (
             <div>
 
                 <section class="py-3 bg-light">
                     <div class="container">
                         <ol class="breadcrumb">
-                            <a href="/"><li class="breadcrumb-item"><a href="#">Trang-chu / </a></li></a>
+                            <a href="/"><li class="breadcrumb-item">Trang-chu / </li></a>
                             <a href="/"><li class="breadcrumb-item active" aria-current="page"> {product.slugString}</li></a>
                         </ol>
                     </div>
@@ -67,7 +93,20 @@ class ProductDetailContainer extends Component {
                                 <div class="card">
                                     <article class="gallery-wrap">
                                         <div class="img-big-wrap">
-                                            <div> <a href="#"><img src={`/resources/images/items/${product.imageString}`} /></a></div>
+                                            <div >
+                                                <a >
+                                                    <MapInteractionCSS value={this.state.value}
+                                                        onChange={(value) => this.setState({ value })}>
+
+
+                                                        {this.state.image ?
+                                                            <img src={"/resources/images/items/" + this.state.image} />
+
+                                                            :
+                                                            <img src={"/resources/images/items/" + product.imageString} />}
+                                                    </MapInteractionCSS>
+                                                </a>
+                                            </div>
                                         </div>
                                         {/* <!-- slider-product.// --> */}
                                         <div class="thumbs-wrap">
@@ -137,7 +176,7 @@ class ProductDetailContainer extends Component {
                                             <a href="#" class="btn  btn-primary">
                                                 <i class="fas fa-shopping-cart"></i> <span class="text">Lưu</span>
                                             </a>
-                                            <a href="#" class="btn btn-light">
+                                            <a href={`lien-he`} class="btn btn-light">
                                                 <i class="fas fa-envelope"></i> <span class="text">Liên Hệ với nhà cung cấp</span>
                                             </a>
                                         </div>
@@ -237,6 +276,26 @@ class ProductDetailContainer extends Component {
                             {/* <!-- col.// --> */}
                         </div>
                         {/* <!-- row.// --> */}
+                        {/* <!-- =============== SECTION 1 =============== --> */}
+                        <section class="padding-bottom">
+                            <header class="section-heading heading-line">
+                                <h4 class="title-section text-uppercase">SẢN PHẨM LIÊN QUAN</h4>
+                            </header>
+
+                            <div class="card card-home-category">
+                                <div class="row no-gutters">
+                                    <div class="col-lg-12">
+                                        <ul class="row no-gutters bordered-cols">
+                                            {this.renderproductrelation()}
+                                        </ul>
+                                    </div>
+                                    {/* <!-- col.// --> */}
+                                </div>
+                                {/* <!-- row.// --> */}
+                            </div>
+                            {/* <!-- card.// --> */}
+                        </section>
+                        {/* <!-- =============== SECTION 1 END =============== --> */}
 
                     </div>
                     {/* <!-- container .//  --> */}

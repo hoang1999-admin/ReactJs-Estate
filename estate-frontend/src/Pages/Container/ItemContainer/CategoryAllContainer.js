@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
+import axios from "axios";
 class CategoryAllContainer extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             category: {},
+            search: '',
             categorys: [],
-            categorybyproduct:[],
+            categorybyproduct: [],
             product: [],
-            countproduct:null
+            currentPage: 1,
+            productsPerPage: 6,
 
         };
 
@@ -23,16 +27,21 @@ class CategoryAllContainer extends Component {
 
         const id = this.props.match.params.id;
 
-        if(id == null)
-        {
-            this.productService.getAllProducts().then(response => {
-                this.setState({ product: response });
-            });
-            this.countproductService.getAllProductsCount().then(response => {
-                this.setState({ countproducts: response });
-            });
-        }else
-        {
+        if (id == null) {
+
+
+            axios.get("http://localhost:8080/api/v1/products?pageNumber=" + this.state.currentPage + "&pageSize=" + this.state.productsPerPage)
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({
+                        product: data.content,
+                        totalPages: data.totalPages,
+                        totalElements: data.totalElements,
+                        currentPage: data.number + 1
+                    });
+                });
+
+        } else {
             this.categoryproductService.getAllProductByCategory(id).then(response => {
                 this.setState({ categorybyproduct: response });
             });
@@ -43,9 +52,32 @@ class CategoryAllContainer extends Component {
         this.categoryService.getAllCategorys().then(response => {
             this.setState({ categorys: response });
         });
-       
-       
+
+
     }
+    changePage = (event) => {
+        let targetPage = parseInt(event.target.value);
+        this.setState({
+            [event.target.name]: targetPage
+        });
+    };
+    prevPage = () => {
+        let prevPage = 1;
+        if (this.state.currentPage > prevPage) {
+
+            this.state.currentPage -= prevPage;
+
+        }
+    };
+    nextPage = () => {
+        if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.productsPerPage)) {
+
+            this.state.currentPage += 1;
+
+        }
+    };
+
+
     rendercategory = () => {
         return this.state.categorys.map((categorys, key) => {
             return (
@@ -55,11 +87,86 @@ class CategoryAllContainer extends Component {
             );
         });
     }
-   
+    renderproductsearch = () => {
+
+        return this.state.search.map((searchs, key) => {
+            return (
+                <article class="card card-product-list" key={key}>
+
+                    <div class="row no-gutters">
+                        <aside class="col-md-3">
+                            <a href={`/index=${searchs.idLong}`} class="img-wrap" style={{ width: `100%` }}>
+                                <span class="badge badge-danger"> NEW </span>
+                                <img src={`/resources/images/items/${searchs.imageString}`} />
+                            </a>
+                        </aside>
+                        {/* <!-- col.// --> */}
+                        <div class="col-md-6">
+                            <div class="info-main">
+                                <a href={`/index=${searchs.idLong}`} class="h5 title">{searchs.titleString}</a>
+                                <div class="rating-wrap mb-2">
+                                    <ul class="rating-stars">
+                                        <li style={{ width: `100%` }} class="stars-active">
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                    </ul>
+                                    <div class="label-rating">9/10</div>
+                                </div>
+                                {/* <!-- rating-wrap.// --> */}
+
+                                <p class="mb-3">
+                                    <span class="tag"> <i class="fa fa-check"></i> Có sẵn</span>
+                                    <span class="tag"> {searchs.roomInteger} phòng </span>
+                                    {/* <span class="tag"> 80 lượt xem </span> */}
+                                    {/* <span class="tag"> Russia </span> */}
+                                </p>
+                                <p>
+                                    {`${searchs.descriptionString.substring(0, 115)}... `}<a href={`/index=${searchs.idLong}`}> Đọc thêm</a>
+                                </p>
+                            </div>
+                            {/* <!-- info-main.// --> */}
+                        </div>
+                        {/* <!-- col.// --> */}
+                        <aside class="col-sm-3">
+                            <div class="info-aside">
+                                <div class="price-wrap">
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={searchs.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    <small class="text-muted">/sản phẩm</small>
+                                </div>
+                                {/* <!-- price-wrap.// --> */}
+                                {/* <small class="text-warning">Paid shipping</small>
+
+                                <p class="text-muted mt-3">Grand textile Co</p> */}
+                                <p class="mt-3">
+                                    <a href={`/lien-he`} class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ </a>
+                                    <a href={`/luu`} class="btn btn-light"><i class="fa fa-heart"></i> Lưu </a>
+                                </p>
+
+
+                            </div>
+                            {/* <!-- info-aside.// --> */}
+                        </aside>
+                        {/* <!-- col.// --> */}
+                    </div>
+                    {/* <!-- row.// --> */}
+                </article>
+                // {/* <!-- card-product .// --> */}
+            );
+        });
+    }
     renderproductbycategory = () => {
+
         return this.state.categorybyproduct.map((products, key) => {
             return (
                 <article class="card card-product-list" key={key}>
+
                     <div class="row no-gutters">
                         <aside class="col-md-3">
                             <a href={`/index=${products.idLong}`} class="img-wrap" style={{ width: `100%` }}>
@@ -94,9 +201,9 @@ class CategoryAllContainer extends Component {
                                     {/* <span class="tag"> 80 lượt xem </span> */}
                                     {/* <span class="tag"> Russia </span> */}
                                 </p>
-
-                                <p>{products.descriptionString}</p>
-
+                                <p>
+                                    {`${products.descriptionString.substring(0, 115)}... `}<a href={`/index=${products.idLong}`}> Đọc thêm</a>
+                                </p>
                             </div>
                             {/* <!-- info-main.// --> */}
                         </div>
@@ -104,7 +211,7 @@ class CategoryAllContainer extends Component {
                         <aside class="col-sm-3">
                             <div class="info-aside">
                                 <div class="price-wrap">
-                                    <span class="h5 price"  style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
                                     <small class="text-muted">/sản phẩm</small>
                                 </div>
                                 {/* <!-- price-wrap.// --> */}
@@ -112,11 +219,11 @@ class CategoryAllContainer extends Component {
 
                                 <p class="text-muted mt-3">Grand textile Co</p> */}
                                 <p class="mt-3">
-                                    <a href="#" class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ </a>
-                                    <a href="#" class="btn btn-light"><i class="fa fa-heart"></i> Lưu </a>
+                                    <a href={`/lien-he`} class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ </a>
+                                    <a href={`/luu`} class="btn btn-light"><i class="fa fa-heart"></i> Lưu </a>
                                 </p>
 
-                               
+
                             </div>
                             {/* <!-- info-aside.// --> */}
                         </aside>
@@ -167,7 +274,9 @@ class CategoryAllContainer extends Component {
                                     {/* <span class="tag"> Russia </span> */}
                                 </p>
 
-                                <p>{products.descriptionString}</p>
+                                <p>
+                                    {`${products.descriptionString.substring(0, 115)}... `}<a href={`/index=${products.idLong}`}> Đọc thêm</a>
+                                </p>
 
                             </div>
                             {/* <!-- info-main.// --> */}
@@ -176,7 +285,7 @@ class CategoryAllContainer extends Component {
                         <aside class="col-sm-3">
                             <div class="info-aside">
                                 <div class="price-wrap">
-                                    <span class="h5 price"  style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
                                     <small class="text-muted">/sản phẩm</small>
                                 </div>
                                 {/* <!-- price-wrap.// --> */}
@@ -184,11 +293,11 @@ class CategoryAllContainer extends Component {
 
                                 <p class="text-muted mt-3">Grand textile Co</p> */}
                                 <p class="mt-3">
-                                    <a href="#" class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ </a>
-                                    <a href="#" class="btn btn-light"><i class="fa fa-heart"></i> Lưu </a>
+                                    <a href={`/lien-he`} class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ </a>
+                                    <a href={`/luu`} class="btn btn-light"><i class="fa fa-heart"></i> Lưu </a>
                                 </p>
 
-                               
+
                             </div>
                             {/* <!-- info-aside.// --> */}
                         </aside>
@@ -201,7 +310,18 @@ class CategoryAllContainer extends Component {
         });
     }
     render() {
+        const { currentPage, totalPages } = this.state;
         const category = this.state.category;
+        const id = this.props.match.params.id;
+        if (id == null) {
+            var n = this.state.product.length;
+
+        } else {
+            var n = this.state.categorybyproduct.length;
+
+        }
+
+
         return (
             // <!-- ========================= SECTION CONTENT ========================= -->
             <section class="section-content padding-y">
@@ -367,7 +487,7 @@ class CategoryAllContainer extends Component {
 
                             <header class="mb-3">
                                 <div class="form-inline">
-                                    <strong class="mr-md-auto">Sản phẩm </strong>
+                                    <strong class="mr-md-auto">{n} Sản phẩm </strong>
                                     <select class="mr-2 form-control">
                                         <option>Mới nhất</option>
                                         <option>Xu hướng</option>
@@ -377,7 +497,7 @@ class CategoryAllContainer extends Component {
                                     <div class="btn-group">
                                         <a href={`/danh-sach`} class="btn btn-light" data-toggle="tooltip" title="List view">
                                             <i class="fa fa-bars"></i></a>
-                                        <a href={`/danh-sach-lon`} class="btn btn-light active" data-toggle="tooltip" title="Grid view">
+                                        <a href={`loai-san-pham?All`} class="btn btn-light active" data-toggle="tooltip" title="Grid view">
                                             <i class="fa fa-th"></i></a>
                                     </div>
                                 </div>
@@ -390,19 +510,17 @@ class CategoryAllContainer extends Component {
 
                             <nav class="mb-4" aria-label="Page navigation sample">
                                 <ul class="pagination">
-                                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    <li class="page-item " disabled={currentPage === 0 ? true : false} onClick={this.prevPage}><a class="page-link" href="#">Previous</a></li>
+
+                                    <li class="page-item active" name="currentPage" value={currentPage}
+                                        onChange={this.changePage}><a class="page-link" href="#">{currentPage}</a></li>
+
+                                    <li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#">Next</a></li>
                                 </ul>
                             </nav>
-
-
+                            Showing Page {currentPage} of {totalPages}
                             <div class="box text-center">
-                                <p>Did you find what you were looking for？</p>
+                                <p>Bạn đã tìm thấy những gì bạn đang tìm kiếm?</p>
                                 <a href="" class="btn btn-light">Yes</a>
                                 <a href="" class="btn btn-light">No</a>
                             </div>

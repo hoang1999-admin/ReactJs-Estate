@@ -1143,7 +1143,7 @@ a[class*='card'] {
 
 @media all and (min-width: 992px) {
   .dropdown-large {
-    min-width: 500px; } }
+    min-width: 280px; } }
 
 .form-inline input[type='number'] {
   max-width: 100px; }

@@ -1,6 +1,277 @@
 import React, { Component } from 'react'
+import HomeServices from '../../HomeServices/HomeServices';
+import axios from 'axios';
+import NumberFormat from 'react-number-format';
+import { Redirect } from 'react-router'
+import { connect } from "react-redux";
+import { logout } from "../Header/ActionAuth/Auth";
+import { clearMessage } from "../Header/ActionAuth/Message";
+import { Router} from "react-router-dom";
+import { history } from '../Header/HelperssAuth/History';
 class Header extends Component {
+
+    constructor(props) {
+        super(props);
+       
+        this.state = {
+            category: [],
+            categorysale: [],
+            categoryrent: [],
+            categoryapply: [],
+            categoryfurnitureandextor: [],
+            categoryfengshui: [],
+            categoryrecruitment: [],
+            categoryexample: [],
+            searchs: [],
+            search: '',
+            currentPage: 1,
+            productsPerPage: 6,
+            totalPages: null,
+            totalElements: null,
+
+            showModeratorBoard: false,
+            showAdminBoard: false,
+            currentUser: undefined,
+        };
+        this.searchChange = this.searchChange.bind(this);
+        this.searchData = this.searchData.bind(this);
+        this.logOut = this.logOut.bind(this);
+
+        this.productService = new HomeServices();
+        this.categoryService = new HomeServices();
+
+        history.listen((location) => {
+            props.dispatch(clearMessage()); // clear message when changing location
+        });
+    }
+    componentDidMount() {
+        const user = this.props.user;
+
+        if (user) {
+            this.setState({
+                currentUser: user,
+                showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+                showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+            });
+        }
+
+        this.categoryService.getAllCategorys().then((res) => {
+            this.setState({ category: res });
+        });
+        this.categoryService.getAllCategorySales().then((res) => {
+            this.setState({ categorysale: res });
+        });
+        this.categoryService.getAllCategoryRents().then((res) => {
+            this.setState({ categoryrent: res });
+        });
+        this.categoryService.getAllCategoryApplys().then((res) => {
+            this.setState({ categoryapply: res });
+        });
+        this.categoryService.getAllCategoryFurnitureandexteriors().then((res) => {
+            this.setState({ categoryfurnitureandextor: res });
+        });
+        this.categoryService.getAllCategoryFengshuis().then((res) => {
+            this.setState({ categoryfengshui: res });
+        });
+        this.categoryService.getAllCategoryRecruitments().then((res) => {
+            this.setState({ categoryrecruitment: res });
+        });
+        this.categoryService.getAllCategoryExamples().then((res) => {
+            this.setState({ categoryexample: res });
+        });
+    }
+    searchChange = (event) => {
+        this.setState({
+            search: event.target.value
+        });
+    };
+    searchData = (event, currentPage) => {
+        event.preventDefault();
+        currentPage -= 1;
+        axios.get("http://localhost:8080/api/v1/product/search/searchText=" + this.state.search + "?page=" + currentPage + "&size=" + this.state.productsPerPage)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    searchs: data.content,
+                    totalPages: data.totalPages,
+                    totalElements: data.totalElements,
+                    currentPage: data.number + 1
+                });
+
+
+            });
+
+        this.refs.fieldSearch.searchs = "";
+        <Redirect to="/tim-kiem" />
+
+    };
+    rendercategory = () => {
+
+        return this.state.category.map((categorys, key) => {
+            return (
+                <a href={`/loai-san-pham/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+            );
+        });
+    }
+    rendercategorysale = () => {
+
+        return this.state.categorysale.map((categorys, key) => {
+            return (
+
+                <a href={`/loai-san-pham/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+    rendercategoryrent = () => {
+
+        return this.state.categoryrent.map((categorys, key) => {
+            return (
+
+                <a href={`/loai-san-pham/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+    rendercategoryapply = () => {
+
+        return this.state.categoryapply.map((categorys, key) => {
+            return (
+
+                <a href={`/tuyen-dung/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+    rendercategoryfurnitureandextor = () => {
+
+        return this.state.categoryfurnitureandextor.map((categorys, key) => {
+            return (
+
+                <a href={`/noi-va-ngoai-that/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+    rendercategoryfengshui = () => {
+
+        return this.state.categoryfengshui.map((categorys, key) => {
+            return (
+
+                <a href={`/phong-thuy/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+    rendercategoryrecruitment = () => {
+
+        return this.state.categoryrecruitment.map((categorys, key) => {
+            return (
+
+                <a href={`/tin-tuc/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+    rendercategoryexample = () => {
+
+        return this.state.categoryexample.map((categorys, key) => {
+            return (
+
+                <a href={`/du-an/index=${categorys.idLong}`} key={key}>{categorys.titleString}</a>
+
+
+            );
+        });
+    }
+
+    renderproductsearch = () => {
+
+        return this.state.searchs.map((searchs) => {
+            return (
+                <article class="card card-product-list" key={searchs.id}>
+                    <h4>Đã tìm kiếm</h4>
+                    <div class="row no-gutters">
+                        <aside class="col-md-3">
+                            <a href={`/index=${searchs.idLong}`} class="img-wrap" style={{ width: `100%` }}>
+                                <span class="badge badge-danger"> NEW </span>
+                                <img src={`/resources/images/items/${searchs.imageString}`} />
+                            </a>
+                        </aside>
+                        {/* <!-- col.// --> */}
+                        <div class="col-md-6">
+                            <div class="info-main">
+                                <a href={`/index=${searchs.idLong}`} class="h5 title">{searchs.titleString}</a>
+                                <div class="rating-wrap mb-2">
+                                    <ul class="rating-stars">
+                                        <li style={{ width: `100%` }} class="stars-active">
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </li>
+                                    </ul>
+                                    <div class="label-rating">9/10</div>
+                                </div>
+                                {/* <!-- rating-wrap.// --> */}
+
+                                <p class="mb-3">
+                                    <span class="tag"> <i class="fa fa-check"></i> Có sẵn</span>
+                                    <span class="tag"> {searchs.roomInteger} phòng </span>
+                                    {/* <span class="tag"> 80 lượt xem </span> */}
+                                    {/* <span class="tag"> Russia </span> */}
+                                </p>
+                                <p>
+                                    {`${searchs.descriptionString.substring(0, 115)}... `}<a href={`/index=${searchs.idLong}`}> Đọc thêm</a>
+                                </p>
+                            </div>
+                            {/* <!-- info-main.// --> */}
+                        </div>
+                        {/* <!-- col.// --> */}
+                        <aside class="col-sm-3">
+                            <div class="info-aside">
+                                <div class="price-wrap">
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={searchs.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    <small class="text-muted">/sản phẩm</small>
+                                </div>
+                                {/* <!-- price-wrap.// --> */}
+                                {/* <small class="text-warning">Paid shipping</small>
+
+                                <p class="text-muted mt-3">Grand textile Co</p> */}
+                                <p class="mt-3">
+                                    <a href={`/lien-he`} class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ </a>
+                                    <a href={`/luu`} class="btn btn-light"><i class="fa fa-heart"></i> Lưu </a>
+                                </p>
+
+
+                            </div>
+                            {/* <!-- info-aside.// --> */}
+                        </aside>
+                        {/* <!-- col.// --> */}
+                    </div>
+                    {/* <!-- row.// --> */}
+                </article>
+                // {/* <!-- card-product .// --> */}
+            );
+        });
+    }
+
+    logOut(){
+        this.props.dispatch(logout());
+    }
+
     render() {
+        const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
         return (
             <header class="section-header">
                 <section class="header-main border-bottom">
@@ -13,9 +284,9 @@ class Header extends Component {
                                 {/* <!-- brand-wrap.// --> */}
                             </div>
                             <div class="col-xl-6 col-lg-5 col-md-6">
-                                <form action="#" class="search-header">
+                                <form class="search-header" action="/tim-kiem">
                                     <div class="input-group w-100">
-                                        <select class="custom-select border-right" name="category_name">
+                                        <select class="custom-select border-right">
                                             <option value="">Tất cả loại</option>
                                             <option value="codex">Căn hộ chung cư</option>
                                             <option value="comments">Các loại nhà bán</option>
@@ -23,29 +294,21 @@ class Header extends Component {
                                             <option value="content">Trang trại khu nghĩ dưỡng</option>
                                             <option value="content">Kho, nhà xưởng</option>
                                         </select>
-                                        <input type="text" class="form-control" placeholder="Tìm Kiếm" />
+                                        <input name="search" product={this.state.product} ref="fieldSearch" onChange={this.searchChange} value={this.state.search} type="text" class="form-control" placeholder="Tìm Kiếm" />
 
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit">
+                                            <button class="btn btn-primary" onClick={this.searchData} type="submit">
                                                 <i class="fa fa-search"></i> Tìm Kiếm
-                                  </button>
+                                        </button>
                                         </div>
                                     </div>
                                 </form>
                                 {/* <!-- search-wrap .end// --> */}
                             </div>
                             {/* <!-- col.// --> */}
+
                             <div class="col-xl-5 col-lg-4 col-md-6">
                                 <div class="widgets-wrap float-md-right">
-                                    <div class="widget-header mr-3">
-                                        <a href={`/thong-tin-ca-nhan`} class="widget-view">
-                                            <div class="icon-area">
-                                                <i class="fa fa-user"></i>
-                                                <span class="notify">3</span>
-                                            </div>
-                                            <small class="text"> Thông tin cá nhân </small>
-                                        </a>
-                                    </div>
                                     <div class="widget-header mr-3">
                                         <a href="#" class="widget-view">
                                             <div class="icon-area">
@@ -53,7 +316,7 @@ class Header extends Component {
                                                 <span class="notify">1</span>
                                             </div>
                                             <small class="text"> Thông báo </small>
-                                        </a>
+                                        </a>  
                                     </div>
                                     <div class="widget-header mr-3">
                                         <a href="#" class="widget-view">
@@ -64,30 +327,82 @@ class Header extends Component {
                                         </a>
                                     </div>
                                     <div class="widget-header">
-                                        <a href="#" class="widget-view">
+                                        <a href={`/gio-hang`} class="widget-view">
                                             <div class="icon-area">
                                                 <i class="fa fa-shopping-cart"></i>
                                             </div>
                                             <small class="text"> Giỏ hàng </small>
                                         </a>
                                     </div>
-                                    <div class="widget-header mr-3">
-                                        <a href={`/dang-nhap`} class="widget-view">
-                                            <div class="icon-area">
-                                                <i class="fa fa-user"></i>
+                                    {showModeratorBoard && (
+                                       <div class="widget-header mr-3">
+                                       <a href={`/nguoi-trung-gian`} class="widget-view">
+                                           <div class="icon-area">
+                                               <i class="fa fa-user"></i>
+                                           </div>
+                                           <small class="text">  Moderator </small>
+                                       </a>
+                                   </div>
+                                    )}
+
+                                    {showAdminBoard && (
+                                       <div class="widget-header mr-3">
+                                       <a href={`/Admin`} class="widget-view">
+                                           <div class="icon-area">
+                                           <i class="fas fa-user-cog"></i>
+                                           </div>
+                                           <small class="text">  Quản Trị </small>
+                                       </a>
+                                   </div>
+                                    )}
+                                    {currentUser ?(
+                                    
+                                        <div class="widgets-wrap float-md-right">
+                                            <div class="widget-header mr-3">
+                                                <a href={`/thong-tin-ca-nhan`} class="widget-view">
+                                                    <div class="icon-area">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                    <small class="text">  {currentUser.username} </small>
+                                                </a>
                                             </div>
-                                            <small class="text"> Đăng nhập </small>
-                                        </a>
-                                    </div>
-                                    <div class="widget-header mr-3">
-                                        <a href={`/dang-ky`} class="widget-view">
-                                            <div class="icon-area">
-                                                <i class="fa fa-user"></i>
+                                            <Router history={history}>
+                                            <div class="widget-header mr-3" onClick={this.logOut}>
+                                                <a href={`/`} class="widget-view">
+                                                    <div class="icon-area">
+                                                        <i class="fa fa-user"></i>
+
+                                                    </div>
+                                                    <small class="text" > Đăng Xuất </small>
+                                                </a>
+                                            </div>
+                                            </Router>
+                                        </div>
+                                       
+                                    ):(
+                                        <div class="widgets-wrap float-md-right">
+                                            <div class="widget-header mr-3">
+                                                <a href={`/dang-nhap`} class="widget-view">
+                                                    <div class="icon-area">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                    <small class="text"> Đăng nhập </small>
+                                                </a>
 
                                             </div>
-                                            <small class="text"> Đăng ký </small>
-                                        </a>
-                                    </div>
+                                            <div class="widget-header mr-3">
+                                                <a href={`/dang-ky`} class="widget-view">
+                                                    <div class="icon-area">
+                                                        <i class="fa fa-user"></i>
+
+                                                    </div>
+                                                    <small class="text"> Đăng ký </small>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    )}
+
                                 </div>
                                 {/* <!-- widgets-wrap.// --> */}
                             </div>
@@ -110,52 +425,15 @@ class Header extends Component {
                         <div class="collapse navbar-collapse" id="main_nav">
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-bars text-muted mr-2"></i> Trang Chủ </a>
-                                    <div class="dropdown-menu dropdown-large">
-                                        <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">Home page 1</a>
-                                                <a href="page-index-2.html">Home page 2</a>
-                                                <a href="page-category.html">All category</a>
-                                                <a href="page-listing-large.html">Listing list</a>
-                                                <a href="page-listing-grid.html">Listing grid</a>
-                                                <a href="page-shopping-cart.html">Shopping cart</a>
-                                                <a href="page-detail-product.html">Product detail</a>
-                                                <a href="page-content.html">Page content</a>
-                                                <a href="page-user-login.html">Page login</a>
-                                                <a href="page-user-register.html">Page register</a>
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="page-profile-main.html">Profile main</a>
-                                                <a href="page-profile-orders.html">Profile orders</a>
-                                                <a href="page-profile-seller.html">Profile seller</a>
-                                                <a href="page-profile-wishlist.html">Profile wishlist</a>
-                                                <a href="page-profile-setting.html">Profile setting</a>
-                                                <a href="page-profile-address.html">Profile address</a>
-                                                <a href="rtl-page-index-1.html">RTL home page</a>
-                                                <a href="page-components.html" target="_blank">More components</a>
-                                            </div>
-                                        </nav>
-                                        {/* <!--  row end .// --> */}
-                                    </div>
+                                    <a class="nav-link " href={`/`}> <i class="fa fa-bars text-muted mr-2"></i> Trang Chủ </a>
                                     {/* <!--  dropdown-menu dropdown-large end.// --> */}
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Nhà Đất Bán </a>
-                                    <div class="dropdown-menu dropdown-large">
+                                    <div class="dropdown-menu dropdown-large ">
                                         <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">Bán nhà đất</a>
-                                                <a href="page-index-1.html">Bán căn hộ chung cư</a>
-                                                <a href="page-index-2.html">Bán nhà riêng</a>
-                                                <a href="page-category.html">Bán nhà biệt thự, liền kề</a>
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="page-listing-large.html">Bán nhà mặt phố</a>
-                                                <a href="page-listing-grid.html">Bán đất nền dự án</a>
-                                                <a href="page-shopping-cart.html">Bán trang trại, khu nghĩ dưỡng</a>
-                                                <a href="page-detail-product.html">Bán kho, nhà xưởng</a>
-                                                <a href="page-content.html" target="_blank">Bán loại bất động sản khác</a>
+                                            <div class="col-12">
+                                                {this.rendercategorysale()}
                                             </div>
                                         </nav>
                                         {/* <!--  row end .// --> */}
@@ -166,18 +444,8 @@ class Header extends Component {
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> Nhà Đất Cho Thuê </a>
                                     <div class="dropdown-menu dropdown-large">
                                         <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">Nhà đất cho thuê</a>
-                                                <a href="page-index-1.html">Cho thuê căn hộ chung cư</a>
-                                                <a href="page-index-2.html">Cho thuê nhà riêng</a>
-                                                <a href="page-category.html">Cho thuê nhà trọ, phòng trọ</a>
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="page-listing-large.html">Cho thuê nhà mặt phố</a>
-                                                <a href="page-listing-grid.html">Cho thuê văn phòng </a>
-                                                <a href="page-shopping-cart.html">Cho thuê cửa hàng</a>
-                                                <a href="page-detail-product.html">Cho thuê kho, nhà xưởng, đất</a>
-                                                <a href="page-content.html" target="_blank">Cho thuê loại bất động sản khác</a>
+                                            <div class="col-12">
+                                                {this.rendercategoryrent()}
                                             </div>
                                         </nav>
                                         {/* <!--  row end .// --> */}
@@ -187,18 +455,8 @@ class Header extends Component {
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> Nội & Ngoại Thất </a>
                                     <div class="dropdown-menu dropdown-large">
                                         <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">Nội thất</a>
-                                                <a href="page-index-2.html">Ngoại thất</a>
-                                                <a href="page-category.html">Xây dựng</a>
-                                                <a href="page-listing-large.html">Kiến trúc</a>
-
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="page-listing-grid.html">Tư vấn nội & ngoại thất</a>
-                                                <a href="page-shopping-cart.html">Mách bạn</a>
-                                                <a href="page-detail-product.html">Mua sắm</a>
-                                                <a href="page-components.html" target="_blank">Nội & ngoại thất khác</a>
+                                            <div class="col-12">
+                                                {this.rendercategoryfurnitureandextor()}
                                             </div>
                                         </nav>
                                         {/* <!--  row end .// --> */}
@@ -209,16 +467,8 @@ class Header extends Component {
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> Phong Thủy </a>
                                     <div class="dropdown-menu dropdown-large">
                                         <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">Phong thủy toàn cảnh</a>
-                                                <a href="page-index-2.html">Tư vấn phong thủy</a>
-                                                <a href="page-category.html">Phong thủy nhà ở</a>
-
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="page-listing-large.html">Phong thủy văn phòng</a>
-                                                <a href="page-listing-grid.html">Phong thủy theo tuổi</a>
-                                                <a href="page-components.html" target="_blank">Phong thủy khác</a>
+                                            <div class="col-12">
+                                                {this.rendercategoryfengshui()}
                                             </div>
                                         </nav>
                                         {/* <!--  row end .// --> */}
@@ -229,21 +479,21 @@ class Header extends Component {
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> Tin Tức </a>
                                     <div class="dropdown-menu dropdown-large">
                                         <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">BDS & Covid-19</a>
-                                                <a href="page-index-2.html">Tin thị trường</a>
-                                                <a href="page-category.html">Phân tích nhận định</a>
-                                                <a href="page-listing-large.html">Chính sách quản lý</a>
-                                                <a href="page-listing-grid.html">Thông tin quy hoạch</a>
+                                            <div class="col-12">
 
+                                                {this.rendercategoryrecruitment()}
                                             </div>
-                                            <div class="col-6">
-
-                                                <a href="page-shopping-cart.html">Bất động sản thế giới</a>
-                                                <a href="page-detail-product.html">Tài chính kế toán</a>
-                                                <a href="page-content.html">Tư vấn luật</a>
-                                                <a href="page-user-login.html">lời khuyên</a>
-                                                <a href="page-components.html" target="_blank">Tin tức khác</a>
+                                        </nav>
+                                        {/* <!--  row end .// --> */}
+                                    </div>
+                                    {/* <!--  dropdown-menu dropdown-large end.// --> */}
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> Tuyển Dụng </a>
+                                    <div class="dropdown-menu dropdown-large">
+                                        <nav class="row">
+                                            <div class="col-lg-12">
+                                                {this.rendercategoryapply()}
                                             </div>
                                         </nav>
                                         {/* <!--  row end .// --> */}
@@ -254,19 +504,8 @@ class Header extends Component {
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> Dự Án </a>
                                     <div class="dropdown-menu dropdown-large">
                                         <nav class="row">
-                                            <div class="col-6">
-                                                <a href="page-index-1.html">Căn hộ chung cư</a>
-                                                <a href="page-index-2.html">Cao ốc văn phòng</a>
-                                                <a href="page-category.html">Trung tâm thương mại</a>
-                                                <a href="page-listing-large.html">Khu đô thị mới</a>
-
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="page-listing-grid.html">Khu phức tạp</a>
-                                                <a href="page-shopping-cart.html">Khu ở xã hội</a>
-                                                <a href="page-detail-product.html">Khu nghĩ dưỡng, sinh thái</a>
-                                                <a href="page-content.html">Khu công nghiệp</a>
-                                                <a href="page-components.html" target="_blank">Dự án khác</a>
+                                            <div class="col-12">
+                                                {this.rendercategoryexample()}
                                             </div>
                                         </nav>
                                         {/* <!--  row end .// --> */}
@@ -294,10 +533,19 @@ class Header extends Component {
                     {/* <!-- container .// --> */}
                 </nav>
 
+                {this.renderproductsearch()}
             </header>
             //  <!-- section-header.// -->
 
         );
     }
 }
-export default Header
+function mapStateToProps(state) {
+    const { user } = state.auth;
+    return {
+        user,
+    };
+}
+
+
+export default connect(mapStateToProps)(Header);

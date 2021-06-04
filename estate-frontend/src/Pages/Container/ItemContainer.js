@@ -12,7 +12,7 @@ class ItemContainer extends Component {
       }
     
       componentDidMount() {
-        this.productService.getAllProducts().then(response => {
+        this.productService.getAllProductTops12().then(response => {
           this.setState({ products: response });
         });
       }

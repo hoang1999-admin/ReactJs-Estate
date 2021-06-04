@@ -36,7 +36,15 @@ public class Category implements Serializable{
 	private Long orderLong;@Column(name = "metakey")
 	private String metakeyString;@Column(name = "metadesc")
 	private String metadescString;@Column(name = "created_at")
-	private Timestamp createdatTimestamp;@Column(name = "status")
+	private Timestamp createdatTimestamp;@Column(name = "maincontainer")
+	private Boolean maincontainerBoolean;@Column(name = "dealcontainer")
+	private Boolean dealcontainerBoolean;@Column(name = "container1")
+	private Boolean container1Boolean;@Column(name = "container2")
+	private Boolean container2Boolean;@Column(name = "requestcontainer")
+	private Boolean requestcontainerBoolean;@Column(name = "itemcontainer")
+	private Boolean itemcontainerBoolean;@Column(name = "servicecontainer")
+	private Boolean servicecontainerBoolean;@Column(name = "regioncontainer")
+	private Boolean regioncontainerBoolean;@Column(name = "status")
 	private String statusString;
 	
 //	// product with category
@@ -92,12 +100,117 @@ public class Category implements Serializable{
 	public void setCreatedatTimestamp(Timestamp createdatTimestamp) {
 		this.createdatTimestamp = createdatTimestamp;
 	}
+	
+	/**
+	 * @return the maincontainerBoolean
+	 */
+	public Boolean getMaincontainerBoolean() {
+		return maincontainerBoolean;
+	}
+	/**
+	 * @param maincontainerBoolean the maincontainerBoolean to set
+	 */
+	public void setMaincontainerBoolean(Boolean maincontainerBoolean) {
+		this.maincontainerBoolean = maincontainerBoolean;
+	}
+	/**
+	 * @return the dealcontainerBoolean
+	 */
+	public Boolean getDealcontainerBoolean() {
+		return dealcontainerBoolean;
+	}
+	/**
+	 * @param dealcontainerBoolean the dealcontainerBoolean to set
+	 */
+	public void setDealcontainerBoolean(Boolean dealcontainerBoolean) {
+		this.dealcontainerBoolean = dealcontainerBoolean;
+	}
+	/**
+	 * @return the container1Boolean
+	 */
+	public Boolean getContainer1Boolean() {
+		return container1Boolean;
+	}
+	/**
+	 * @param container1Boolean the container1Boolean to set
+	 */
+	public void setContainer1Boolean(Boolean container1Boolean) {
+		this.container1Boolean = container1Boolean;
+	}
+	/**
+	 * @return the container2Boolean
+	 */
+	public Boolean getContainer2Boolean() {
+		return container2Boolean;
+	}
+	/**
+	 * @param container2Boolean the container2Boolean to set
+	 */
+	public void setContainer2Boolean(Boolean container2Boolean) {
+		this.container2Boolean = container2Boolean;
+	}
+	/**
+	 * @return the requestcontainerBoolean
+	 */
+	public Boolean getRequestcontainerBoolean() {
+		return requestcontainerBoolean;
+	}
+	/**
+	 * @param requestcontainerBoolean the requestcontainerBoolean to set
+	 */
+	public void setRequestcontainerBoolean(Boolean requestcontainerBoolean) {
+		this.requestcontainerBoolean = requestcontainerBoolean;
+	}
+	/**
+	 * @return the itemcontainerBoolean
+	 */
+	public Boolean getItemcontainerBoolean() {
+		return itemcontainerBoolean;
+	}
+	/**
+	 * @param itemcontainerBoolean the itemcontainerBoolean to set
+	 */
+	public void setItemcontainerBoolean(Boolean itemcontainerBoolean) {
+		this.itemcontainerBoolean = itemcontainerBoolean;
+	}
+	/**
+	 * @return the servicecontainerBoolean
+	 */
+	public Boolean getServicecontainerBoolean() {
+		return servicecontainerBoolean;
+	}
+	/**
+	 * @param servicecontainerBoolean the servicecontainerBoolean to set
+	 */
+	public void setServicecontainerBoolean(Boolean servicecontainerBoolean) {
+		this.servicecontainerBoolean = servicecontainerBoolean;
+	}
+	/**
+	 * @return the regioncontainerBoolean
+	 */
+	public Boolean getRegioncontainerBoolean() {
+		return regioncontainerBoolean;
+	}
+	/**
+	 * @param regioncontainerBoolean the regioncontainerBoolean to set
+	 */
+	public void setRegioncontainerBoolean(Boolean regioncontainerBoolean) {
+		this.regioncontainerBoolean = regioncontainerBoolean;
+	}
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getStatusString() {
 		return statusString;
 	}
+	
 	public void setStatusString(String statusString) {
 		this.statusString = statusString;
 	}
+	
 //	public Set<Product> getProducts() {
 //		return products;
 //	}

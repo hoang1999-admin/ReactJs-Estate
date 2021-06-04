@@ -2,34 +2,33 @@ import React, { Component } from 'react'
 import HomeServices from '../../HomeServices/HomeServices';
 class Subcribe extends Component {
     constructor(props) {
-        super(props)
-
+        super(props);
         this.state = {
-            // step 2
-          
-          statusInteger:1,
+           
+            statusIteger: 1,
             emailString: ''
-        }
-        this.saveEmail = this.saveEmail.bind(this);
-        this.emailService = new HomeServices();
-    }
+        };
     
-
-    saveEmail = (e) => {
-        e.preventDefault();
-        let email = {
-            statusInteger:this.state.statusInteger,
-             emailString: this.state.emailString};
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.emailService = new HomeServices();
+      }
+    
+      handleChange = (event) => {
+        this.setState({emailString: event.target.value});
+      }
+    
+      handleSubmit = (event) =>{
+        event.preventDefault();
+        alert('Lưu thành công : ' + this.state.emailString);
+        let email = {emailString: this.state.emailString,statusInteger:this.state.statusIteger};
         console.log('email => ' + JSON.stringify(email));
-
-        // step 5
-       
-          this.emailService.createEmail(email).then(res =>{
-            this.props.history.push('/')
-            });
-        
-        }
-
+        this.emailService.createEmail(email).then(res =>{
+           
+           
+        });
+        this.refs.fieldEmail.value="";
+      }
 render()
 {
     return (
@@ -43,11 +42,11 @@ render()
                     <div class="col-lg-5 col-md-6">
                         <form class="form-row" >
                             <div class="col-md-8 col-7">
-                                <input class="form-control border-0" name="emailString" placeholder="Email của bạn" type="email"  />
+                                <input class="form-control border-0" ref="fieldEmail"value={this.state.emailString} onChange={this.handleChange} name="value" placeholder="Email của bạn" type="email"  />
                             </div>
                             {/* <!-- col.// --> */}
                             <div class="col-md-4 col-5">
-                                <button  type="submit" class="btn btn-block btn-warning" onClick={this.saveEmail}> <i class="fa fa-envelope"></i> Đăng Ký </button>
+                                <button  type="submit" defaultValue="Reset" class="btn btn-block btn-warning" onClick={this.handleSubmit}> <i class="fa fa-envelope"></i> Đăng Ký </button>
                             
                             </div>
                             {/* <!-- col.// --> */}

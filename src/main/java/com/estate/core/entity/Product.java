@@ -11,12 +11,16 @@ package com.estate.core.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -64,6 +68,48 @@ public class Product implements Serializable{
 //	@JoinColumn(name = "category_id", nullable = false)
 //	private Category category;
 //	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="product_id")
+
+	private List<ProductRelation> relative;
+	
+	/**
+	 * @return the relative
+	 */
+	public List<ProductRelation> getRelative() {
+		return relative;
+	}
+	/**
+	 * @param relative the relative to set
+	 */
+	public void setRelative(List<ProductRelation> relative) {
+		this.relative = relative;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="id_product")
+
+	private List<Photo> photo;
+	
+	
+	/**
+	 * @return the photo
+	 */
+	public List<Photo> getPhoto() {
+		return photo;
+	}
+	/**
+	 * @param photo the photo to set
+	 */
+	public void setPhoto(List<Photo> photo) {
+		this.photo = photo;
+	}
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public Long getIdLong() {
 		return idLong;
 	}
@@ -244,6 +290,22 @@ public class Product implements Serializable{
 //	public void setCategory(Category category) {
 //		this.category = category;
 //	}
+	@Override
+	public String toString() {
+		return "Product [idLong=" + idLong + ", productidLong=" + productidLong + ", categoryidLong=" + categoryidLong
+				+ ", titleString=" + titleString + ", descriptionString=" + descriptionString + ", slugString="
+				+ slugString + ", metakeyString=" + metakeyString + ", metadescString=" + metadescString
+				+ ", priceDouble=" + priceDouble + ", pricesaleDouble=" + pricesaleDouble + ", discountInteger="
+				+ discountInteger + ", positionString=" + positionString + ", directionString=" + directionString
+				+ ", createdatTimestamp=" + createdatTimestamp + ", imageString=" + imageString + ", areaString="
+				+ areaString + ", addressString=" + addressString + ", phoneString=" + phoneString + ", customerString="
+				+ customerString + ", roomInteger=" + roomInteger + ", maincontainerBoolean=" + maincontainerBoolean
+				+ ", dealcontainerBoolean=" + dealcontainerBoolean + ", container1Boolean=" + container1Boolean
+				+ ", container2Boolean=" + container2Boolean + ", requestcontainerBoolean=" + requestcontainerBoolean
+				+ ", itemcontainerBoolean=" + itemcontainerBoolean + ", servicecontainerBoolean="
+				+ servicecontainerBoolean + ", regioncontainerBoolean=" + regioncontainerBoolean + ", statusString="
+				+ statusString + "]";
+	}
 
 	
 }

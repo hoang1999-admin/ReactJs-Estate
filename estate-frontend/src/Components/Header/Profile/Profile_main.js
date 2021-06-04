@@ -1,27 +1,14 @@
-import React, { Component } from 'react';
-import HomeServices from '../../../HomeServices/HomeServices';
-
+import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
+import { connect } from "react-redux";
 class Profile_main extends Component {
-	constructor(props) {
-        super(props)
 
-        this.state = {
-           email:{}
-        }
-       
-        this.emailService = new HomeServices();
-	}
-    componentDidMount(){
-		const id = this.props.match.params.id;
-            this.emailService.getEmailById(id).then( (res) =>{
-                this.setState({
-                email:res
-                });
-            });
-             
-    }
 	render() {
-		const email = this.state.email;
+		const { user: currentUser } = this.props;
+
+		if (!currentUser) {
+			return <Redirect to="/dang-nhap" />;
+		}
 		return (
 			<div>
 
@@ -63,8 +50,8 @@ class Profile_main extends Component {
 												<img class="rounded-circle img-sm border" src="/resources/images/avatars/avatar3.jpg" />
 											</div>
 											<div class="text">
-												<strong> Mr. Jackson Someone </strong> <br />
-												<p class="mb-2"> {email.emailString} </p>
+												<strong> {currentUser.username} </strong> <br />
+												<p class="mb-2"> {currentUser.email} </p>
 												<a href="#" class="btn btn-light btn-sm">Edit</a>
 											</div>
 										</figure>
@@ -171,5 +158,11 @@ class Profile_main extends Component {
 		);
 	}
 }
-
-export default Profile_main;
+function mapStateToProps(state) {
+	const { user } = state.auth;
+	return {
+	  user,
+	};
+  }
+  
+  export default connect(mapStateToProps)(Profile_main);

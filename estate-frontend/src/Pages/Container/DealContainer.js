@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import HomeServices from '../../HomeServices/HomeServices';
-
 class DealContainer extends Component {
   constructor() {
     super();
@@ -48,12 +47,16 @@ class DealContainer extends Component {
               <p>Nhanh Lên Ưu Đãi Có Hạn!!!</p>
             </header>
             {/* <!-- sect-heading --> */}
-            <div class="timer">
-              <div> <span class="num">04</span> <small>Ngày</small></div>
-              <div> <span class="num">12</span> <small>Giờ</small></div>
-              <div> <span class="num">58</span> <small>Phút</small></div>
-              <div> <span class="num">02</span> <small>Giây</small></div>
-            </div>
+            
+                <div class="timer">
+                  <div> <span class="num" id="ngay"></span> <small>Ngày</small></div>
+                  <div> <span class="num" id="gio"></span> <small>Giờ</small></div>
+                  <div> <span class="num" id="phut"></span> <small>Phút</small></div>
+                  <div> <span class="num" id="giay"></span> <small>Giây</small></div>
+                </div>
+               <br/>
+                 <div class="num test text-center" style={{borderRadius:`10px 10px 10px 10px`}} id="hetthoigian"></div>
+           
           </div>
           {/* <!-- col.// --> */}
           <div class="row no-gutters items-wrap">
@@ -62,7 +65,7 @@ class DealContainer extends Component {
 
           </div>
         </div>
-
+        
       </section>
       // {/* <!-- =============== SECTION DEAL // END =============== --> */}
 

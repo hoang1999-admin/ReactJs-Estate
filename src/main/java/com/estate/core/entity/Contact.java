@@ -18,6 +18,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.NumberFormat;
+
+import com.sun.istack.NotNull;
+
 @Entity
 @Table(name = "contacts")
 public class Contact {
@@ -26,9 +30,9 @@ public class Contact {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long idLong;@Column(name = "title")
-	private String titleString;@Column(name = "fullname")
-	private String fullnameString;@Column(name = "email")
-	private String emailString;@Column(name = "phone")
+	private String titleString;@Column(name = "fullname")@NotNull
+	private String fullnameString;@Column(name = "email")@NotNull 
+	private String emailString;@Column(name = "phone")@NotNull @NumberFormat
 	private String phoneString;@Column(name = "image")
 	private String imageString;@Column(name = "detail")
 	private String detailString;@Column(name = "created_at")
