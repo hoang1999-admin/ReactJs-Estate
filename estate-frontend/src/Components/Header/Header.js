@@ -6,13 +6,14 @@ import { Redirect } from 'react-router'
 import { connect } from "react-redux";
 import { logout } from "../Header/ActionAuth/Auth";
 import { clearMessage } from "../Header/ActionAuth/Message";
-import { Router} from "react-router-dom";
+import { Router } from "react-router-dom";
 import { history } from '../Header/HelperssAuth/History';
+import Text from './Language/Text';
 class Header extends Component {
 
     constructor(props) {
         super(props);
-       
+
         this.state = {
             category: [],
             categorysale: [],
@@ -101,7 +102,7 @@ class Header extends Component {
 
             });
 
-        this.refs.fieldSearch.searchs = "";
+        this.refs.fieldSearch = "";
         <Redirect to="/tim-kiem" />
 
     };
@@ -222,6 +223,7 @@ class Header extends Component {
                                         </li>
                                     </ul>
                                     <div class="label-rating">9/10</div>
+                                    <div class="label-rating"> <i class="fas fa-history" style={{color:`green`}}></i> {searchs.createdatTimestamp}</div>
                                 </div>
                                 {/* <!-- rating-wrap.// --> */}
 
@@ -241,7 +243,8 @@ class Header extends Component {
                         <aside class="col-sm-3">
                             <div class="info-aside">
                                 <div class="price-wrap">
-                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={searchs.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    {/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: {searchs.pricesaleDouble.toLocaleString('vi-VN')} </span>
                                     <small class="text-muted">/sản phẩm</small>
                                 </div>
                                 {/* <!-- price-wrap.// --> */}
@@ -266,7 +269,7 @@ class Header extends Component {
         });
     }
 
-    logOut(){
+    logOut() {
         this.props.dispatch(logout());
     }
 
@@ -284,7 +287,7 @@ class Header extends Component {
                                 {/* <!-- brand-wrap.// --> */}
                             </div>
                             <div class="col-xl-6 col-lg-5 col-md-6">
-                                <form class="search-header" action="/tim-kiem">
+                                <form class="search-header" action="/tim-kiem" ref="fieldSearch">
                                     <div class="input-group w-100">
                                         <select class="custom-select border-right">
                                             <option value="">Tất cả loại</option>
@@ -297,9 +300,9 @@ class Header extends Component {
                                         <input name="search" product={this.state.product} ref="fieldSearch" onChange={this.searchChange} value={this.state.search} type="text" class="form-control" placeholder="Tìm Kiếm" />
 
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" onClick={this.searchData} type="submit">
+                                            <button class="btn btn-primary" ref="fieldSearch" onClick={this.searchData} type="submit">
                                                 <i class="fa fa-search"></i> Tìm Kiếm
-                                        </button>
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
@@ -309,6 +312,32 @@ class Header extends Component {
 
                             <div class="col-xl-5 col-lg-4 col-md-6">
                                 <div class="widgets-wrap float-md-right">
+                                    {/* <div class="widget-header mr-3">
+                                        <a href="/test" class="widget-view">
+                                            <div class="icon-area">
+                                                <i class="fa fa-comment-dots"></i>
+
+                                            </div>
+                                            <small class="text"> Test </small>
+                                        </a>
+                                    </div>
+                                    <div class="widget-header mr-3">
+                                        <a href="/test2" class="widget-view">
+                                            <div class="icon-area">
+                                                <i class="fa fa-comment-dots"></i>
+
+                                            </div>
+                                            <small class="text"> Test2 </small>
+                                        </a>
+                                    </div> <div class="widget-header mr-3">
+                                        <a href="/test3" class="widget-view">
+                                            <div class="icon-area">
+                                                <i class="fa fa-comment-dots"></i>
+
+                                            </div>
+                                            <small class="text"> Test3 </small>
+                                        </a>
+                                    </div> */}
                                     <div class="widget-header mr-3">
                                         <a href="#" class="widget-view">
                                             <div class="icon-area">
@@ -316,7 +345,7 @@ class Header extends Component {
                                                 <span class="notify">1</span>
                                             </div>
                                             <small class="text"> Thông báo </small>
-                                        </a>  
+                                        </a>
                                     </div>
                                     <div class="widget-header mr-3">
                                         <a href="#" class="widget-view">
@@ -335,28 +364,28 @@ class Header extends Component {
                                         </a>
                                     </div>
                                     {showModeratorBoard && (
-                                       <div class="widget-header mr-3">
-                                       <a href={`/nguoi-trung-gian`} class="widget-view">
-                                           <div class="icon-area">
-                                               <i class="fa fa-user"></i>
-                                           </div>
-                                           <small class="text">  Moderator </small>
-                                       </a>
-                                   </div>
+                                        <div class="widget-header mr-3">
+                                            <a href={`/nguoi-trung-gian`} class="widget-view">
+                                                <div class="icon-area">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <small class="text">  Moderator </small>
+                                            </a>
+                                        </div>
                                     )}
 
                                     {showAdminBoard && (
-                                       <div class="widget-header mr-3">
-                                       <a href={`/Admin`} class="widget-view">
-                                           <div class="icon-area">
-                                           <i class="fas fa-user-cog"></i>
-                                           </div>
-                                           <small class="text">  Quản Trị </small>
-                                       </a>
-                                   </div>
+                                        <div class="widget-header mr-3">
+                                            <a href={`/Admin`} class="widget-view">
+                                                <div class="icon-area">
+                                                    <i class="fas fa-user-cog"></i>
+                                                </div>
+                                                <small class="text">  Quản Trị </small>
+                                            </a>
+                                        </div>
                                     )}
-                                    {currentUser ?(
-                                    
+                                    {currentUser ? (
+
                                         <div class="widgets-wrap float-md-right">
                                             <div class="widget-header mr-3">
                                                 <a href={`/thong-tin-ca-nhan`} class="widget-view">
@@ -367,19 +396,19 @@ class Header extends Component {
                                                 </a>
                                             </div>
                                             <Router history={history}>
-                                            <div class="widget-header mr-3" onClick={this.logOut}>
-                                                <a href={`/`} class="widget-view">
-                                                    <div class="icon-area">
-                                                        <i class="fa fa-user"></i>
+                                                <div class="widget-header mr-3" onClick={this.logOut}>
+                                                    <a href={`/`} class="widget-view">
+                                                        <div class="icon-area">
+                                                            <i class="fa fa-user"></i>
 
-                                                    </div>
-                                                    <small class="text" > Đăng Xuất </small>
-                                                </a>
-                                            </div>
+                                                        </div>
+                                                        <small class="text" > Đăng Xuất </small>
+                                                    </a>
+                                                </div>
                                             </Router>
                                         </div>
-                                       
-                                    ):(
+
+                                    ) : (
                                         <div class="widgets-wrap float-md-right">
                                             <div class="widget-header mr-3">
                                                 <a href={`/dang-nhap`} class="widget-view">
@@ -425,7 +454,7 @@ class Header extends Component {
                         <div class="collapse navbar-collapse" id="main_nav">
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link " href={`/`}> <i class="fa fa-bars text-muted mr-2"></i> Trang Chủ </a>
+                                <a class="nav-link " href={`/`}> <i class="fa fa-bars text-muted mr-2"></i>Trang chủ</a>
                                     {/* <!--  dropdown-menu dropdown-large end.// --> */}
                                 </li>
                                 <li class="nav-item dropdown">
@@ -514,17 +543,11 @@ class Header extends Component {
                                 </li>
                             </ul>
                             <ul class="navbar-nav ml-md-auto">
-                                <li class="nav-item">
+                                {/* <li class="nav-item">
                                     <a class="nav-link" href="#" download="taiungdung.application">Tải ứng dụng</a>
-                                </li>
+                                </li> */}
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="http://example.com" data-toggle="dropdown">Tiếng Anh</a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">Tiếng Nga</a>
-                                        <a class="dropdown-item" href="#">Tiếng Pháp</a>
-                                        <a class="dropdown-item" href="#">Tiếng Tây Ban Nha</a>
-                                        <a class="dropdown-item" href="#">Tiếng Trung Quốc</a>
-                                    </div>
+                                   <Text/>
                                 </li>
                             </ul>
                         </div>
@@ -532,7 +555,6 @@ class Header extends Component {
                     </div>
                     {/* <!-- container .// --> */}
                 </nav>
-
                 {this.renderproductsearch()}
             </header>
             //  <!-- section-header.// -->

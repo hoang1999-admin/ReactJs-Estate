@@ -1,6 +1,8 @@
 import axios from "axios";
+import authHeader from "../HomeServices/Author/Auth-Header";
 
 const API_URL_Category = "http://localhost:8080/api/v1/category";
+const API_URL_CategorySaleAndRent = "http://localhost:8080/api/v1/categorysaleandrent";
 const API_URL_CategoryTop = "http://localhost:8080/api/v1/category-top";
 const API_URL_CategorySale = "http://localhost:8080/api/v1/category-sale";
 const API_URL_CategoryRent = "http://localhost:8080/api/v1/category-rent";
@@ -36,11 +38,17 @@ const API_URL_Request= "http://localhost:8080/api/v1/request";
 const API_URL_Area= "http://localhost:8080/api/v1/area";
 const API_URL_AreaTop= "http://localhost:8080/api/v1/area-top";
 
+const API_URL = "http://localhost:8080/api/v1/cart/";
+
 class HomeServices {
 
   // category
   async getAllCategorys() {
     const url = `${API_URL_Category}/`;
+    return axios.get(url).then(response => response.data);
+  }
+  async getAllCategorySalesAndRent() {
+    const url = `${API_URL_CategorySaleAndRent}/`;
     return axios.get(url).then(response => response.data);
   }
   async getAllCategoryTops() {
@@ -257,6 +265,21 @@ class HomeServices {
 
   deleteArea(areaId) {
     return axios.delete(API_URL_Area + '/' + areaId);
+  }
+  // cart
+  postCart(cart) {
+    return axios.get(API_URL + "addProduct", { headers: authHeader() },cart);
+  }
+
+  putCart(cart,cartid) {
+    return axios.get(API_URL + "updateProduct", { headers: authHeader() },cart,cartid);
+  }
+
+  DeleteCart(cartid) {
+    return axios.get(API_URL + "deleteProduct", { headers: authHeader() },cartid);
+  }
+  getCartToUser(userid) {
+    return axios.get(API_URL + "getCartsByUserId", { headers: authHeader() },userid);
   }
 }
 

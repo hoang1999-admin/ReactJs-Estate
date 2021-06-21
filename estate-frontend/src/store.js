@@ -4,7 +4,6 @@ import thunk from "redux-thunk";
 import rootReducer from "./Components/Header/ReducerAuth/Index";
 
 const middleware = [thunk];
-
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(...middleware))

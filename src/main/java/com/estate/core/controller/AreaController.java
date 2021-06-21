@@ -63,9 +63,9 @@ public class AreaController {
 	{
 		Area area = areaRepository.findById(id)
 				.orElseThrow(()->new ResourceNotFoundException("area not with id: "+id));
-		area.setIdLong(areaDetail.getIdLong());
+	
 		area.setImageString(areaDetail.getImageString());
-		area.setProduct_idLong(areaDetail.getProduct_idLong());
+		area.setProductidLong(areaDetail.getProductidLong());
 		area.setTitleString(areaDetail.getTitleString());
 		area.setStatusInteger(areaDetail.getStatusInteger());
 		

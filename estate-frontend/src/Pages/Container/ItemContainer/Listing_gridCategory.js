@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
 import axios from "axios";
+import Header from '../../../Components/Header/Header';
+import Footer from '../../../Components/Footer/Footer';
+import Subcribe from '../../../Components/Subcribe/Subcribe';
+import Accep from '../../../Components/Accep/Accep';
 class Listing_gridCategory extends Component {
 
 	constructor(props) {
@@ -175,14 +179,16 @@ class Listing_gridCategory extends Component {
 						<figcaption class="info-wrap">
 							<a href={`/index=${products.idLong}`} class="title mb-2">{products.titleString}</a>
 							<div class="price-wrap">
-							<span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+								{/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
+								<span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble.toLocaleString('vi-VN')} VNĐ</span>
+
 								<small class="text-muted">/Sản phẩm</small>
 							</div>
 							{/* <!-- price-wrap.// --> */}
 
 							{/* <p class="mb-2"> 2 Pieces  <small class="text-muted">(Min Order)</small></p>
 						 */}
-							<p class="text-muted ">{`${products.descriptionString.substring(0, 115)}... `}<a href={`/index=${products.idLong}`}> Đọc thêm</a></p>
+							<p class="text-muted ">{`${products.descriptionString.substring(0, 100)}... `}<a href={`/index=${products.idLong}`}> Đọc thêm</a></p>
 
 							<hr />
 
@@ -195,7 +201,7 @@ class Listing_gridCategory extends Component {
 
 							<label class="custom-control mb-3 custom-checkbox">
 								<input type="checkbox" class="custom-control-input" />
-								
+
 							</label>
 
 							<a href={`lien-he`} class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Liên hệ nhà cung cấp </a>
@@ -219,143 +225,141 @@ class Listing_gridCategory extends Component {
 
 		}
 		return (
+			<div>
+				<Header />
+				{/* // <!-- ========================= SECTION CONTENT ========================= --> */}
+				<section class="section-content padding-y">
+					<div class="container">
 
-			// <!-- ========================= SECTION CONTENT ========================= -->
-			<section class="section-content padding-y">
-				<div class="container">
 
+						{/* <!-- ============================  FILTER TOP  ================================= --> */}
+						<div class="card mb-3">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-2"> Bạn đang ở đây: </div>
+									{/* <!-- col.// --> */}
+									<nav class="col-md-8">
+										<ol class="breadcrumb">
+											<li class="breadcrumb-item"><a href={`/`}>trang-chu</a></li>
+											<li class="breadcrumb-item"><a href={`loai-san-pham?All`}>loai-san-pham</a></li>
+											<li class="breadcrumb-item"><a href="#">{category.titleString}</a></li>
 
-					{/* <!-- ============================  FILTER TOP  ================================= --> */}
-					<div class="card mb-3">
-						<div class="card-body">
-							<div class="row">
-								<div class="col-md-2"> Bạn đang ở đây: </div>
-								{/* <!-- col.// --> */}
-								<nav class="col-md-8">
-									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href={`/`}>trang-chu</a></li>
-										<li class="breadcrumb-item"><a href={`loai-san-pham?All`}>loai-san-pham</a></li>
-										<li class="breadcrumb-item"><a href="#">{category.titleString}</a></li>
-										
-									</ol>
-								</nav>
-								{/* <!-- col.// --> */}
-							</div>
-							{/* <!-- row.// --> */}
-							<hr />
-							<div class="row">
-								<div class="col-md-2">Bộ lọc</div>
-								{/* <!-- col.// --> */}
-								<div class="col-md-10">
-									<ul class="list-inline">
-										<li class="list-inline-item mr-3 dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Loại nhà cung cấp</a>
-											<div class="dropdown-menu p-3" style={{ maxwidth: `400px;` }}>
-												<label class="form-check">
-													<input type="radio" name="myfilter" class="form-check-input" /> Nhà cung cấp tốt </label>
-												<label class="form-check">
-													<input type="radio" name="myfilter" class="form-check-input" /> Nhà cung cấp tốt nhất</label>
-												<label class="form-check">
-													<input type="radio" name="myfilter" class="form-check-input" /> Nhà cung cấp mới</label>
-											</div>
-											{/* <!-- dropdown-menu.// --> */}
-										</li>
-										<li class="list-inline-item mr-3 dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown">  Quốc gia </a>
-											<div class="dropdown-menu p-3">
-												<label class="form-check"> 	 <input type="checkbox" class="form-check-input" /> Trung Quốc   </label>
-												<label class="form-check">   	 <input type="checkbox" class="form-check-input" /> Nhật      </label>
-												<label class="form-check">    <input type="checkbox" class="form-check-input" /> Uzbekistan  </label>
-												<label class="form-check">  <input type="checkbox" class="form-check-input" /> Nga     </label>
-											</div>
-											{/* <!-- dropdown-menu.// --> */}
-										</li>
-										<li class="list-inline-item mr-3 dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Đặc điểm</a>
-											<div class="dropdown-menu">
-												<a href="" class="dropdown-item">Anti backterial</a>
-												<a href="" class="dropdown-item">With buttons</a>
-												<a href="" class="dropdown-item">Extra safety</a>
-											</div>
-										</li>
-										
-										<li class="list-inline-item mr-3"><a href="#">Kích thước</a></li>
-										<li class="list-inline-item mr-3">
-											<div class="form-inline">
-												<label class="mr-2">Giá</label>
-												<input class="form-control form-control-sm" placeholder="Thấp" min="0" type="number" />
-												<span class="px-2"> - </span>
-												<input class="form-control form-control-sm" placeholder="Cao" min ="0"type="number" />
-												<button type="submit" class="btn btn-sm btn-light ml-2">Ok</button>
-											</div>
-										</li>
-										<li class="list-inline-item mr-3">
-											<label class="custom-control mt-1 custom-checkbox">
-												<input type="checkbox" class="custom-control-input" />
-												<div class="custom-control-label">Sẵn sàng cuộc gặp
-			  </div>
-											</label>
-										</li>
-									</ul>
+										</ol>
+									</nav>
+									{/* <!-- col.// --> */}
 								</div>
-								{/* <!-- col.// --> */}
+								{/* <!-- row.// --> */}
+								<hr />
+								<div class="row">
+									<div class="col-md-2">Bộ lọc</div>
+									{/* <!-- col.// --> */}
+									<div class="col-md-10">
+										<ul class="list-inline">
+											<li class="list-inline-item mr-3 dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Loại nhà cung cấp</a>
+												<div class="dropdown-menu p-3" style={{ maxwidth: `400px;` }}>
+													<label class="form-check">
+														<input type="radio" name="myfilter" class="form-check-input" /> Nhà cung cấp tốt </label>
+													<label class="form-check">
+														<input type="radio" name="myfilter" class="form-check-input" /> Nhà cung cấp tốt nhất</label>
+													<label class="form-check">
+														<input type="radio" name="myfilter" class="form-check-input" /> Nhà cung cấp mới</label>
+												</div>
+												{/* <!-- dropdown-menu.// --> */}
+											</li>
+											<li class="list-inline-item mr-3 dropdown">
+												<a href="#" class="dropdown-toggle" data-toggle="dropdown">  Quốc gia </a>
+												<div class="dropdown-menu p-3">
+													<label class="form-check"> 	 <input type="checkbox" class="form-check-input" /> Trung Quốc   </label>
+													<label class="form-check">   	 <input type="checkbox" class="form-check-input" /> Nhật      </label>
+													<label class="form-check">    <input type="checkbox" class="form-check-input" /> Uzbekistan  </label>
+													<label class="form-check">  <input type="checkbox" class="form-check-input" /> Nga     </label>
+												</div>
+												{/* <!-- dropdown-menu.// --> */}
+											</li>
+											<li class="list-inline-item mr-3 dropdown">
+												<a href="#" class="dropdown-toggle" data-toggle="dropdown">Đặc điểm</a>
+												<div class="dropdown-menu">
+													<a href="" class="dropdown-item">Anti backterial</a>
+													<a href="" class="dropdown-item">With buttons</a>
+													<a href="" class="dropdown-item">Extra safety</a>
+												</div>
+											</li>
+
+											<li class="list-inline-item mr-3"><a href="#">Kích thước</a></li>
+											<li class="list-inline-item mr-3">
+												<div class="form-inline">
+													<label class="mr-2">Giá</label>
+													<input class="form-control form-control-sm" placeholder="Thấp" min="0" type="number" />
+													<span class="px-2"> - </span>
+													<input class="form-control form-control-sm" placeholder="Cao" min="0" type="number" />
+													<button type="submit" class="btn btn-sm btn-light ml-2">Ok</button>
+												</div>
+											</li>
+											<li class="list-inline-item mr-3">
+												<label class="custom-control mt-1 custom-checkbox">
+													<input type="checkbox" class="custom-control-input" />
+													<div class="custom-control-label">Sẵn sàng cuộc gặp
+													</div>
+												</label>
+											</li>
+										</ul>
+									</div>
+									{/* <!-- col.// --> */}
+								</div>
+								{/* <!-- row.// --> */}
 							</div>
-							{/* <!-- row.// --> */}
+							{/* <!-- card-body .// --> */}
 						</div>
-						{/* <!-- card-body .// --> */}
-					</div>
-					{/* <!-- card.// --> */}
-					{/* <!-- ============================ FILTER TOP END.// ================================= --> */}
+						{/* <!-- card.// --> */}
+						{/* <!-- ============================ FILTER TOP END.// ================================= --> */}
 
-					<header class="mb-3">
-						<div class="form-inline">
-							<strong class="mr-md-auto">{n} Sản phẩm </strong>
-							<select class="mr-2 form-control">
-								<option>Mới nhất</option>
-								<option>Xu hướng</option>
-								<option>Phổ biến nhất</option>
-								<option>Rẻ nhất</option>
-							</select>
-							<div class="btn-group">
-								<a href={`/danh-sach`} class="btn btn-light" data-toggle="tooltip" title="List view">
-									<i class="fa fa-bars"></i></a>
-								<a href={`loai-san-pham?All`} class="btn btn-light active" data-toggle="tooltip" title="Grid view">
-									<i class="fa fa-th"></i></a>
+						<header class="mb-3">
+							<div class="form-inline">
+								<strong class="mr-md-auto">{n} Sản phẩm </strong>
+								<select class="mr-2 form-control">
+									<option>Mới nhất</option>
+									<option>Xu hướng</option>
+									<option>Phổ biến nhất</option>
+									<option>Rẻ nhất</option>
+								</select>
+								<div class="btn-group">
+									<a href={`/danh-sach`} class="btn btn-light" data-toggle="tooltip" title="List view">
+										<i class="fa fa-bars"></i></a>
+									<a href={`loai-san-pham?All`} class="btn btn-light active" data-toggle="tooltip" title="Grid view">
+										<i class="fa fa-th"></i></a>
+								</div>
 							</div>
+						</header>
+						{/* <!-- sect-heading --> */}
+
+						<div class="row">
+							{this.renderproduct()}
 						</div>
-					</header>
-					{/* <!-- sect-heading --> */}
+						{/* <!-- row end.// --> */}
 
-					<div class="row">
-						{this.renderproduct()}
+
+						<nav class="mb-4" aria-label="Page navigation sample">
+							<ul class="pagination">
+								<li class="page-item " disabled={currentPage === 0 ? true : false} onClick={this.prevPage}><a class="page-link" href="#">Previous</a></li>
+
+								<li class="page-item active" name="currentPage" value={currentPage}
+									onChange={this.changePage}><a class="page-link" href="#">{currentPage}</a></li>
+
+								<li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#">Next</a></li>
+							</ul>
+						</nav>
+					
+
+<Accep/>
+
 					</div>
-					{/* <!-- row end.// --> */}
+					{/* <!-- container .//  --> */}
+				</section>
+				{/* // <!-- ========================= SECTION CONTENT END// ========================= --> */}
 
-
-					<nav class="mb-4" aria-label="Page navigation sample">
-						<ul class="pagination">
-							<li class="page-item " disabled={currentPage === 0 ? true : false} onClick={this.prevPage}><a class="page-link" href="#">Previous</a></li>
-
-							<li class="page-item active" name="currentPage" value={currentPage}
-								onChange={this.changePage}><a class="page-link" href="#">{currentPage}</a></li>
-
-							<li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#">Next</a></li>
-						</ul>
-					</nav>
-                            Showing Page {currentPage} of {totalPages}
-
-
-					<div class="box text-center">
-						<p>Bạn đã tìm thấy những gì bạn đang tìm kiếm?</p>
-						<a href="" class="btn btn-light">Yes</a>
-						<a href="" class="btn btn-light">No</a>
-					</div>
-
-				</div>
-				{/* <!-- container .//  --> */}
-			</section>
-			// {/* <!-- ========================= SECTION CONTENT END// ========================= --> */}
-
-
+				<Subcribe />
+				<Footer />
+			</div>
 		);
 	}
 }

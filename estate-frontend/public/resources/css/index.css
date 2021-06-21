@@ -1,29 +1,194 @@
+/* chữ nhấp nháy */
 @-webkit-keyframes my {
-    0% { color: #F8CD0A; } 
+    0% { color: #f8420a; } 
     50% { color: #fff;  } 
-    100% { color: #F8CD0A;  } 
+    100% { color: #f8420a;  }
 }
 @-moz-keyframes my { 
-    0% { color: #F8CD0A;  } 
+  0% { color: #f8420a; } 
     50% { color: #fff;  }
-    100% { color: #F8CD0A;  } 
+    100% { color: #f8420a;  } 
 }
 @-o-keyframes my { 
-    0% { color: #F8CD0A; } 
+  0% { color: #f8420a; } 
     50% { color: #fff; } 
-    100% { color: #F8CD0A;  } 
+    100% { color: #f8420a;  }
 }
 @keyframes my { 
-    0% { color: #F8CD0A;  } 
+  0% { color: #f8420a; } 
     50% { color: #fff;  }
-    100% { color: #F8CD0A;  } 
+    100% { color: #f8420a;  } 
 } 
 .test {
-        background:#3d3d3d;
+      
         font-size:24px;
         font-weight:bold;
     -webkit-animation: my 700ms infinite;
     -moz-animation: my 700ms infinite; 
     -o-animation: my 700ms infinite; 
     animation: my 700ms infinite;
+}
+ /* scroll - top */
+.btn-top {
+    background-repeat: no-repeat;
+    border: medium none;
+    bottom: 80px;
+    cursor: pointer;
+    display:none;
+    outline: medium none;
+    padding: 0;
+    position: fixed;
+    right: 60px;
+    width: 5px;
+    height: 10px;
+    z-index: 9999;
+}
+#marquee {
+    -webkit-perspective: 800px;
+    perspective: 800px;
+    font-size: 0;
+    font-family: Agency, sans-serif;
+    margin-bottom: 30px;
+  }
+  
+  #marquee div {
+    display: inline-block;
+    height: 3rem;
+    width: 10rem;
+    position: relative;
+  }
+  
+  #marquee div:first-of-type {
+    background: #e5233e;
+    -webkit-transform-origin: top right;
+    transform-origin: top right;
+    -webkit-transform: rotateY(-50deg);
+    transform: rotateY(-50deg);
+    color: #fff;
+  }
+  
+  #marquee div:last-of-type {
+    background: #b31e31;
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+    -webkit-transform: rotateY(55deg);
+    transform: rotateY(55deg);
+    color: #f8c9d9;
+  }
+  
+  #marquee div {
+    font-size: 2rem;
+    overflow: hidden;
+  }
+  
+  #marquee div span {
+    position: absolute;
+    width: 2000%;
+    line-height: 1.4;
+  }
+   @-webkit-keyframes 
+  leftcrawl {  to {
+   -webkit-transform: translateX(-120rem);
+   transform: translateX(-120rem);
+  }
+  }
+   @keyframes 
+  leftcrawl {  to {
+   -webkit-transform: translateX(-120rem);
+   transform: translateX(-120rem);
+  }
+  }
+  @-webkit-keyframes 
+  rightcrawl {  to {
+   -webkit-transform: translateX(-130rem);
+   transform: translateX(-130rem);
+  }
+  }
+  @keyframes 
+  rightcrawl {  to {
+   -webkit-transform: translateX(-130rem);
+   transform: translateX(-130rem);
+  }
+  }
+  
+  #marquee div:first-of-type span {
+    -webkit-transform: translateX(20rem);
+    transform: translateX(20rem);
+    -webkit-animation: leftcrawl 18s linear infinite;
+    animation: leftcrawl 18s linear infinite;
+    text-shadow: 4px 0px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  #marquee div:last-of-type span {
+    -webkit-transform: translateX(10rem);
+    transform: translateX(10rem);
+    -webkit-animation: rightcrawl 18s linear infinite;
+    animation: rightcrawl 18s linear infinite;
+  }
+   @media all and (max-width:993px) {
+  
+  #marquee {
+    -webkit-perspective: none;
+    perspective: none;
+  }
+  
+  #marquee div:last-of-type {
+    opacity: 0;
+    height: 0;
+  }
+  
+  #marquee div:first-of-type { width: 80%; }
+  }
+  
+/****** Style Star Rating Widget *****/
+#rating{border:none;float:left;}
+#rating>input{display:none;}/*ẩn input radio - vì chúng ta đã có label là GUI*/
+#rating>label:before{margin:5px;font-size:1.25em;font-family:FontAwesome;display:inline-block;content:"\f005";}/*1 ngôi sao*/
+#rating>.half:before{content:"\f089";position:absolute;}/*0.5 ngôi sao*/
+#rating>label{color:#ddd;float:right;}/*float:right để lật ngược các ngôi sao lại đúng theo thứ tự trong thực tế*/
+/*thêm màu cho sao đã chọn và các ngôi sao phía trước*/
+#rating>input:checked~label,
+#rating:not(:checked)>label:hover, 
+#rating:not(:checked)>label:hover~label{color:#FFD700;}
+/* Hover vào các sao phía trước ngôi sao đã chọn*/
+#rating>input:checked+label:hover,
+#rating>input:checked~label:hover,
+#rating>label:hover~input:checked~label,
+#rating>input:checked~label:hover~label{color:#FFED85;}
+
+
+.rating {
+  position: relative;
+  width: 180px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .3em;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 0 2px #b3acac;
+}
+
+.rating__result {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-10px) translateX(-5px);
+  z-index: -9;
+  font: 3em Arial, Helvetica, sans-serif;
+  color: #ebebeb8e;
+  pointer-events: none;
+}
+
+.rating__star {
+  font-size: 1.3em;
+  cursor: pointer;
+  color: #dabd18b2;
+  transition: filter linear .3s;
+}
+
+.rating__star:hover {
+  filter: drop-shadow(1px 1px 4px gold);
 }

@@ -37,6 +37,12 @@ public class Email {
 		this.emailString = emailString;
 	}
 
+	public Email(String emailString, Integer statusInteger) {
+		super();
+		this.emailString = emailString;
+		this.statusInteger = statusInteger;
+	}
+
 	public Email(Long idLong, String emailString, Integer statusInteger) {
 		super();
 		this.idLong = idLong;

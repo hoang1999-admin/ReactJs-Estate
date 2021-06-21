@@ -25,9 +25,9 @@ public class Photo {
 	private Long idLong;@Column(name = "title")
 	private String titleString;@Column(name = "image")
 	private String imageString;@Column(name = "type")
-	private Integer typeString;@Column(name = "id_product")
+	private Integer typeInteger;@Column(name = "id_product")
 	private Long productidLong;@Column(name = "status")
-	private String statusString;
+	private Integer statusInteger;
 	public Long getIdLong() {
 		return idLong;
 	}
@@ -46,11 +46,18 @@ public class Photo {
 	public void setImageString(String imageString) {
 		this.imageString = imageString;
 	}
-	public Integer getTypeString() {
-		return typeString;
+	
+	/**
+	 * @return the typeInteger
+	 */
+	public Integer getTypeInteger() {
+		return typeInteger;
 	}
-	public void setTypeString(Integer typeString) {
-		this.typeString = typeString;
+	/**
+	 * @param typeInteger the typeInteger to set
+	 */
+	public void setTypeInteger(Integer typeInteger) {
+		this.typeInteger = typeInteger;
 	}
 	public Long getProductidLong() {
 		return productidLong;
@@ -58,11 +65,17 @@ public class Photo {
 	public void setProductidLong(Long productidLong) {
 		this.productidLong = productidLong;
 	}
-	public String getStatusString() {
-		return statusString;
+	/**
+	 * @return the statusInteger
+	 */
+	public Integer getStatusInteger() {
+		return statusInteger;
 	}
-	public void setStatusString(String statusString) {
-		this.statusString = statusString;
+	/**
+	 * @param statusInteger the statusInteger to set
+	 */
+	public void setStatusInteger(Integer statusInteger) {
+		this.statusInteger = statusInteger;
 	}
 
 	

@@ -23,3 +23,17 @@ function getTime() {
          }
     setTimeout(function () { getTime() }, 500);
   }
+  function animate_string() {
+    const element = document.getElementById('target');
+    const textNode = element.firstChild;
+    let text = textNode.data;
+    setInterval(() => {
+        text = text[text.length - 1] + text.substring(0, text.length - 1);
+        textNode.data = text;
+    }, 200);
+}
+function calcRate(r) {
+ const f = ~~r,//Tương tự Math.floor(r)
+ id = 'star' + f + (r % f ? 'half' : '')
+ id && (document.getElementById(id).checked = !0)
+}

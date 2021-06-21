@@ -23,7 +23,7 @@ public class Area {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long idLong;@Column(name = "product_id")
-	private Long product_idLong;@Column(name = "title")
+	private Long productidLong;@Column(name = "title")
 	private String titleString;@Column(name = "image")
 	private String imageString;@Column(name = "status")
 	private Integer statusInteger;
@@ -36,11 +36,18 @@ public class Area {
 	public void setIdLong(Long idLong) {
 		this.idLong = idLong;
 	}
-	public Long getProduct_idLong() {
-		return product_idLong;
+	
+	/**
+	 * @return the productidLong
+	 */
+	public Long getProductidLong() {
+		return productidLong;
 	}
-	public void setProduct_idLong(Long product_idLong) {
-		this.product_idLong = product_idLong;
+	/**
+	 * @param productidLong the productidLong to set
+	 */
+	public void setProductidLong(Long productidLong) {
+		this.productidLong = productidLong;
 	}
 	public String getTitleString() {
 		return titleString;

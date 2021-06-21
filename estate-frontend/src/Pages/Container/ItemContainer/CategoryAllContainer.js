@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
+import Pagination from "react-js-pagination";
 import axios from "axios";
+import Header from '../../../Components/Header/Header';
+import Footer from '../../../Components/Footer/Footer';
+import Subcribe from '../../../Components/Subcribe/Subcribe';
+import Accep from '../../../Components/Accep/Accep';
 class CategoryAllContainer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            id: this.props.match.params.id,
             category: {},
             search: '',
             categorys: [],
@@ -14,70 +20,108 @@ class CategoryAllContainer extends Component {
             product: [],
             currentPage: 1,
             productsPerPage: 6,
-
         };
 
         this.categoryService = new HomeServices();
         this.productService = new HomeServices();
         this.categoryproductService = new HomeServices();
         this.countproductService = new HomeServices();
-    }
 
+        this.changePage = this.changePage.bind(this);
+        this.prevPage = this.prevPage.bind(this);
+        this.nextPage = this.nextPage.bind(this);
+        this.firstPage = this.firstPage.bind(this);
+        this.lastPage = this.lastPage.bind(this);
+        this.fetchURL = this.fetchURL.bind(this);
+        this.fetchURLCategoryId = this.fetchURLCategoryId.bind(this);
+    }
+    fetchURL(currentPage) {
+        currentPage -= 1;
+        axios.get(`http://localhost:8080/api/v1/products?page=${currentPage}&size=${this.state.productsPerPage}`)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    product: data.content,
+                    totalPages: data.totalPages,
+                    totalElements: data.totalElements,
+                    currentPage: data.number + 1,
+
+                });
+            });
+    }
+    fetchURLCategoryId(currentPage) {
+        currentPage -= 1;
+        axios.get(`http://localhost:8080/api/v1/productbycategory/index=${this.state.id}?page=${currentPage}&size=${this.state.productsPerPage}`)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    categorybyproduct: data.content,
+                    totalPages: data.totalPages,
+                    totalElements: data.totalElements,
+                    currentPage: data.number + 1,
+
+                });
+            });
+      
+    }
     componentDidMount() {
 
-        const id = this.props.match.params.id;
-
-        if (id == null) {
 
 
-            axios.get("http://localhost:8080/api/v1/products?pageNumber=" + this.state.currentPage + "&pageSize=" + this.state.productsPerPage)
-                .then(response => response.data)
-                .then((data) => {
-                    this.setState({
-                        product: data.content,
-                        totalPages: data.totalPages,
-                        totalElements: data.totalElements,
-                        currentPage: data.number + 1
-                    });
-                });
-
+        if (this.state.id == null) {
+            this.fetchURL(this.state.currentPage);
         } else {
-            this.categoryproductService.getAllProductByCategory(id).then(response => {
-                this.setState({ categorybyproduct: response });
-            });
+
+            this.fetchURLCategoryId(this.state.currentPage);
         }
-        this.categoryService.getAllCategorysId(id).then(response => {
+        this.categoryService.getAllCategorysId(this.state.id).then(response => {
             this.setState({ category: response });
         });
-        this.categoryService.getAllCategorys().then(response => {
+        this.categoryService.getAllCategorySalesAndRent().then(response => {
             this.setState({ categorys: response });
         });
 
 
     }
     changePage = (event) => {
-        let targetPage = parseInt(event.target.value);
-        this.setState({
-            [event.target.name]: targetPage
-        });
-    };
-    prevPage = () => {
-        let prevPage = 1;
-        if (this.state.currentPage > prevPage) {
+		let targetPage = parseInt(event.target.value);
+        this.fetchURL(targetPage);
+        this.fetchURLCategoryId(targetPage);
+		this.setState({
+			[event.target.name]: targetPage
+		});
+	};
+    firstPage = () => {
+		let firstPage = 1;
+		if (this.state.currentPage > firstPage) {
 
-            this.state.currentPage -= prevPage;
+		this.fetchURL(firstPage);
+        this.fetchURLCategoryId(firstPage);
+		}
+	};
+	prevPage = () => {
+		let prevPage = 1;
+		if (this.state.currentPage > prevPage) {
 
-        }
-    };
-    nextPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.productsPerPage)) {
+		this.fetchURL(this.state.currentPage -= prevPage);
+        this.fetchURLCategoryId(this.state.currentPage -= prevPage);
+		}
+	};
+    lastPage = () => {
+		let condition = Math.ceil(this.state.totalElements / this.state.productsPerPage);
+		if (this.state.currentPage < condition) {
 
-            this.state.currentPage += 1;
+		this.fetchURL(condition);
+        this.fetchURLCategoryId(condition);
+		}
+	};
+	nextPage = () => {
+		if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.productsPerPage)) {
 
-        }
-    };
-
-
+			this.fetchURL(this.state.currentPage += 1);
+            this.fetchURLCategoryId(this.state.currentPage += 1);
+		}
+	};
     rendercategory = () => {
         return this.state.categorys.map((categorys, key) => {
             return (
@@ -118,6 +162,7 @@ class CategoryAllContainer extends Component {
                                         </li>
                                     </ul>
                                     <div class="label-rating">9/10</div>
+                                    <div class="label-rating"> <i class="fas fa-history" style={{color:`green`}}></i> {searchs.createdatTimestamp}</div>
                                 </div>
                                 {/* <!-- rating-wrap.// --> */}
 
@@ -137,7 +182,8 @@ class CategoryAllContainer extends Component {
                         <aside class="col-sm-3">
                             <div class="info-aside">
                                 <div class="price-wrap">
-                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={searchs.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    {/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: {searchs.pricesaleDouble.toLocaleString('vi-VN')} </span>
                                     <small class="text-muted">/sản phẩm</small>
                                 </div>
                                 {/* <!-- price-wrap.// --> */}
@@ -192,6 +238,7 @@ class CategoryAllContainer extends Component {
                                         </li>
                                     </ul>
                                     <div class="label-rating">9/10</div>
+                                    <div class="label-rating"> <i class="fas fa-history" style={{color:`green`}}></i> {products.createdatTimestamp}</div>
                                 </div>
                                 {/* <!-- rating-wrap.// --> */}
 
@@ -211,7 +258,8 @@ class CategoryAllContainer extends Component {
                         <aside class="col-sm-3">
                             <div class="info-aside">
                                 <div class="price-wrap">
-                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    {/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble.toLocaleString('vi-VN')} </span>
                                     <small class="text-muted">/sản phẩm</small>
                                 </div>
                                 {/* <!-- price-wrap.// --> */}
@@ -264,6 +312,7 @@ class CategoryAllContainer extends Component {
                                         </li>
                                     </ul>
                                     <div class="label-rating">9/10</div>
+                                    <div class="label-rating"><i class="fas fa-history" style={{color:`green`}}></i> {products.createdatTimestamp}</div>
                                 </div>
                                 {/* <!-- rating-wrap.// --> */}
 
@@ -285,7 +334,8 @@ class CategoryAllContainer extends Component {
                         <aside class="col-sm-3">
                             <div class="info-aside">
                                 <div class="price-wrap">
-                                    <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span>
+                                    {/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
+                                    <span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble.toLocaleString('vi-VN')} </span>
                                     <small class="text-muted">/sản phẩm</small>
                                 </div>
                                 {/* <!-- price-wrap.// --> */}
@@ -310,7 +360,7 @@ class CategoryAllContainer extends Component {
         });
     }
     render() {
-        const { currentPage, totalPages } = this.state;
+        const { currentPage, totalPages ,totalElements } = this.state;
         const category = this.state.category;
         const id = this.props.match.params.id;
         if (id == null) {
@@ -323,219 +373,221 @@ class CategoryAllContainer extends Component {
 
 
         return (
-            // <!-- ========================= SECTION CONTENT ========================= -->
-            <section class="section-content padding-y">
-                <div class="container">
+            <div>
+                <Header />
+                {/* // <!-- ========================= SECTION CONTENT ========================= -->/ */}
+                <section class="section-content padding-y">
+                    <div class="container">
 
 
-                    {/* <!-- ============================  FILTER TOP  ================================= --> */}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <ol class="breadcrumb float-left">
-                                <li class="breadcrumb-item"><a href={`/`} >trang-chu</a></li>
-                                <li class="breadcrumb-item"><a href={`/loai-san-pham?All`} >loai-san-pham</a></li>
-                                <li class="breadcrumb-item active">{category.slugString}</li>
-                            </ol>
-                        </div>
-                        {/* <!-- card-body .// --> */}
-                    </div>
-                    {/* <!-- card.// --> */}
-
-                    {/* <!-- ============================ FILTER TOP END.// ================================= --> */}
-
-
-                    <div class="row">
-                        <aside class="col-md-2">
-
-                            <article class="filter-group">
-                                <h6 class="title">
-                                    <a href={`/loai-san-pham?All`} class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_1">Loại sản phẩm </a>
-                                </h6>
-                                <div class="filter-content collapse show" id="collapse_1">
-                                    <div class="inner">
-                                        {this.rendercategory()}
-                                    </div>
-                                    {/* <!-- inner.// --> */}
-                                </div>
-                            </article>
-                            {/* <!-- filter-group  .// --> */}
-                            <article class="filter-group">
-                                <h6 class="title">
-                                    <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_2"> Hướng </a>
-                                </h6>
-                                <div class="filter-content collapse show" id="collapse_2">
-                                    <div class="inner">
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" checked="" class="custom-control-input" />
-                                            <div class="custom-control-label">Đông
-                                  <b class="badge badge-pill badge-light float-right">120</b>  </div>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" checked="" class="custom-control-input" />
-                                            <div class="custom-control-label">Tây
-                                  <b class="badge badge-pill badge-light float-right">15</b>  </div>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" checked="" class="custom-control-input" />
-                                            <div class="custom-control-label">Nam
-                                  <b class="badge badge-pill badge-light float-right">35</b> </div>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" checked="" class="custom-control-input" />
-                                            <div class="custom-control-label">Bắc
-                                  <b class="badge badge-pill badge-light float-right">89</b> </div>
-                                        </label>
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" />
-                                            <div class="custom-control-label">Tây nam
-                                  <b class="badge badge-pill badge-light float-right">30</b>  </div>
-                                        </label>
-                                    </div>
-                                    {/* <!-- inner.// --> */}
-                                </div>
-                            </article>
-                            {/* <!-- filter-group .// --> */}
-                            <article class="filter-group">
-                                <h6 class="title">
-                                    <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_3"> Mức giá </a>
-                                </h6>
-                                <div class="filter-content collapse show" id="collapse_3">
-                                    <div class="inner">
-                                        <input type="range" class="custom-range" min="0" max="100" name="" />
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>Thấp</label>
-                                                <input class="form-control" placeholder="$0" type="number" />
-                                            </div>
-                                            <div class="form-group text-right col-md-6">
-                                                <label>Cao</label>
-                                                <input class="form-control" placeholder="$1,0000" type="number" />
-                                            </div>
-                                        </div>
-                                        {/* <!-- form-row.// --> */}
-                                        <button class="btn btn-block btn-primary">Lọc</button>
-                                    </div>
-                                    {/* <!-- inner.// --> */}
-                                </div>
-                            </article>
-                            {/* <!-- filter-group .// --> */}
-                            <article class="filter-group">
-                                <h6 class="title">
-                                    <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_4"> Diện tích </a>
-                                </h6>
-                                <div class="filter-content collapse show" id="collapse_4">
-                                    <div class="inner">
-                                        <label class="checkbox-btn">
-                                            <input type="checkbox" />
-                                            <span class="btn btn-light"> Dưới 50 m<sup>2</sup></span>
-                                        </label>
-
-                                        <label class="checkbox-btn">
-                                            <input type="checkbox" />
-                                            <span class="btn btn-light"> Trên 50 m<sup>2</sup></span>
-                                        </label>
-
-                                        <label class="checkbox-btn">
-                                            <input type="checkbox" />
-                                            <span class="btn btn-light"> Nhỏ 100 m<sup>2</sup></span>
-                                        </label>
-
-                                        <label class="checkbox-btn">
-                                            <input type="checkbox" />
-                                            <span class="btn btn-light"> Lớn 100 m<sup>2</sup></span>
-                                        </label>
-                                    </div>
-                                    {/* <!-- inner.// --> */}
-                                </div>
-                            </article>
-                            {/* <!-- filter-group .// --> */}
-                            <article class="filter-group">
-                                <h6 class="title">
-                                    <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_5"> Điều kiện </a>
-                                </h6>
-                                <div class="filter-content collapse show" id="collapse_5">
-                                    <div class="inner">
-                                        <label class="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" checked="" class="custom-control-input" />
-                                            <div class="custom-control-label">Bất kỳ</div>
-                                        </label>
-
-                                        <label class="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" class="custom-control-input" />
-                                            <div class="custom-control-label">Mới </div>
-                                        </label>
-
-                                        <label class="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" class="custom-control-input" />
-                                            <div class="custom-control-label">Phổ biến</div>
-                                        </label>
-
-                                        <label class="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" class="custom-control-input" />
-                                            <div class="custom-control-label">Tốt nhất</div>
-                                        </label>
-                                    </div>
-                                    {/* <!-- inner.// --> */}
-                                </div>
-                            </article>
-                            {/* <!-- filter-group .// --> */}
-
-                        </aside>
-                        {/* <!-- col.// --> */}
-                        <main class="col-md-10">
-
-
-                            <header class="mb-3">
-                                <div class="form-inline">
-                                    <strong class="mr-md-auto">{n} Sản phẩm </strong>
-                                    <select class="mr-2 form-control">
-                                        <option>Mới nhất</option>
-                                        <option>Xu hướng</option>
-                                        <option>Phổ biến nhất</option>
-                                        <option>Rẻ nhất</option>
-                                    </select>
-                                    <div class="btn-group">
-                                        <a href={`/danh-sach`} class="btn btn-light" data-toggle="tooltip" title="List view">
-                                            <i class="fa fa-bars"></i></a>
-                                        <a href={`loai-san-pham?All`} class="btn btn-light active" data-toggle="tooltip" title="Grid view">
-                                            <i class="fa fa-th"></i></a>
-                                    </div>
-                                </div>
-                            </header>
-                            {/* <!-- sect-heading --> */}
-
-
-                            {this.renderproduct()}
-                            {this.renderproductbycategory()}
-
-                            <nav class="mb-4" aria-label="Page navigation sample">
-                                <ul class="pagination">
-                                    <li class="page-item " disabled={currentPage === 0 ? true : false} onClick={this.prevPage}><a class="page-link" href="#">Previous</a></li>
-
-                                    <li class="page-item active" name="currentPage" value={currentPage}
-                                        onChange={this.changePage}><a class="page-link" href="#">{currentPage}</a></li>
-
-                                    <li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </nav>
-                            Showing Page {currentPage} of {totalPages}
-                            <div class="box text-center">
-                                <p>Bạn đã tìm thấy những gì bạn đang tìm kiếm?</p>
-                                <a href="" class="btn btn-light">Yes</a>
-                                <a href="" class="btn btn-light">No</a>
+                        {/* <!-- ============================  FILTER TOP  ================================= --> */}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <ol class="breadcrumb float-left">
+                                    <li class="breadcrumb-item"><a href={`/`} >trang-chu</a></li>
+                                    <li class="breadcrumb-item"><a href={`/loai-san-pham?All`} >loai-san-pham</a></li>
+                                    <li class="breadcrumb-item active">{category.slugString}</li>
+                                </ol>
                             </div>
+                            {/* <!-- card-body .// --> */}
+                        </div>
+                        {/* <!-- card.// --> */}
+
+                        {/* <!-- ============================ FILTER TOP END.// ================================= --> */}
 
 
-                        </main>
-                        {/* <!-- col.// --> */}
+                        <div class="row">
+                            <aside class="col-md-2">
+
+                                <article class="filter-group">
+                                    <h6 class="title">
+                                        <a href={`/loai-san-pham?All`} class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_1">Loại sản phẩm </a>
+                                    </h6>
+                                    <div class="filter-content collapse show" id="collapse_1">
+                                        <div class="inner">
+                                            {this.rendercategory()}
+                                        </div>
+                                        {/* <!-- inner.// --> */}
+                                    </div>
+                                </article>
+                                {/* <!-- filter-group  .// --> */}
+                                <article class="filter-group">
+                                    <h6 class="title">
+                                        <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_2"> Hướng </a>
+                                    </h6>
+                                    <div class="filter-content collapse show" id="collapse_2">
+                                        <div class="inner">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" checked="" class="custom-control-input" />
+                                                <div class="custom-control-label">Đông
+                                                    <b class="badge badge-pill badge-light float-right">120</b>  </div>
+                                            </label>
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" checked="" class="custom-control-input" />
+                                                <div class="custom-control-label">Tây
+                                                    <b class="badge badge-pill badge-light float-right">15</b>  </div>
+                                            </label>
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" checked="" class="custom-control-input" />
+                                                <div class="custom-control-label">Nam
+                                                    <b class="badge badge-pill badge-light float-right">35</b> </div>
+                                            </label>
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" checked="" class="custom-control-input" />
+                                                <div class="custom-control-label">Bắc
+                                                    <b class="badge badge-pill badge-light float-right">89</b> </div>
+                                            </label>
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" />
+                                                <div class="custom-control-label">Tây nam
+                                                    <b class="badge badge-pill badge-light float-right">30</b>  </div>
+                                            </label>
+                                        </div>
+                                        {/* <!-- inner.// --> */}
+                                    </div>
+                                </article>
+                                {/* <!-- filter-group .// --> */}
+                                <article class="filter-group">
+                                    <h6 class="title">
+                                        <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_3"> Mức giá </a>
+                                    </h6>
+                                    <div class="filter-content collapse show" id="collapse_3">
+                                        <div class="inner">
+                                            <input type="range" class="custom-range" min="0" max="100" name="" />
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label>Thấp</label>
+                                                    <input class="form-control" placeholder="$0" type="number" />
+                                                </div>
+                                                <div class="form-group text-right col-md-6">
+                                                    <label>Cao</label>
+                                                    <input class="form-control" placeholder="$1,0000" type="number" />
+                                                </div>
+                                            </div>
+                                            {/* <!-- form-row.// --> */}
+                                            <button class="btn btn-block btn-primary">Lọc</button>
+                                        </div>
+                                        {/* <!-- inner.// --> */}
+                                    </div>
+                                </article>
+                                {/* <!-- filter-group .// --> */}
+                                <article class="filter-group">
+                                    <h6 class="title">
+                                        <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_4"> Diện tích </a>
+                                    </h6>
+                                    <div class="filter-content collapse show" id="collapse_4">
+                                        <div class="inner">
+                                            <label class="checkbox-btn">
+                                                <input type="checkbox" />
+                                                <span class="btn btn-light"> Dưới 50 m<sup>2</sup></span>
+                                            </label>
+
+                                            <label class="checkbox-btn">
+                                                <input type="checkbox" />
+                                                <span class="btn btn-light"> Trên 50 m<sup>2</sup></span>
+                                            </label>
+
+                                            <label class="checkbox-btn">
+                                                <input type="checkbox" />
+                                                <span class="btn btn-light"> Nhỏ 100 m<sup>2</sup></span>
+                                            </label>
+
+                                            <label class="checkbox-btn">
+                                                <input type="checkbox" />
+                                                <span class="btn btn-light"> Lớn 100 m<sup>2</sup></span>
+                                            </label>
+                                        </div>
+                                        {/* <!-- inner.// --> */}
+                                    </div>
+                                </article>
+                                {/* <!-- filter-group .// --> */}
+                                <article class="filter-group">
+                                    <h6 class="title">
+                                        <a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_5"> Điều kiện </a>
+                                    </h6>
+                                    <div class="filter-content collapse show" id="collapse_5">
+                                        <div class="inner">
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" name="myfilter_radio" checked="" class="custom-control-input" />
+                                                <div class="custom-control-label">Bất kỳ</div>
+                                            </label>
+
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" name="myfilter_radio" class="custom-control-input" />
+                                                <div class="custom-control-label">Mới </div>
+                                            </label>
+
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" name="myfilter_radio" class="custom-control-input" />
+                                                <div class="custom-control-label">Phổ biến</div>
+                                            </label>
+
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" name="myfilter_radio" class="custom-control-input" />
+                                                <div class="custom-control-label">Tốt nhất</div>
+                                            </label>
+                                        </div>
+                                        {/* <!-- inner.// --> */}
+                                    </div>
+                                </article>
+                                {/* <!-- filter-group .// --> */}
+
+                            </aside>
+                            {/* <!-- col.// --> */}
+                            <main class="col-md-10">
+
+
+                                <header class="mb-3">
+                                    <div class="form-inline">
+                                        <strong class="mr-md-auto"> <i class="far fa-hand-point-right"> </i> {n} / {totalElements} Sản phẩm </strong>
+                                        <select class="mr-2 form-control">
+                                            <option>Mới nhất</option>
+                                            <option>Xu hướng</option>
+                                            <option>Phổ biến nhất</option>
+                                            <option>Rẻ nhất</option>
+                                        </select>
+                                        <div class="btn-group">
+                                            <a href={`/danh-sach`} class="btn btn-light" data-toggle="tooltip" title="List view">
+                                                <i class="fa fa-bars"></i></a>
+                                            <a href={`loai-san-pham?All`} class="btn btn-light active" data-toggle="tooltip" title="Grid view">
+                                                <i class="fa fa-th"></i></a>
+                                        </div>
+                                    </div>
+                                </header>
+                                {/* <!-- sect-heading --> */}
+
+
+                                {this.renderproduct()}
+                                {this.renderproductbycategory()}
+
+                                <nav class="mb-4" aria-label="Page navigation sample">
+                                    <ul class="pagination">
+                                        <li class="page-item " disabled={currentPage === 1 ? true : false} onClick={this.firstPage}><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li>
+                                        <li class="page-item " disabled={currentPage === 1 ? true : false} onClick={this.prevPage}><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
+
+                                        <li class="page-item active" name="currentPage" value={currentPage}
+                                            onChange={this.changePage}><a class="page-link" href="#">{currentPage}</a></li>
+
+                                        <li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+                                        <li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.lastPage}><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
+
+                                    </ul>
+                                </nav>
+                                Show page: {currentPage} of {totalPages}
+                                <Accep />
+
+                            </main>
+                            {/* <!-- col.// --> */}
+
+                        </div>
 
                     </div>
-
-                </div>
-                {/* <!-- container .//  --> */}
-            </section>
-            // <!-- ========================= SECTION CONTENT END// ========================= -->
-
+                    {/* <!-- container .//  --> */}
+                </section>
+                {/* // <!-- ========================= SECTION CONTENT END// ========================= --> */}
+                <Subcribe />
+                <Footer />
+            </div>
         );
     }
 }

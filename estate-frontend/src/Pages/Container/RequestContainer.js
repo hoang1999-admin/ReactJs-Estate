@@ -101,12 +101,13 @@ class RequestContainer extends Component {
                                 <p class="card-text" style={{ maxwidth: `400px` }}>“Cảm giác thoải mái nhất là khi biết rằng bạn đang đứng trên đất của chính bạn. Đất đai là điều duy nhất không thể bay đi. “- Anthony Trollope, tiểu thuyết gia.</p>
                                 <a href="#" class="btn btn-primary rounded-pill">Tìm hiểu thêm</a>
                             </div>
+                           
                         </div>
                     </div>
                     {/* <!-- col // --> */}
+                    
                     <div class="col-md-4">
-
-                        <div class="card card-body">
+                       <div class="card card-body">
                             <h4 class="title py-3">Một yêu cầu, nhiều trích dẫn</h4>
                             <form>
                                 <div class="form-group">

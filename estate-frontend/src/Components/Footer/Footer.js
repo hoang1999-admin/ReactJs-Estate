@@ -9,13 +9,13 @@ export default function Footer() {
                 <section class="footer-top padding-y-lg text-white">
                     <div class="row">
                         <aside class="col-md col-6">
-                        <a href="http://batdongsan.com" class="brand-wrap">
+                            <a href="http://batdongsan.com" class="brand-wrap">
                                 <img class="logo" src="/resources/images/lgBDS-min.png" />
-                            </a><br/><br/>
+                            </a><br /><br />
                             <h6 class="title">Công ty Cổ phần batdongsan.com Việt Nam</h6>
                             <a href="#" class="brand-wrap">
                                 <img class="logo" src="/resources/images/avatars/da-dang-ki-bct.png" />
-                            </a><br/>
+                            </a><br />
                         </aside>
                         <aside class="col-md col-6">
                             <h6 class="title">Công ty</h6>
@@ -30,7 +30,7 @@ export default function Footer() {
                         <aside class="col-md col-6">
                             <h6 class="title">Hỗ trợ</h6>
                             <ul class="list-unstyled">
-                                <li> <a href="#">Liên hệ chúng tôi</a></li>
+                                <li> <a href={`/lien-he`}>Liên hệ chúng tôi</a></li>
                                 <li> <a href="#">Hoàn tiền</a></li>
                                 <li> <a href="#">Tình trạng đặt hàng</a></li>
                                 <li> <a href="#">Thông tin vận chuyển</a></li>
@@ -40,19 +40,19 @@ export default function Footer() {
                         <aside class="col-md col-6">
                             <h6 class="title">Tài khoản</h6>
                             <ul class="list-unstyled">
-                                <li> <a href="#"> Đăng nhập người dùng </a></li>
-                                <li> <a href="#"> Đăng ký người dùng </a></li>
-                                <li> <a href="#"> Thiết lập tài khoản </a></li>
-                                <li> <a href="#"> Đơn đặt hàng của tôi </a></li>
+                                <li> <a href={`/dang-nhap`}> Đăng nhập người dùng </a></li>
+                                <li> <a href={`/dang-ky`}> Đăng ký người dùng </a></li>
+                                <li> <a href={`/thong-tin-ca-nhan`}> Thiết lập tài khoản </a></li>
+                                <li> <a href={`/don-dat-hang-cua-toi`}> Đơn đặt hàng của tôi </a></li>
                             </ul>
                         </aside>
                         <aside class="col-md">
                             <h6 class="title">Xã hội</h6>
                             <ul class="list-unstyled">
-                                <li><a href="#"> <i class="fab fa-facebook"></i> Facebook </a></li>
-                                <li><a href="#"> <i class="fab fa-twitter"></i> Twitter </a></li>
-                                <li><a href="#"> <i class="fab fa-instagram"></i> Instagram </a></li>
-                                <li><a href="#"> <i class="fab fa-youtube"></i> Youtube </a></li>
+                                <li><a href="http://facebook.com" target="_blank" > <i class="fab fa-facebook"></i> Facebook </a></li>
+                                <li><a href="http://twitter.com" target="_blank"> <i class="fab fa-twitter"></i> Twitter </a></li>
+                                <li><a href="http://instagram.com" target="_blank"> <i class="fab fa-instagram"></i> Instagram </a></li>
+                                <li><a href="http://youtube.com" target="_blank"> <i class="fab fa-youtube"></i> Youtube </a></li>
                             </ul>
                         </aside>
                     </div>
@@ -67,9 +67,14 @@ Chịu trách nhiệm nội dung: Ngô Đình Hoàng. Xem chính sách sử dụ
                     <p class="text-muted"> &copy 2021 Công ty Bat Dong San, All rights reserved </p>
                     <br />
                 </section>
+
             </div>
             {/* <!-- //container --> */}
+            <div class="btn-top">
+                <img src="/resources/images/scroll-top.png" alt="JSOFT" style={{width:`50px`},{height:`80px`}} />
+            </div>
         </footer>
+
         // {/* <!-- ========================= FOOTER END // ========================= --> */}
 
     );

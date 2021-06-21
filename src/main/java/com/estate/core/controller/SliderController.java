@@ -65,16 +65,16 @@ public class SliderController {
 	{
 		Slider slider = sliderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("slider not with id: "+id));
 		
-		slider.setIdLong(sliderdetail.getIdLong());
+		
 		slider.setTitleString(sliderdetail.getTitleString());
 		slider.setLinkString(sliderdetail.getLinkString());
 		slider.setImageString(sliderdetail.getImageString());
-		slider.setOrderLong(sliderdetail.getOrderLong());
+		slider.setOrderInteger(sliderdetail.getOrderInteger());
 		slider.setPositionString(sliderdetail.getPositionString());
 		slider.setCreatedatTimestamp(sliderdetail.getCreatedatTimestamp());
 		slider.setMetakeyString(sliderdetail.getMetakeyString());
 		slider.setMetadescString(sliderdetail.getMetadescString());
-		slider.setStatusString(sliderdetail.getStatusString());
+		slider.setStatusInteger(sliderdetail.getStatusInteger());
 		
 		Slider sliderupdateSlider = sliderRepository.save(slider);
 		return ResponseEntity.ok(sliderupdateSlider);

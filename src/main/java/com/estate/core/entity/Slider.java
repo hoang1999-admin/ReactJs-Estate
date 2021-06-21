@@ -29,11 +29,11 @@ public class Slider {
 	private String linkString;@Column(name = "position")
 	private String positionString;@Column(name = "image")
 	private String imageString;@Column(name = "orders")
-	private Long orderLong;@Column(name = "metakey")
+	private Integer orderInteger;@Column(name = "metakey")
 	private String metakeyString;@Column(name = "metadesc")
 	private String metadescString;@Column(name = "created_at")
 	private Timestamp createdatTimestamp;@Column(name = "status")
-	private String statusString;
+	private Integer statusInteger;
 	public Long getIdLong() {
 		return idLong;
 	}
@@ -64,11 +64,18 @@ public class Slider {
 	public void setImageString(String imageString) {
 		this.imageString = imageString;
 	}
-	public Long getOrderLong() {
-		return orderLong;
+	
+	/**
+	 * @return the orderInteger
+	 */
+	public Integer getOrderInteger() {
+		return orderInteger;
 	}
-	public void setOrderLong(Long orderLong) {
-		this.orderLong = orderLong;
+	/**
+	 * @param orderInteger the orderInteger to set
+	 */
+	public void setOrderInteger(Integer orderInteger) {
+		this.orderInteger = orderInteger;
 	}
 	public String getMetakeyString() {
 		return metakeyString;
@@ -88,13 +95,19 @@ public class Slider {
 	public void setCreatedatTimestamp(Timestamp createdatTimestamp) {
 		this.createdatTimestamp = createdatTimestamp;
 	}
-	public String getStatusString() {
-		return statusString;
+	/**
+	 * @return the statusInteger
+	 */
+	public Integer getStatusInteger() {
+		return statusInteger;
 	}
-	public void setStatusString(String statusString) {
-		this.statusString = statusString;
+	/**
+	 * @param statusInteger the statusInteger to set
+	 */
+	public void setStatusInteger(Integer statusInteger) {
+		this.statusInteger = statusInteger;
 	}
-
+	
 
 	
 	

@@ -15,9 +15,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.estate.core.entity.Product;
 import com.estate.core.exception.ResourceNotFoundException;
 import com.estate.core.repository.ProductRepository;
-import com.estate.core.services.ProductService;
+import com.estate.core.services.productservices.ProductServices;
 
 
 
@@ -45,26 +43,16 @@ public class ProductController {
 	@Autowired
 	private ProductRepository productRepository;
 	@Autowired
-	private ProductService<Product> productService;
+	private ProductServices<Product> productService;
 
 	@GetMapping("/product/search/searchText={searchText}")
-	public ResponseEntity<Page<Product>> findAll(Pageable pageable,@PathVariable String searchText) {
-		return new ResponseEntity<>(productService.findAllProducts(pageable, searchText), HttpStatus.OK);
-	}
-	
-	@GetMapping("/product-page")
-	public ResponseEntity<Page<Product>> findAll(@PathVariable int pageNumber,@PathVariable int pageSize) {
-		return new ResponseEntity<>(productService.findAll(
-				PageRequest.of(
-						pageNumber, pageSize
-					
-				)
-		), HttpStatus.OK);
+	public Page<Product> findAll(Pageable pageable,@PathVariable String searchText) {
+		return productService.findAllProducts(pageable, searchText);
 	}
 	@GetMapping("/products")
-	public Page<Product> getListPageProducts()
+	public Page<Product> getListPageProducts(Pageable pageable)
 	{
-		return (Page<Product>) productRepository.findAll(PageRequest.of(0,6));
+		return productRepository.findAll(pageable);
 	}
 	@GetMapping("/product")
 	public List<Product> getListProducts()
@@ -109,9 +97,9 @@ public class ProductController {
 		return productRepository.getListProductPhoto(id);
 	}
 	@GetMapping("/productbycategory/index={categoryid}")
-	public List<Product> getListCategoryProducts(@PathVariable long categoryid)
+	public Page<Product> getListCategoryProducts(Pageable pageable,@PathVariable long categoryid)
 	{
-		return productRepository.findByCategoryidLong(categoryid);
+		return productRepository.findByCategoryidLong(pageable,categoryid);
 	}
 	
 	@GetMapping("/product/index={id}")

@@ -29,42 +29,44 @@ import com.estate.core.entity.Email;
 import com.estate.core.exception.ResourceNotFoundException;
 import com.estate.core.repository.EmailRepository;
 
-@CrossOrigin(origins = "http://localhost:3000/Admin")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1")
 public class EmailAminController {
 	@Autowired
 	private EmailRepository emailRepository;
 	
-	@GetMapping("/email")
+	@GetMapping("/emailadmin")
 	public List<Email> getListeEmails()
 	{
 		return emailRepository.findAll();
 	}
-	@GetMapping("/email/index={id}")
+	@GetMapping("/emailadmin/index={id}")
 	public ResponseEntity<Email> getEmailId(@PathVariable long id)
 	{
 		Email email = emailRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("email not with id: "+id));
 		return ResponseEntity.ok(email);
 	}
-	@PostMapping("/email")
+	@PostMapping("/emailadmin")
 	public Email creatEmail(@RequestBody Email email)
 	{
 		return emailRepository.save(email);
 	}
 	
-	@PutMapping("/email/index={id}")
+	@PutMapping("/emailadmin/index={id}")
 	public ResponseEntity<Email> updateEmail(@PathVariable long id,@RequestBody Email emailDetail)
 	{
 		Email email = emailRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("email not with id: "+id));
-		email.setIdLong(emailDetail.getIdLong());
+	
 		email.setEmailString(emailDetail.getEmailString());
 		email.setStatusInteger(emailDetail.getStatusInteger());
+		
+		
 		Email emailupdatEmail = emailRepository.save(email);
 		return ResponseEntity.ok(emailupdatEmail);
 		
 	}
-	@DeleteMapping("/email/index={id}")
+	@DeleteMapping("/emailadmin/index={id}")
 	public ResponseEntity<Map<String, Boolean>> deleteEmail(@PathVariable long id)
 	{
 		Email email = emailRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("email not with id: "+id));

@@ -44,6 +44,11 @@ public class CategoryController {
 	{
 		return categoryRepository.findAll();
 	}
+	@GetMapping("/categorysaleandrent")
+	public List<Category> getListCategorieSaleAndRent()
+	{
+		return categoryRepository.findSaleAndRent();
+	}
 	@GetMapping("/category-top")
 	public List<Category> getListCategories7()
 	{
@@ -102,7 +107,7 @@ public class CategoryController {
 			Category Category = categoryRepository.findById(id)
 					.orElseThrow(() -> new ResourceNotFoundException("Category not exist with id :" + id));
 			
-			Category.setParentidLong(CategoryDetails.getParentidLong());
+			
 			Category.setTitleString(CategoryDetails.getTitleString());
 			Category.setSlugString(CategoryDetails.getSlugString());
 			Category.setOrderLong(CategoryDetails.getOrderLong());

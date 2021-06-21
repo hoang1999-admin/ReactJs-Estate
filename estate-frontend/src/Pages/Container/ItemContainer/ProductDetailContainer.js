@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
 import { MapInteractionCSS } from 'react-map-interaction';
+import Header from '../../../Components/Header/Header';
+import Footer from '../../../Components/Footer/Footer';
+import Subcribe from '../../../Components/Subcribe/Subcribe';
 class ProductDetailContainer extends Component {
     constructor(props) {
         super(props);
@@ -71,9 +74,10 @@ class ProductDetailContainer extends Component {
     render() {
         const product = this.state.product;
         const { scale, translation } = this.state;
+
         return (
             <div>
-
+                <Header />
                 <section class="py-3 bg-light">
                     <div class="container">
                         <ol class="breadcrumb">
@@ -125,42 +129,63 @@ class ProductDetailContainer extends Component {
                                     <h2 class="title mt-3">{product.titleString}</h2>
 
                                     <div class="rating-wrap my-3">
-                                        <ul class="rating-stars">
-                                            <li style={{ width: `80%` }} class="stars-active">
-                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </li>
-                                        </ul>
-                                        <small class="label-rating text-muted">132 nhận xét</small>
-                                        <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 đơn đặt hàng </small>
+                                        <div id="rating" >
+                                            <input type="radio" id="star5" name="rating" value="5" />
+                                            <label class="full" for="star5" title="Awesome - 5 stars"></label>
+
+                                            <input type="radio" id="star4half" name="rating" value="4 and a half" />
+                                            <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+
+                                            <input type="radio" id="star4" name="rating" value="4" />
+                                            <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+
+                                            <input type="radio" id="star3half" name="rating" value="3 and a half" />
+                                            <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+
+                                            <input type="radio" id="star3" name="rating" value="3" />
+                                            <label class="full" for="star3" title="Meh - 3 stars"></label>
+
+                                            <input type="radio" id="star2half" name="rating" value="2 and a half" />
+                                            <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+
+                                            <input type="radio" id="star2" name="rating" value="2" />
+                                            <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+
+                                            <input type="radio" id="star1half" name="rating" value="1 and a half" />
+                                            <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+
+                                            <input type="radio" id="star1" name="rating" value="1" />
+                                            <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+
+                                            <input type="radio" id="starhalf" name="rating" value="half" />
+                                            <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                                        </div>
+                                        {/* <small class="label-rating text-muted">132 nhận xét</small>
+                                        <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 đơn đặt hàng </small> */}
+                                        <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> {product.createdatTimestamp}</small>
+
                                     </div>
                                     {/* <!-- rating-wrap.// --> */}
 
                                     <div class="mb-3">
-                                        <var class="price h4" style={{ color: `red` }}>Giá: <NumberFormat value={this.state.product.priceDouble} displayType={'text'} thousandSeparator={true} /> VND</var>
+                                        <var class="price h4" style={{ color: `red` }}>Giá: <NumberFormat value={this.state.product.priceDouble} displayType={'text'} thousandSeparator={true} /> VNĐ</var>
                                         {/* <span class="text-muted">USD 562.65 incl. VAT</span> */}
                                     </div>
                                     {/* <!-- price-detail-wrap .// --> */}
                                     <p>{product.descriptionString}</p>
                                     <dl class="row">
                                         <dt class="col-sm-3">Nhà cung cấp</dt>
-                                        <dd class="col-sm-9"><a href="#">Công ty Bất Động Sản</a></dd>
+                                        <dd class="col-sm-9"><a href="#">{product.customerString}</a></dd>
 
                                         <dt class="col-sm-3">Số bài viết</dt>
-                                        <dd class="col-sm-9">596 065</dd>
+                                        <dd class="col-sm-9">{this.state.productrelation.length}</dd>
 
                                         <dt class="col-sm-3">Tình trạng</dt>
                                         <dd class="col-sm-9">vẫn còn</dd>
                                     </dl>
 
                                     <div class="form-row  mt-4">
-                                        <div class="form-group col-md flex-grow-0">
+                                        {/* <div class="form-group col-md flex-grow-0">
                                             <div class="input-group mb-3 input-spinner">
                                                 <div class="input-group-prepend">
                                                     <button class="btn btn-light" type="button" id="button-plus"> + </button>
@@ -170,7 +195,7 @@ class ProductDetailContainer extends Component {
                                                     <button class="btn btn-light" type="button" id="button-minus"> &minus; </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         {/* <!-- col.// --> */}
                                         <div class="form-group col-md">
                                             <a href="#" class="btn  btn-primary">
@@ -301,7 +326,8 @@ class ProductDetailContainer extends Component {
                     {/* <!-- container .//  --> */}
                 </section>
                 {/* <!-- ========================= SECTION CONTENT END// ========================= --> */}
-
+                <Subcribe />
+                <Footer />
             </div>
         );
     }

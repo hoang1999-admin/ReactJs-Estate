@@ -12,7 +12,7 @@ export const cartState = {
 export const reducer=(state,action)=>{
     switch(action.type){
         case "add_cart":
-        return {cartItems:[...action.data]}
+        return {cartItems:[...action.data]};
         break;
         case "delete_cart":
         break;

@@ -7,7 +7,7 @@ class MainContainer extends React.Component {
         this.state = {
             categorys: [],
             categorytops: [],
-            producttops:[],
+            producttops: [],
             sliders: [],
             activeIndex: 4
         };
@@ -43,13 +43,13 @@ class MainContainer extends React.Component {
     renderProductTops = () => {
         return this.state.producttops.map((product, key) => {
             return (
-                <div class="card-banner border-bottom" key ={key}>
-                <div class="py-3" style={{ width: `100%` }}>
-                    <h6 class="card-title">{product.titleString}</h6>
-                    <a href={`/index=${product.idLong}`} class="btn btn-secondary btn-sm"> Chi tiết </a>
+                <div class="card-banner border-bottom" key={key}>
+                    <div class="py-3" style={{ width: `100%` }}>
+                        <h6 class="card-title">{product.titleString}</h6>
+                        <a href={`/index=${product.idLong}`} class="btn btn-secondary btn-sm"> Chi tiết </a>
+                    </div>
+                    <img src={`/resources/images/items/${product.imageString}`} height="60" class="img-bg" />
                 </div>
-                <img src={`/resources/images/items/${product.imageString}`}  height="60" class="img-bg" />
-            </div>
 
             );
         });
@@ -75,6 +75,19 @@ class MainContainer extends React.Component {
                 <main class="card">
                     <div class="card-body">
 
+                        <div class="row">
+                            <div class="col-3">
+                                <div id="marquee">
+                                    <div><span>Chào mừng quý khách đến xem bất động sản của chúng tôi.
+                                        Chúc quý khách có một ngày vui vẻ và đặc biệt thật nhiều sức khỏe.</span></div>
+                                    <div aria-hidden="true"><span>Chào mừng quý khách đến xem bất động sản của chúng tôi.
+                                        Chúc quý khách có một ngày vui vẻ và đặc biệt thật nhiều sức khỏe.</span></div>
+                                </div>
+                            </div>
+                            <div class="col-9" style={{fontSize:`30px`}}>
+                                <font ><marquee scrollamount="8" direction="left" >Mua bất động sản không chỉ là cách tốt nhất, cách nhanh nhất, cách an toàn nhất mà còn là cách duy nhất để trở nên giàu có.(Marshall Field)</marquee></font>
+                            </div>
+                        </div>
                         <div class="row">
                             <aside class="col-lg col-md-3 flex-lg-grow-0">
                                 <nav class="nav-home-aside">
@@ -119,7 +132,7 @@ class MainContainer extends React.Component {
                                     <h6 class="bg-blue text-center text-white mb-0 p-2">Loại phổ biến</h6>
 
                                     {this.renderProductTops()}
-                                   
+
                                 </aside>
                             </div>
                             {/* <!-- col.// --> */}

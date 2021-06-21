@@ -29,8 +29,7 @@ public class Category implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long idLong;@Column(name = "parent_id")
-	private Long parentidLong;@Column(name = "title")
+	private Long idLong;@Column(name = "title")
 	private String titleString;@Column(name = "slug")
 	private String slugString;@Column(name = "orders")
 	private Long orderLong;@Column(name = "metakey")
@@ -57,12 +56,7 @@ public class Category implements Serializable{
 	public void setIdLong(Long idLong) {
 		this.idLong = idLong;
 	}
-	public Long getParentidLong() {
-		return parentidLong;
-	}
-	public void setParentidLong(Long parentidLong) {
-		this.parentidLong = parentidLong;
-	}
+	
 	public String getTitleString() {
 		return titleString;
 	}
@@ -200,15 +194,24 @@ public class Category implements Serializable{
 	/**
 	 * @return the serialversionuid
 	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+	
 	public String getStatusString() {
 		return statusString;
 	}
 	
 	public void setStatusString(String statusString) {
 		this.statusString = statusString;
+	}
+	@Override
+	public String toString() {
+		return "Category [idLong=" + idLong + ", titleString=" + titleString + ", slugString=" + slugString
+				+ ", orderLong=" + orderLong + ", metakeyString=" + metakeyString + ", metadescString=" + metadescString
+				+ ", createdatTimestamp=" + createdatTimestamp + ", maincontainerBoolean=" + maincontainerBoolean
+				+ ", dealcontainerBoolean=" + dealcontainerBoolean + ", container1Boolean=" + container1Boolean
+				+ ", container2Boolean=" + container2Boolean + ", requestcontainerBoolean=" + requestcontainerBoolean
+				+ ", itemcontainerBoolean=" + itemcontainerBoolean + ", servicecontainerBoolean="
+				+ servicecontainerBoolean + ", regioncontainerBoolean=" + regioncontainerBoolean + ", statusString="
+				+ statusString + "]";
 	}
 	
 //	public Set<Product> getProducts() {

@@ -24,29 +24,31 @@ import com.estate.core.entity.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long>,PagingAndSortingRepository<Product,Long>{
+	@Query(value="SELECT * FROM products pro right JOIN productrelations pr ON (pro.id = pr.product_id) where pr.productrelation_id=?", nativeQuery = true)
+	List<Product> getListProductRelation(long id);
 	
-	@Query(value ="SELECT * FROM products WHERE id in (SELECT pr.id FROM productrelations pr WHERE pr.product_id = :id)",nativeQuery = true)
-	List<Product> getListProductRelation(@Param("id") long id);
+//	@Query(value ="SELECT * FROM products WHERE id in (SELECT pr.id FROM productrelations pr WHERE pr.product_id = :id)",nativeQuery = true)
+//	List<Product> getListProductRelation(@Param("id") long id);
 	
 	@Query(value ="SELECT * FROM products WHERE id in (SELECT pr.id FROM photos pr WHERE pr.id_product = :id)",nativeQuery = true)
 	List<Product> getListProductPhoto(@Param("id") long id);
 	
-	@Query(value ="FROM Product WHERE container2 = true AND status = 1")
+	@Query(value ="FROM Product WHERE container2 = true AND status = '1'")
 	List<Product> getListSale();
 	
-	@Query(value ="FROM Product WHERE container1 = true AND status = 1")
+	@Query(value ="FROM Product WHERE container1 = true AND status = '1'")
 	List<Product> getListRent();
 	
-	@Query(value =" FROM Product WHERE dealcontainer = true AND status = 1")
+	@Query(value =" FROM Product WHERE dealcontainer = true AND status = '1'")
 	List<Product> getListDeal();
 	
 	@Query(value = "SELECT * FROM products ORDER BY id asc limit :limit", nativeQuery = true)
 	List<Product> findTopN(@Param("limit") int limit);
-	
-	@Query("FROM Product WHERE category_id=:cat_id")
-	List<Product> getByCategoryId(@Param("cat_id") String product_id);
-	
-	List<Product> findByCategoryidLong(Long categoryidLong);
+//	
+//	@Query("FROM Product WHERE category_id=:cat_id")
+//	List<Product> getByCategoryId(@Param("cat_id") String product_id);
+//	
+	Page<Product> findByCategoryidLong(Pageable pageable,Long categoryidLong);
 	
 	Page<Product> findAll(Pageable pageable);
 	

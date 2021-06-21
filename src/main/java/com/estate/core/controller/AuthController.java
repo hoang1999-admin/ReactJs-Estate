@@ -34,12 +34,12 @@ import com.estate.core.entity.Role;
 import com.estate.core.entity.User;
 import com.estate.core.repository.RoleRepository;
 import com.estate.core.repository.UserRepository;
-import com.estate.core.security.JwtResponse;
-import com.estate.core.security.JwtUtils;
-import com.estate.core.security.LoginRequest;
-import com.estate.core.security.MessageResponse;
-import com.estate.core.security.SignupRequest;
-import com.estate.core.security.UserDetailsImpl;
+import com.estate.core.security.jwt.JwtResponse;
+import com.estate.core.security.jwt.JwtUtils;
+import com.estate.core.security.jwt.LoginRequest;
+import com.estate.core.security.jwt.MessageResponse;
+import com.estate.core.security.jwt.SignupRequest;
+import com.estate.core.security.jwt.UserDetailsImpl;
 
 
 
