@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
 import moment from 'moment';
-const timestamp = Date.now();
+
 class CreateProduct extends Component {
     constructor(props) {
         super(props)

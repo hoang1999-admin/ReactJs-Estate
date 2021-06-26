@@ -65,7 +65,6 @@ class UpdateCategory extends Component {
                 metakeyString: categorydata.metakeyString,
                 metadescString: categorydata.metadescString,
 
-                createdatTimestamp: categorydata.createdatTimestamp,
 
                 maincontainerBoolean: categorydata.maincontainerBoolean,
                 dealcontainerBoolean: categorydata.dealcontainerBoolean,

@@ -5,6 +5,7 @@ import { MapInteractionCSS } from 'react-map-interaction';
 import Header from '../../../Components/Header/Header';
 import Footer from '../../../Components/Footer/Footer';
 import Subcribe from '../../../Components/Subcribe/Subcribe';
+import moment from 'moment';
 class ProductDetailContainer extends Component {
     constructor(props) {
         super(props);
@@ -74,7 +75,7 @@ class ProductDetailContainer extends Component {
     render() {
         const product = this.state.product;
         const { scale, translation } = this.state;
-
+        const dd = moment(product.createdatTimestamp).format("LLLL");
         return (
             <div>
                 <Header />
@@ -162,11 +163,11 @@ class ProductDetailContainer extends Component {
                                         </div>
                                         {/* <small class="label-rating text-muted">132 nhận xét</small>
                                         <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 đơn đặt hàng </small> */}
-                                        <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> {product.createdatTimestamp}</small>
+                                        <small class="label-rating text-success ml-3" style={{fontSize:`20px` }}> <i class="fa fa-clipboard-check"></i> {dd}</small>
 
                                     </div>
                                     {/* <!-- rating-wrap.// --> */}
-
+                                            <br/>
                                     <div class="mb-3">
                                         <var class="price h4" style={{ color: `red` }}>Giá: <NumberFormat value={this.state.product.priceDouble} displayType={'text'} thousandSeparator={true} /> VNĐ</var>
                                         {/* <span class="text-muted">USD 562.65 incl. VAT</span> */}
@@ -231,7 +232,7 @@ class ProductDetailContainer extends Component {
                         <div class="row">
                             <div class="col-md-8">
 
-                                <h5 class="title-description">Mô tả</h5>
+                                <h5 class="title-description"><a href="javascript:void(0)" title={product.descriptionString}>Mô tả</a> <i className="far fa-hand-point-left ml-4" style={{ color: `green` }}> </i></h5>
                                 <p>{product.metadescString}</p>
                                 <table class="table table-bordered">
                                     <tr> <th colspan="2">Mã </th> </tr>

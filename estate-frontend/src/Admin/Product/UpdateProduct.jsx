@@ -1,7 +1,7 @@
-import moment from 'moment';
+
 import React, { Component } from 'react'
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
-
+import moment from 'moment';
 
 
 class UpdateProduct extends Component {
@@ -88,7 +88,7 @@ class UpdateProduct extends Component {
                 discountInteger: productdata.discountInteger,
                 positionString: productdata.positionString,
                 directionString: productdata.directionString,
-                createdatTimestamp: productdata.createdatTimestamp,
+               
                 imageString: productdata.imageString,
                 areaString: productdata.areaString,
                 addressString: productdata.addressString,
@@ -126,7 +126,7 @@ class UpdateProduct extends Component {
             discountInteger: this.state.discountInteger,
             positionString: this.state.positionString,
             directionString: this.state.directionString,
-            createdatTimesTamp: this.state.createdatTimesTamp,
+            createdatTimestamp: this.state.createdatTimestamp,
             imageString: this.fileInput.current.files[0].name,
             areaString: this.state.areaString,
             addressString: this.state.addressString,

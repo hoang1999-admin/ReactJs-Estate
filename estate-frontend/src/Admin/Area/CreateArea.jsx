@@ -36,7 +36,7 @@ class CreateArea extends Component {
         console.log('area => ' + JSON.stringify(area));
 
         // step 5
-        if (area == '') {
+        if (area === null) {
             alert('Lưu thất bại');
         } else {
             this.areaService.createArea(area).then(res => {

@@ -45,7 +45,7 @@ class UpdateContact extends Component {
                 titleString: contactdata.titleString,
                 detailString: contactdata.detailString,
                 imageString: contactdata.imageString,
-                createdatTimestamp: contactdata.createdatTimestamp,
+
                 statusString: this.state.statusString ? this.state.statusString : this.state.statusString2,
 
             });

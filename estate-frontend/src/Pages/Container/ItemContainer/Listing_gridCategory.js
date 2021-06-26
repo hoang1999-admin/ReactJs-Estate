@@ -17,7 +17,7 @@ class Listing_gridCategory extends Component {
 			categorybyproduct: [],
 			product: [],
 			currentPage: 1,
-			productsPerPage: 6,
+			productsPerPage: 8,
 
 		};
 
@@ -25,30 +25,52 @@ class Listing_gridCategory extends Component {
 		this.productService = new HomeServices();
 		this.categoryproductService = new HomeServices();
 		this.countproductService = new HomeServices();
-	}
 
+		this.changePage = this.changePage.bind(this);
+        this.prevPage = this.prevPage.bind(this);
+        this.nextPage = this.nextPage.bind(this);
+        this.firstPage = this.firstPage.bind(this);
+        this.lastPage = this.lastPage.bind(this);
+        this.fetchURL = this.fetchURL.bind(this);
+        this.fetchURLCategoryId = this.fetchURLCategoryId.bind(this);
+	}
+	fetchURL(currentPage) {
+        currentPage -= 1;
+        axios.get(`http://localhost:8080/api/v1/products?page=${currentPage}&size=${this.state.productsPerPage}`)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    product: data.content,
+                    totalPages: data.totalPages,
+                    totalElements: data.totalElements,
+                    currentPage: data.number + 1,
+					isLoading: false,
+                });
+            }) .catch(error => this.setState({ error, isLoading: false }));
+    }
+    fetchURLCategoryId(currentPage) {
+        currentPage -= 1;
+        axios.get(`http://localhost:8080/api/v1/productbycategory/index=${this.state.id}?page=${currentPage}&size=${this.state.productsPerPage}`)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    categorybyproduct: data.content,
+                    totalPages: data.totalPages,
+                    totalElements: data.totalElements,
+                    currentPage: data.number + 1,
+
+                });
+            });
+      
+    }
 	componentDidMount() {
 
 		const id = this.props.match.params.id;
 
 		if (id == null) {
-
-
-			axios.get("http://localhost:8080/api/v1/products?pageNumber=" + this.state.currentPage + "&pageSize=" + this.state.productsPerPage)
-				.then(response => response.data)
-				.then((data) => {
-					this.setState({
-						product: data.content,
-						totalPages: data.totalPages,
-						totalElements: data.totalElements,
-						currentPage: data.number + 1
-					});
-				});
-
+			this.fetchURL(this.state.currentPage);
 		} else {
-			this.categoryproductService.getAllProductByCategory(id).then(response => {
-				this.setState({ categorybyproduct: response });
-			});
+			this.fetchURLCategoryId(this.state.currentPage);
 		}
 		this.categoryService.getAllCategorysId(id).then(response => {
 			this.setState({ category: response });
@@ -61,27 +83,43 @@ class Listing_gridCategory extends Component {
 	}
 	changePage = (event) => {
 		let targetPage = parseInt(event.target.value);
+        this.fetchURL(targetPage);
+        this.fetchURLCategoryId(targetPage);
 		this.setState({
 			[event.target.name]: targetPage
 		});
+	};
+    firstPage = () => {
+		let firstPage = 1;
+		if (this.state.currentPage > firstPage) {
+
+		this.fetchURL(firstPage);
+        this.fetchURLCategoryId(firstPage);
+		}
 	};
 	prevPage = () => {
 		let prevPage = 1;
 		if (this.state.currentPage > prevPage) {
 
-			this.state.currentPage -= prevPage;
+		this.fetchURL(this.state.currentPage -= prevPage);
+        this.fetchURLCategoryId(this.state.currentPage -= prevPage);
+		}
+	};
+    lastPage = () => {
+		let condition = Math.ceil(this.state.totalElements / this.state.productsPerPage);
+		if (this.state.currentPage < condition) {
 
+		this.fetchURL(condition);
+        this.fetchURLCategoryId(condition);
 		}
 	};
 	nextPage = () => {
 		if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.productsPerPage)) {
 
-			this.state.currentPage += 1;
-
+			this.fetchURL(this.state.currentPage += 1);
+            this.fetchURLCategoryId(this.state.currentPage += 1);
 		}
 	};
-
-
 	rendercategory = () => {
 		return this.state.categorys.map((categorys, key) => {
 			return (
@@ -214,7 +252,7 @@ class Listing_gridCategory extends Component {
 		});
 	}
 	render() {
-		const { currentPage, totalPages } = this.state;
+		const { currentPage, totalPages,totalElements ,product} = this.state;
 		const category = this.state.category;
 		const id = this.props.match.params.id;
 		if (id == null) {
@@ -223,6 +261,34 @@ class Listing_gridCategory extends Component {
 		} else {
 			var n = this.state.categorybyproduct.length;
 
+		}
+		let onResetArray = () => {
+			this.setState({ product:this.state.product})
+			//console.log(autos)
+		  }
+		let filterDong = () => {
+			const fordDongs = product.filter((products) => products.directionString.includes("D"));
+			// const fordAutos = autoData.filter( (auto) => auto.title.includes("Ford"));
+	
+			this.setState({ product: fordDongs });
+		}
+		let filterTay = () => {
+			const fordTays = product.filter((products) => products.directionString.includes("T"));
+			// const fordAutos = autoData.filter( (auto) => auto.title.includes("Ford"));
+	
+			this.setState({ product: fordTays });
+		}
+		let filterNam = () => {
+			const fordNams = product.filter((products) => products.directionString.includes("N"));
+			// const fordAutos = autoData.filter( (auto) => auto.title.includes("Ford"));
+	
+			this.setState({ product: fordNams });
+		}
+		let filterBac = () => {
+			const fordBacs = product.filter((products) => products.directionString.includes("B"));
+			// const fordAutos = autoData.filter( (auto) => auto.title.includes("Ford"));
+	
+			this.setState({ product: fordBacs });
 		}
 		return (
 			<div>
@@ -236,7 +302,7 @@ class Listing_gridCategory extends Component {
 						<div class="card mb-3">
 							<div class="card-body">
 								<div class="row">
-									<div class="col-md-2"> Bạn đang ở đây: </div>
+									<div class="col-md-2"><i class="fas fa-house-damage"></i> Bạn đang ở đây: </div>
 									{/* <!-- col.// --> */}
 									<nav class="col-md-8">
 										<ol class="breadcrumb">
@@ -251,7 +317,7 @@ class Listing_gridCategory extends Component {
 								{/* <!-- row.// --> */}
 								<hr />
 								<div class="row">
-									<div class="col-md-2">Bộ lọc</div>
+									<div class="col-md-2"> <i class="fas fa-filter"></i> Bộ lọc</div>
 									{/* <!-- col.// --> */}
 									<div class="col-md-10">
 										<ul class="list-inline">
@@ -277,11 +343,12 @@ class Listing_gridCategory extends Component {
 												{/* <!-- dropdown-menu.// --> */}
 											</li>
 											<li class="list-inline-item mr-3 dropdown">
-												<a href="#" class="dropdown-toggle" data-toggle="dropdown">Đặc điểm</a>
+												<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hướng</a>
 												<div class="dropdown-menu">
-													<a href="" class="dropdown-item">Anti backterial</a>
-													<a href="" class="dropdown-item">With buttons</a>
-													<a href="" class="dropdown-item">Extra safety</a>
+													<a href="javascript:void(0)" class="dropdown-item" onClick={filterDong}>Đông</a>
+													<a href="javascript:void(0)" class="dropdown-item" onClick={filterTay}>Tây</a>
+													<a href="javascript:void(0)" class="dropdown-item" onClick={filterNam}>Nam</a>
+													<a href="javascript:void(0)" class="dropdown-item" onClick={filterBac}>Bắc</a>
 												</div>
 											</li>
 
@@ -292,7 +359,7 @@ class Listing_gridCategory extends Component {
 													<input class="form-control form-control-sm" placeholder="Thấp" min="0" type="number" />
 													<span class="px-2"> - </span>
 													<input class="form-control form-control-sm" placeholder="Cao" min="0" type="number" />
-													<button type="submit" class="btn btn-sm btn-light ml-2">Ok</button>
+													<button type="submit" class="btn btn-sm btn-light ml-2"onClick={onResetArray}>Reset</button>
 												</div>
 											</li>
 											<li class="list-inline-item mr-3">
@@ -315,7 +382,7 @@ class Listing_gridCategory extends Component {
 
 						<header class="mb-3">
 							<div class="form-inline">
-								<strong class="mr-md-auto">{n} Sản phẩm </strong>
+								<strong class="mr-md-auto"> <i class="far fa-hand-point-right"> </i> {n} / {totalElements} Sản phẩm </strong>
 								<select class="mr-2 form-control">
 									<option>Mới nhất</option>
 									<option>Xu hướng</option>
@@ -336,21 +403,22 @@ class Listing_gridCategory extends Component {
 							{this.renderproduct()}
 						</div>
 						{/* <!-- row end.// --> */}
-
-
 						<nav class="mb-4" aria-label="Page navigation sample">
 							<ul class="pagination">
-								<li class="page-item " disabled={currentPage === 0 ? true : false} onClick={this.prevPage}><a class="page-link" href="#">Previous</a></li>
+								<li class="page-item " disabled={currentPage === 1 ? true : false} onClick={this.firstPage}><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li>
+								<li class="page-item " disabled={currentPage === 1 ? true : false} onClick={this.prevPage}><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
 
 								<li class="page-item active" name="currentPage" value={currentPage}
 									onChange={this.changePage}><a class="page-link" href="#">{currentPage}</a></li>
 
-								<li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#">Next</a></li>
+								<li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.nextPage}><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+								<li class="page-item" disabled={currentPage === totalPages ? true : false} onClick={this.lastPage}><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
+
 							</ul>
 						</nav>
-					
+						Trang: {currentPage} / {totalPages} Tổng số trang.
 
-<Accep/>
+						<Accep />
 
 					</div>
 					{/* <!-- container .//  --> */}

@@ -46,7 +46,7 @@ class UpdateSlider extends Component {
                 metakeyString: sliderdata.metakeyString,
                 metadescString: sliderdata.metadescString,
                 positionString: sliderdata.positionString,
-                createdatTimestamp: sliderdata.createdatTimestamp,
+
                 imageString: sliderdata.imageString,
                 statusString: this.state.statusString ? this.state.statusString : this.state.statusString2,
 

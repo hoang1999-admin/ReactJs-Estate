@@ -55,7 +55,7 @@ class IndexArea extends Component {
 
                     <td class="text-center">
                         {
-                            area.statusInteger != 2
+                            (area.statusInteger !== 2)
                                 ?
                                 <a class="btn btn-success btn-sm" href="javascript:void(0)" role="button">
                                     <i class="fa fa-toggle-on"></i>
