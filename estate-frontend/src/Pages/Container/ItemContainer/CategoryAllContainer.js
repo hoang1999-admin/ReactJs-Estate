@@ -8,9 +8,9 @@ import Accep from '../../../Components/Accep/Accep';
 import moment from 'moment';
 import { Range, getTrackBackground } from "react-range";
 
-const STEP = 0.1;
+const STEP = 100000;
 const MIN = 0;
-const MAX = 100;
+const MAX = 10000000000;
 class CategoryAllContainer extends Component {
 
     constructor(props) {
@@ -27,7 +27,7 @@ class CategoryAllContainer extends Component {
             currentPage: 1,
             productsPerPage: 6,
             checked: false,
-            values:[50],
+            values:[0],
         };
 
         this.categoryService = new HomeServices();
@@ -479,6 +479,8 @@ class CategoryAllContainer extends Component {
                     return products
                 } else if (products.directionString >= 0) {
                     return products
+                }else if (products.pricesaleDouble >= 0) {
+                    return products
                 }
 
             }).map((products, key) => {
@@ -584,12 +586,15 @@ class CategoryAllContainer extends Component {
     }
 
     handlePrice= (event) =>{
-        const target = event.target;
-        const value = target.type === 'button' ? target.checked : target.value;
-        const name = target.name;
-        this.setState({ [name]: value });
-        alert(this.state.values)
-
+        if (this.state.id == null) {
+            const filter = this.state.product.filter((products) => products.pricesaleDouble = event);
+            console.log(filter);
+            this.setState({ filters: filter, checked: true });
+        } else {
+            const filterc = this.state.categorybyproduct.filter((products) =>products.pricesaleDouble = event);
+            console.log(filterc);
+            this.setState({ filterss: filterc, checked: true });
+        }
     }
     handleChangedong = (event) => {
         const target = event.target;
