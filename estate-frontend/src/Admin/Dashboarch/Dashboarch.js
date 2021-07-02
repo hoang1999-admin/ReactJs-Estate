@@ -8,6 +8,7 @@ import { logout } from "../../Components/Header/ActionAuth/Auth";
 import { clearMessage } from "../../Components/Header/ActionAuth/Message";
 import { Router } from "react-router-dom";
 import { history } from '../../Components/Header/HelperssAuth/History';
+import Home from '../Home/Home';
 class Dashboarch extends Component {
     constructor(props) {
         super(props);
@@ -193,21 +194,7 @@ class Dashboarch extends Component {
                     <div className="col-3">
                         <div class="list-group">
                             <Router history={history}>
-                                <ul>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-product">Sản phẩm</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-category">Loại sản phẩm</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-email">E-mail</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-contact">Liên hệ</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-slider">slider</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-photo">Hình ảnh</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-area">Khu vực</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-productrelation">Sản phẩm liên quan</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-request">Yêu cầu</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-role">Vai trò</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-userrole">Vai trò và thành viên</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-user">Thành viên</a></li>
-                                    <li class="list-group-item list-group-item-action" onClick={this.logOut}><a href="/">Đăng xuất</a></li>
-                                </ul>
+                              <Home/>
                             </Router>
                         </div>
                     </div>

@@ -12,6 +12,9 @@ const API_URL_USER_ROLE = "http://localhost:8080/api/v1/user_roleadmin";
 const API_URL_ROLE = "http://localhost:8080/api/v1/roleadmin";
 const API_URL_AREA = "http://localhost:8080/api/v1/areaadmin";
 const API_URL_PRODUCTRELATION = "http://localhost:8080/api/v1/productrelationadmin";
+const API_URL_BLOG = "http://localhost:8080/api/v1/blogadmin";
+const API_URL_POST = "http://localhost:8080/api/v1/postadmin";
+const API_URL_PAGE = "http://localhost:8080/api/v1/pageadmin";
 
 class HomeServiceAdmin {
 
@@ -288,6 +291,72 @@ class HomeServiceAdmin {
 
     deleteProductRelation(productrelationId){
         return axios.delete(API_URL_PRODUCTRELATION+ '/index=' + productrelationId);
+    }
+
+    // blog
+
+    getBlogs(){
+        return axios.get(API_URL_BLOG);
+    }
+
+    createBlog(blog){
+        return axios.post(API_URL_BLOG, blog);
+    }
+
+    getBlogById(blogId){
+        return axios.get(API_URL_BLOG + '/index=' + blogId);
+    }
+
+    updateBlog(blog, blogId){
+        return axios.put(API_URL_BLOG + '/index=' + blogId, blog);
+    }
+
+    deleteBlog(blogId){
+        return axios.delete(API_URL_BLOG + '/index=' + blogId);
+    }
+
+    // post
+
+    getPosts(){
+        return axios.get(API_URL_POST);
+    }
+
+    createPost(post){
+        return axios.post(API_URL_POST, post);
+    }
+
+    getPostById(postId){
+        return axios.get(API_URL_POST + '/index=' + postId);
+    }
+
+    updatePost(post, postId){
+        return axios.put(API_URL_POST + '/index=' + postId, post);
+    }
+
+    deletePost(postId){
+        return axios.delete(API_URL_POST + '/index=' + postId);
+    }
+
+    // page
+
+    getPages(){
+        return axios.get(API_URL_PAGE);
+    }
+
+    createPage(page){
+        return axios.post(API_URL_PAGE, page);
+    }
+
+    getPageById(pageId){
+        return axios.get(API_URL_PAGE + '/index=' + pageId);
+    }
+
+    updatePage(page, pageId){
+        return axios.put(API_URL_PAGE + '/index=' + pageId, page);
+    }
+
+    deletePage(pageId){
+        return axios.delete(API_URL_PAGE + '/index=' + pageId);
     }
 
     

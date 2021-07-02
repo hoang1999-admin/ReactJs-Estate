@@ -2,60 +2,60 @@ import React, { Component } from 'react';
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
 import Home from '../Home/Home';
 
-class IndexProduct extends Component {
+class IndexBlog extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
 
-            products: [],
+            blogs: [],
 
 
         };
-        this.addProduct = this.addProduct.bind(this);
-        this.editProduct = this.editProduct.bind(this);
-        this.trashProduct = this.trashProduct.bind(this);
-        this.deleteProduct = this.deleteProduct.bind(this);
+        this.addBlog = this.addBlog.bind(this);
+        this.editBlog = this.editBlog.bind(this);
+        this.trashBlog = this.trashBlog.bind(this);
+        this.deleteBlog = this.deleteBlog.bind(this);
 
-        this.productService = new HomeServiceAdmin();
+        this.blogService = new HomeServiceAdmin();
     }
-    deleteProduct(id) {
+    deleteBlog(id) {
 
-        this.productService.deleteProduct(id).then(res => {
-            this.setState({ products: this.state.products.filter(product => product.idLong !== id) });
+        this.blogService.deleteBlog(id).then(res => {
+            this.setState({ blogs: this.state.blogs.filter(blog => blog.idLong !== id) });
             alert('Xóa thành công');
         });
 
     }
-    editProduct(id) {
-        this.props.history.push(`/update-product/index=${id}`);
+    editBlog(id) {
+        this.props.history.push(`/update-Blog/index=${id}`);
     }
     componentDidMount() {
-        this.productService.getProducts().then(response => {
-            this.setState({ products: response.data });
+        this.blogService.getBlogs().then(response => {
+            this.setState({ blogs: response.data });
         });
     }
 
-    addProduct() {
-        this.props.history.push('/add-product');
+    addBlog() {
+        this.props.history.push('/add-blog');
     }
-    trashProduct() {
-        this.props.history.push('/trash-product');
+    trashBlog() {
+        this.props.history.push('/trash-blog');
     }
-    renderProducts = () => {
-        return this.state.products.map((product, key) => {
+    renderBlogs = () => {
+        return this.state.blogs.map((blog, key) => {
             return (
                 <tr role="row" class="odd" key={key}>
                     <td class="sorting_1">
-                        <img src={`/resources/images/items/${product.imageString}`} class="img-fluid" alt="hinh" title={`/resources/images/items/${product.imageString}`} />
+                        <img src={`/resources/images/posts/${blog.imageString}`} class="img-fluid" alt="hinh" title={`/resources/images/items/${blog.imageString}`} />
                     </td>
                     <td>
-                        <a href={`/index=${product.idLong}`}>{product.titleString}</a>
+                        <a href={`/index=${blog.idLong}`}>{blog.titleString}</a>
                     </td>
 
                     <td class="text-center">
                         {
-                            product.statusString != 2
+                            blog.statusString != 2
                                 ?
                                 <a class="btn btn-success btn-sm" href="javascript:void(0)" role="button">
                                     <i class="fa fa-toggle-on"></i>
@@ -68,14 +68,14 @@ class IndexProduct extends Component {
 
 
 
-                        <a class="btn btn-info btn-sm" onClick={() => this.editProduct(product.idLong)} href="javascript:void(0)" role="button">
+                        <a class="btn btn-info btn-sm" onClick={() => this.editBlog(blog.idLong)} href="javascript:void(0)" role="button">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="btn btn-danger btn-sm" onClick={() => this.deleteProduct(product.idLong)} href="javascript:void(0)" role="button">
+                        <a class="btn btn-danger btn-sm" onClick={() => this.deleteBlog(blog.idLong)} href="javascript:void(0)" role="button">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
-                    <td class="text-center">{product.idLong}</td>
+                    <td class="text-center">{blog.idLong}</td>
                 </tr>
             );
         });
@@ -133,12 +133,12 @@ class IndexProduct extends Component {
                                 <div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">
-                                            <strong class="text-danger">DANH SÁCH SẢN PHẨM</strong>
+                                            <strong class="text-danger">DANH SÁCH BLOG</strong>
                                         </h3>
 
                                         <div class="card-tools" style={{ float: `right` }}>
-                                            <a class="btn btn-sm btn-success" onClick={this.addProduct} href="javascript:void(0)"><i class="fas fa-plus"></i> Thêm</a>
-                                            <a class="btn btn-sm btn-danger" onClick={this.trashProduct} href="javascript:void(0)"><i class="fas fa-trash"></i> Thùng Rác</a>
+                                            <a class="btn btn-sm btn-success" onClick={this.addBlog} href="javascript:void(0)"><i class="fas fa-plus"></i> Thêm</a>
+                                            <a class="btn btn-sm btn-danger" onClick={this.trashBlog} href="javascript:void(0)"><i class="fas fa-trash"></i> Thùng Rác</a>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -146,13 +146,13 @@ class IndexProduct extends Component {
                                             <thead>
                                                 <tr role="row">
                                                     <th style={{ width: `100px` }} class="sorting_asc" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Hình ảnh: activate to sort column descending">Hình ảnh</th>
-                                                    <th style={{ width: `500px` }} class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Tên loại sản phẩm: activate to sort column ascending">Tên sản phẩm</th>
+                                                    <th style={{ width: `500px` }} class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Tên loại sản phẩm: activate to sort column ascending">Tên blog</th>
                                                     <th style={{ width: `160px` }} class="text-center sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Chức năng: activate to sort column ascending">Chức năng</th>
                                                     <th style={{ width: `30px` }} class="text-center sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="ID: activate to sort column ascending">ID</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {this.renderProducts()}
+                                                {this.renderBlogs()}
                                             </tbody>
                                         </table>
                                     </div>
@@ -181,4 +181,4 @@ class IndexProduct extends Component {
     }
 }
 
-export default IndexProduct
+export default IndexBlog

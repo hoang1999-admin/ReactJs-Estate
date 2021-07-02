@@ -2,80 +2,57 @@ import React, { Component } from 'react';
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
 import Home from '../Home/Home';
 
-class IndexProduct extends Component {
+class TrashPage extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
-
-            products: [],
-
-
+            pages: []
         };
-        this.addProduct = this.addProduct.bind(this);
-        this.editProduct = this.editProduct.bind(this);
-        this.trashProduct = this.trashProduct.bind(this);
-        this.deleteProduct = this.deleteProduct.bind(this);
+       
+        this.retrashpage = this.retrashpage.bind(this);
+        this.deletepage = this.deletepage.bind(this);
 
-        this.productService = new HomeServiceAdmin();
+        this.pageService = new HomeServiceAdmin();
     }
-    deleteProduct(id) {
+    deletepage(id) {
+        this.pageService.deletePage(id).then(res => {
+            this.setState({ pages: this.state.pages.filter(page => page.idLong !== id) });
 
-        this.productService.deleteProduct(id).then(res => {
-            this.setState({ products: this.state.products.filter(product => product.idLong !== id) });
-            alert('Xóa thành công');
         });
+        alert('Xóa thành công');
+    }
+    retrashpage(id) {
+        this.props.history.push(`/update-page/index=${id}`);
+    }
 
-    }
-    editProduct(id) {
-        this.props.history.push(`/update-product/index=${id}`);
-    }
     componentDidMount() {
-        this.productService.getProducts().then(response => {
-            this.setState({ products: response.data });
+        this.pageService.getPages().then(response => {
+            this.setState({ pages: response.data });
         });
     }
-
-    addProduct() {
-        this.props.history.push('/add-product');
+    cancel() {
+        this.props.history.push('/list-page');
     }
-    trashProduct() {
-        this.props.history.push('/trash-product');
-    }
-    renderProducts = () => {
-        return this.state.products.map((product, key) => {
+    renderpages = () => {
+        return this.state.pages.map((page, key) => {
             return (
                 <tr role="row" class="odd" key={key}>
                     <td class="sorting_1">
-                        <img src={`/resources/images/items/${product.imageString}`} class="img-fluid" alt="hinh" title={`/resources/images/items/${product.imageString}`} />
+                        <img src={`/resources/images/items/${page.imageString}`} class="img-fluid" alt="hinh" />
                     </td>
                     <td>
-                        <a href={`/index=${product.idLong}`}>{product.titleString}</a>
+                        <a href={`/index=${page.idLong}`}>{page.titleString}</a>
                     </td>
 
                     <td class="text-center">
-                        {
-                            product.statusString != 2
-                                ?
-                                <a class="btn btn-success btn-sm" href="javascript:void(0)" role="button">
-                                    <i class="fa fa-toggle-on"></i>
-                                </a>
-                                : <a class="btn btn-danger btn-sm" href="javascript:void(0)" role="button">
-                                    <i class="fa fa-toggle-off"></i>
-                                </a>
-
-                        }
-
-
-
-                        <a class="btn btn-info btn-sm" onClick={() => this.editProduct(product.idLong)} href="javascript:void(0)" role="button">
+                        <a class="btn btn-info btn-sm" onClick={() => this.retrashpage(page.idLong)} href="javascript:void(0)" role="button">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="btn btn-danger btn-sm" onClick={() => this.deleteProduct(product.idLong)} href="javascript:void(0)" role="button">
+                        <a class="btn btn-danger btn-sm" onClick={() => this.deletepage(page.idLong)} href="javascript:void(0)" role="button">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
-                    <td class="text-center">{product.idLong}</td>
+                    <td class="text-center">{page.idLong}</td>
                 </tr>
             );
         });
@@ -124,35 +101,34 @@ class IndexProduct extends Component {
                 <div className="row">
                     <div className="col-3">
                         <div class="list-group">
-                           <Home/>
+                            <Home/>
                         </div>
                     </div>
                     <div className="col-9">
-                        <div class="content-wrapper">
+                        <div class="content-wrapper my-2">
                             <section class="content">
                                 <div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">
-                                            <strong class="text-danger">DANH SÁCH SẢN PHẨM</strong>
+                                            <strong class="text-danger">THÙNG RÁC CỦA BÀI VIẾT</strong>
                                         </h3>
-
                                         <div class="card-tools" style={{ float: `right` }}>
-                                            <a class="btn btn-sm btn-success" onClick={this.addProduct} href="javascript:void(0)"><i class="fas fa-plus"></i> Thêm</a>
-                                            <a class="btn btn-sm btn-danger" onClick={this.trashProduct} href="javascript:void(0)"><i class="fas fa-trash"></i> Thùng Rác</a>
+                                            <a class="btn btn-sm btn-danger" onClick={this.cancel.bind(this)}  href="javascript:void(0)"><i class="fas fa-times"></i> Thoát</a>
                                         </div>
                                     </div>
                                     <div class="card-body">
+
                                         <table class="table table-bordered dataTable no-footer" id="myTable">
                                             <thead>
                                                 <tr role="row">
                                                     <th style={{ width: `100px` }} class="sorting_asc" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Hình ảnh: activate to sort column descending">Hình ảnh</th>
-                                                    <th style={{ width: `500px` }} class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Tên loại sản phẩm: activate to sort column ascending">Tên sản phẩm</th>
+                                                    <th style={{ width: `500px` }} class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Tên loại sản phẩm: activate to sort column ascending">Tên loại bài viết</th>
                                                     <th style={{ width: `160px` }} class="text-center sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Chức năng: activate to sort column ascending">Chức năng</th>
                                                     <th style={{ width: `30px` }} class="text-center sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="ID: activate to sort column ascending">ID</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {this.renderProducts()}
+                                                {/* {this.renderpages()} */}
                                             </tbody>
                                         </table>
                                     </div>
@@ -161,24 +137,9 @@ class IndexProduct extends Component {
                         </div>
                     </div>
                 </div>
-
-                <footer class="main-footer">
-                    <div class="float-right d-none d-sm-block">
-                        <b>Version</b> 3.0.4
-                    </div>
-                    <strong>Copyright & ngo dinh hoang ; 2020-2021 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-                    reserved.
-                </footer>
-
-                {/* <!-- Control Sidebar --> */}
-                <aside class="control-sidebar control-sidebar-dark">
-                    {/* <!-- Control sidebar content goes here --> */}
-                </aside>
-                {/* <!-- /.control-sidebar --> */}
             </div>
-
         );
     }
 }
 
-export default IndexProduct
+export default TrashPage
