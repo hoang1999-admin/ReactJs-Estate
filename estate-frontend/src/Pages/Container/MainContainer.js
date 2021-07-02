@@ -45,10 +45,11 @@ class MainContainer extends React.Component {
             return (
                 <div class="card-banner border-bottom" key={key}>
                     <div class="py-3" style={{ width: `100%` }}>
-                        <h6 class="card-title">{product.titleString}</h6>
+                        <h6 class="card-title"><a href={`/index=${product.idLong}`}>{product.titleString}</a></h6>
                         <a href={`/index=${product.idLong}`} class="btn btn-secondary btn-sm"> Chi tiết </a>
                     </div>
-                    <img src={`/resources/images/items/${product.imageString}`} height="60" class="img-bg" />
+                    <a href={`/index=${product.idLong}`}><img src={`/resources/images/items/${product.imageString}`} height="60" class="img-bg" /></a>
+
                 </div>
 
             );
@@ -91,7 +92,7 @@ class MainContainer extends React.Component {
                         <div class="row">
                             <aside class="col-lg col-md-3 flex-lg-grow-0">
                                 <nav class="nav-home-aside">
-                                    <h6 class="title-category"> Loại Sản Phẩm <i class="d-md-none icon fa fa-chevron-down"></i></h6>
+                                    <h6 class="title-category"> <a href={`/loai-san-pham?All`}>Loại Sản Phẩm </a><i class="d-md-none icon fa fa-chevron-down"></i></h6>
                                     <ul class="menu-category">
                                         {this.renderCategoryTops()}
                                         <li >
@@ -129,7 +130,7 @@ class MainContainer extends React.Component {
                             {/* <!-- col.// --> */}
                             <div class="col-md d-none d-lg-block flex-grow-1">
                                 <aside class="special-home-right">
-                                    <h6 class="bg-blue text-center text-white mb-0 p-2">Loại phổ biến</h6>
+                                    <h6 class="bg-blue text-center text-white mb-0 p-2"><a className="text-white" href={`/danh-sach`}>Loại phổ biến</a></h6>
 
                                     {this.renderProductTops()}
 

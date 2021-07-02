@@ -27,6 +27,10 @@ import Test from '../Header/Menu/test';
 import Test2 from '../Header/Menu/test2';
 import Test3 from '../Header/Menu/test3';
 
+import BlogDetail from '../Header/Menu/Blog/BlogDetail';
+import PageDetail from '../Header/Menu/Blog/PageDetail';
+import PostDetail from '../Header/Menu/Blog/PostDetail';
+
 
 import UpdateProduct from '../../Admin/Product/UpdateProduct';
 import CreateProduct from '../../Admin/Product/CreateProduct';
@@ -88,6 +92,21 @@ import CreateUserRole from '../../Admin/User_Role/CreateUserRole';
 import Updateuserrole from '../../Admin/User_Role/UpdateUserRole';
 import TrashUserRole from '../../Admin/User_Role/TrashUserRole';
 
+import IndexBlog from '../../Admin/Blog/IndexBlog';
+import CreateBlog from '../../Admin/Blog/CreateBlog';
+import UpdateBlog from '../../Admin/Blog/UpdateBlog';
+import TrashBlog from '../../Admin/Blog/TrashBlog';
+
+import IndexPage from '../../Admin/Page/IndexPage';
+import CreatePage from '../../Admin/Page/CreatePage';
+import UpdatePage from '../../Admin/Page/UpdatePage';
+import TrashPage from '../../Admin/Page/TrashPage';
+
+import IndexPost from '../../Admin/Post/IndexPost';
+import CreatePost from '../../Admin/Post/CreatePost';
+import UpdatePost from '../../Admin/Post/UpdatePost';
+import TrashPost from '../../Admin/Post/TrashPost';
+
 
 
 
@@ -124,6 +143,9 @@ export default function Main() {
           <Route path="/test" component={Test} />
           <Route path="/test2" component={Test2} />
           <Route path="/test3" component={Test3} />
+          <Route path="/chi-tiet/index=:id" component={BlogDetail} />
+          <Route path="/chi-tiet-trang/index=:id" component={PageDetail} />
+          <Route path="/chi-tiet-bai-viet/index=:id" component={PostDetail} />
 
           {/*  Admin */}
 
@@ -188,6 +210,21 @@ export default function Main() {
           <Route path="/add-userrole" component={CreateUserRole} />
           <Route path="/update-userrole/index=:id" component={Updateuserrole} />
           <Route path="/trash-userrole" component={TrashUserRole} />
+           {/* Blog*/}
+           <Route path="/list-blog" component={IndexBlog} />
+          <Route path="/add-blog" component={CreateBlog} />
+          <Route path="/update-blog/index=:id" component={UpdateBlog} />
+          <Route path="/trash-blog" component={TrashBlog} />
+           {/* Post */}
+           <Route path="/list-post" component={IndexPost} />
+          <Route path="/add-post" component={CreatePost} />
+          <Route path="/update-post/index=:id" component={UpdatePost} />
+          <Route path="/trash-post" component={TrashPost} />
+           {/* Page */}
+           <Route path="/list-page" component={IndexPage} />
+          <Route path="/add-page" component={CreatePage} />
+          <Route path="/update-page/index=:id" component={UpdatePage} />
+          <Route path="/trash-page" component={TrashPage} />
         </Switch>
       </BrowserRouter>
     </main>

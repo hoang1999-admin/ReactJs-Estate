@@ -40,6 +40,25 @@ const API_URL_AreaTop= "http://localhost:8080/api/v1/area-top";
 
 const API_URL = "http://localhost:8080/api/v1/cart/";
 
+const API_URL_Blog = "http://localhost:8080/api/v1/blogs";
+
+const API_URL_Post = "http://localhost:8080/api/v1/posts";
+const API_URL_Post1 = "http://localhost:8080/api/v1/posts1";
+const API_URL_Post2 = "http://localhost:8080/api/v1/posts2";
+const API_URL_Post3 = "http://localhost:8080/api/v1/posts3";
+const API_URL_Post4 = "http://localhost:8080/api/v1/posts4";
+const API_URL_Post5 = "http://localhost:8080/api/v1/posts5";
+const API_URL_Post6 = "http://localhost:8080/api/v1/posts6";
+
+
+const API_URL_Page = "http://localhost:8080/api/v1/pages";
+const API_URL_Page1 = "http://localhost:8080/api/v1/pages1";
+const API_URL_Page2 = "http://localhost:8080/api/v1/pages2";
+const API_URL_Page3 = "http://localhost:8080/api/v1/pages3";
+const API_URL_Page4 = "http://localhost:8080/api/v1/pages4";
+const API_URL_Page5 = "http://localhost:8080/api/v1/pages5";
+const API_URL_Page6 = "http://localhost:8080/api/v1/pages6";
+
 class HomeServices {
 
   // category
@@ -180,6 +199,157 @@ class HomeServices {
     const url = `${API_URL_Slider}/index=${id}`;
     return axios.get(url).then(response => response.data);
   }
+  // blog
+  async getAllBlogs() {
+    const url = `${API_URL_Blog}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllBlogsId(id) {
+    const url = `${API_URL_Blog}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post
+  async getAllPosts() {
+    const url = `${API_URL_Post}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPostsId(id) {
+    const url = `${API_URL_Post}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post1
+  async getAllPosts1() {
+    const url = `${API_URL_Post1}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts1Id(id) {
+    const url = `${API_URL_Post1}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post2
+  async getAllPosts2() {
+    const url = `${API_URL_Post2}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts2Id(id) {
+    const url = `${API_URL_Post2}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post3
+  async getAllPosts3() {
+    const url = `${API_URL_Post3}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts3Id(id) {
+    const url = `${API_URL_Post3}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post4
+  async getAllPosts4() {
+    const url = `${API_URL_Post4}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts4Id(id) {
+    const url = `${API_URL_Post4}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post5
+  async getAllPosts5() {
+    const url = `${API_URL_Post5}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts5Id(id) {
+    const url = `${API_URL_Post5}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // post6
+  async getAllPosts6() {
+    const url = `${API_URL_Post6}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts6Id(id) {
+    const url = `${API_URL_Post6}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page
+  async getAllPages() {
+    const url = `${API_URL_Page}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPagesId(id) {
+    const url = `${API_URL_Page}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page1
+  async getAllPages1() {
+    const url = `${API_URL_Page1}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPages1Id(id) {
+    const url = `${API_URL_Page1}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page2
+  async getAllPages2() {
+    const url = `${API_URL_Page2}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPages2Id(id) {
+    const url = `${API_URL_Page2}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page3
+  async getAllPages3() {
+    const url = `${API_URL_Page3}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPages3Id(id) {
+    const url = `${API_URL_Page3}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page4
+  async getAllPages4() {
+    const url = `${API_URL_Page4}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPages4Id(id) {
+    const url = `${API_URL_Page4}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page5
+  async getAllPages5() {
+    const url = `${API_URL_Page5}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPages5Id(id) {
+    const url = `${API_URL_Page5}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+  // page6
+  async getAllPages6() {
+    const url = `${API_URL_Page6}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPages6Id(id) {
+    const url = `${API_URL_Page6}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+
   // contact
 
   getContacts() {

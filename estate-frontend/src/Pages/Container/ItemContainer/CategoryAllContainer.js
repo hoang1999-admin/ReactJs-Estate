@@ -6,11 +6,8 @@ import Footer from '../../../Components/Footer/Footer';
 import Subcribe from '../../../Components/Subcribe/Subcribe';
 import Accep from '../../../Components/Accep/Accep';
 import moment from 'moment';
-import { Range, getTrackBackground } from "react-range";
+import NumberFormat from 'react-number-format';
 
-const STEP = 100000;
-const MIN = 0;
-const MAX = 10000000000;
 class CategoryAllContainer extends Component {
 
     constructor(props) {
@@ -27,7 +24,15 @@ class CategoryAllContainer extends Component {
             currentPage: 1,
             productsPerPage: 6,
             checked: false,
-            values:[0],
+            // price
+            minValue: 1000000,
+            maxValue: 10000000000,
+            step: 1000,
+            firstValue: null,
+            secondValue: null,
+            // selection
+            value1: null,
+
         };
 
         this.categoryService = new HomeServices();
@@ -55,7 +60,10 @@ class CategoryAllContainer extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handlePrice = this.handlePrice.bind(this);
+        this.sortByPriceAsc = this.sortByPriceAsc.bind(this);
+        this.sortByPriceDesc = this.sortByPriceDesc.bind(this);
         this.refreshPage = this.refreshPage.bind(this);
+
     }
     fetchURL(currentPage) {
         currentPage -= 1;
@@ -103,6 +111,9 @@ class CategoryAllContainer extends Component {
         });
 
 
+    }
+    componentWillMount() {
+        this.setState({ firstValue: this.state.minValue, secondValue: this.state.maxValue });
     }
     searchSpace = (event) => {
         if (this.state.id == null) {
@@ -192,8 +203,9 @@ class CategoryAllContainer extends Component {
                     return products
                 } else if (products.productidLong.toLowerCase().includes(this.state.search.toLowerCase())) {
                     return products
+                }else if (products.positionString.toLowerCase().includes(this.state.search.toLowerCase())) {
+                    return products
                 }
-
             }).map((products, key) => {
                 const dd = moment(products.createdatTimestamp).format("LLLL");
 
@@ -282,6 +294,8 @@ class CategoryAllContainer extends Component {
                 } else if (products.areaString.toLowerCase().includes(this.state.search.toLowerCase())) {
                     return products
                 } else if (products.productidLong.toLowerCase().includes(this.state.search.toLowerCase())) {
+                    return products
+                }else if (products.positionString.toLowerCase().includes(this.state.search.toLowerCase())) {
                     return products
                 } else if (this.state.filterss == null)
                     return products
@@ -382,6 +396,8 @@ class CategoryAllContainer extends Component {
                     return products
                 } else if (products.productidLong.toLowerCase().includes(this.state.search.toLowerCase())) {
                     return products
+                }else if (products.positionString.toLowerCase().includes(this.state.search.toLowerCase())) {
+                    return products
                 }
 
             }).map((products, key) => {
@@ -473,13 +489,15 @@ class CategoryAllContainer extends Component {
                     return products
                 } else if (products.productidLong.toLowerCase().includes(this.state.search.toLowerCase())) {
                     return products
+                }else if (products.positionString.toLowerCase().includes(this.state.search.toLowerCase())) {
+                    return products
                 } else if (this.state.filters == null)
                     return products
                 else if (products.areaString >= 0) {
                     return products
                 } else if (products.directionString >= 0) {
                     return products
-                }else if (products.pricesaleDouble >= 0) {
+                } else if (products.pricesaleDouble >= 0) {
                     return products
                 }
 
@@ -584,14 +602,29 @@ class CategoryAllContainer extends Component {
         }
 
     }
+    handlePrice(name, event) {
+        //We set the state value depending on input that is clicked
+        if (name === "second") {
+            let newValue = parseInt(this.state.firstValue) + parseInt(this.state.step);
+            //The second value can't be lower than the first value
+            if (parseInt(this.state.secondValue) > parseInt(newValue)) {
+                this.setState({ secondValue: event.target.value });
+            }
 
-    handlePrice= (event) =>{
+
+        } else {
+            //The first value can't be greater than the second value
+            if (parseInt(this.state.firstValue) < parseInt(this.state.secondValue)) {
+                this.setState({ firstValue: event.target.value });
+            }
+
+        }
         if (this.state.id == null) {
-            const filter = this.state.product.filter((products) => products.pricesaleDouble = event);
+            const filter = this.state.product.filter((products) => products.pricesaleDouble <= this.state.firstValue);
             console.log(filter);
             this.setState({ filters: filter, checked: true });
         } else {
-            const filterc = this.state.categorybyproduct.filter((products) =>products.pricesaleDouble = event);
+            const filterc = this.state.categorybyproduct.filter((products) => products.pricesaleDouble <= this.state.firstValue);
             console.log(filterc);
             this.setState({ filterss: filterc, checked: true });
         }
@@ -808,6 +841,63 @@ class CategoryAllContainer extends Component {
             }
         }
     }
+
+    onChange = event => {
+        const target = event.target.value;
+        if (this.state.id == null) {
+            const filter = this.state.product.filter(
+                (products) => products.pricesaleDouble >= target
+            );
+            console.log(filter);
+            this.setState({ filters: filter, checked: true });
+        } else {
+            const filterc = this.state.categorybyproduct.filter(
+                (products) => products.pricesaleDouble >= target
+            );
+            console.log(filterc);
+            this.setState({ filterss: filterc, checked: true });
+        }
+    };
+    sortByPriceAsc = () => {
+        let sortedProductsAsc;
+        if (this.state.id == null) {
+            sortedProductsAsc = this.state.product.sort((a, b) => {
+                return parseInt(a.pricesaleDouble) - parseInt(b.pricesaleDouble);
+            })
+            this.setState({
+                filters: sortedProductsAsc
+            })
+        } else {
+            sortedProductsAsc = this.state.categorybyproduct.sort((a, b) => {
+                return parseInt(a.pricesaleDouble) - parseInt(b.pricesaleDouble);
+            })
+            this.setState({
+                filterss: sortedProductsAsc
+            })
+        }
+    }
+
+
+    sortByPriceDesc = () => {
+        let sortedProductsDsc;
+        if (this.state.id == null) {
+            sortedProductsDsc = this.state.product.sort((a, b) => {
+                return parseInt(b.pricesaleDouble) - parseInt(a.pricesaleDouble);
+            })
+            this.setState({
+                filters: sortedProductsDsc
+            })
+        } else {
+            sortedProductsDsc = this.state.categorybyproduct.sort((a, b) => {
+                return parseInt(b.pricesaleDouble) - parseInt(a.pricesaleDouble);
+            })
+            this.setState({
+                filterss: sortedProductsDsc
+            })
+        }
+
+    }
+
     render() {
         const { currentPage, totalPages, totalElements } = this.state;
         const category = this.state.category;
@@ -856,25 +946,25 @@ class CategoryAllContainer extends Component {
             var less100 = this.state.categorybyproduct.filter((products) => products.areaString < 100).length;
             var than100 = this.state.categorybyproduct.filter((products) => products.areaString > 100).length;
 
-            var QQM = this.state.product.filter((products) => products.positionString.includes("Mỹ")).length;
-            var QQN = this.state.product.filter((products) => products.positionString.includes("Nga")).length;
-            var QQVN = this.state.product.filter((products) => products.positionString.includes("Việt Nam")).length;
-            var QQTQ = this.state.product.filter((products) => products.positionString.includes("Trung Quốc")).length;
-            var QQNB = this.state.product.filter((products) => products.positionString.includes("Nhật Bản")).length;
-            var QQHQ = this.state.product.filter((products) => products.positionString.includes("Hàn Quốc")).length;
+            var QQM = this.state.categorybyproduct.filter((products) => products.positionString.includes("Mỹ")).length;
+            var QQN = this.state.categorybyproduct.filter((products) => products.positionString.includes("Nga")).length;
+            var QQVN = this.state.categorybyproduct.filter((products) => products.positionString.includes("Việt Nam")).length;
+            var QQTQ = this.state.categorybyproduct.filter((products) => products.positionString.includes("Trung Quốc")).length;
+            var QQNB = this.state.categorybyproduct.filter((products) => products.positionString.includes("Nhật Bản")).length;
+            var QQHQ = this.state.categorybyproduct.filter((products) => products.positionString.includes("Hàn Quốc")).length;
 
-            var TTHCN = this.state.product.filter((products) => products.positionString.includes("Hồ Chí Minh")).length;
-            var TTHN = this.state.product.filter((products) => products.positionString.includes("Hà Nội")).length;
-            var TTDN = this.state.product.filter((products) => products.positionString.includes("Đà Nẵng")).length;
+            var TTHCN = this.state.categorybyproduct.filter((products) => products.positionString.includes("Hồ Chí Minh")).length;
+            var TTHN = this.state.categorybyproduct.filter((products) => products.positionString.includes("Hà Nội")).length;
+            var TTDN = this.state.categorybyproduct.filter((products) => products.positionString.includes("Đà Nẵng")).length;
 
-            var QGV = this.state.product.filter((products) => products.positionString.includes("Gò Vấp")).length;
-            var Q12 = this.state.product.filter((products) => products.positionString.includes("Quận 12")).length;
-            var QPN = this.state.product.filter((products) => products.positionString.includes("Quận Phú NHuận")).length;
-            var QTP = this.state.product.filter((products) => products.positionString.includes("Quận Tân Phú")).length;
-            var QLB = this.state.product.filter((products) => products.positionString.includes("Quận Long Biên")).length;
-            var QHM = this.state.product.filter((products) => products.positionString.includes("Quận Hoàng Mai")).length;
-            var QST = this.state.product.filter((products) => products.positionString.includes("Quận Sơn Trà")).length;
-            var QBD = this.state.product.filter((products) => products.positionString.includes("Quận Ba Đình")).length;
+            var QGV = this.state.categorybyproduct.filter((products) => products.positionString.includes("Gò Vấp")).length;
+            var Q12 = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận 12")).length;
+            var QPN = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận Phú NHuận")).length;
+            var QTP = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận Tân Phú")).length;
+            var QLB = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận Long Biên")).length;
+            var QHM = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận Hoàng Mai")).length;
+            var QST = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận Sơn Trà")).length;
+            var QBD = this.state.categorybyproduct.filter((products) => products.positionString.includes("Quận Ba Đình")).length;
 
         }
 
@@ -952,86 +1042,24 @@ class CategoryAllContainer extends Component {
                                     <h6 className="title">
                                         <a href="#" className="dropdown-toggle" data-toggle="collapse" data-target="#collapse_3"> Mức giá </a>
                                     </h6>
-                                    <div className="filter-content collapse show" id="collapse_3">
-                                        <div className="inner" >
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                    flexWrap: "wrap",
-                                                    margin: "2em"
-                                                }}
-                                            >
-                                                <Range
-                                                    values={this.state.values}
-                                                    step={STEP}
-                                                    min={MIN}
-                                                    max={MAX}
-                                                    onChange={(values) => this.setState({ values })}
-                                                    renderTrack={({ props, children }) => (
-                                                        <div
-                                                            onMouseDown={props.onMouseDown}
-                                                            onTouchStart={props.onTouchStart}
-                                                            style={{
-                                                                ...props.style,
-                                                                height: "36px",
-                                                                display: "flex",
-                                                                width: "100%"
-                                                            }}
-                                                        >
-                                                            <div
-                                                                ref={props.ref}
-                                                                style={{
-                                                                    height: "5px",
-                                                                    width: "100%",
-                                                                    borderRadius: "4px",
-                                                                    background: getTrackBackground({
-                                                                        values: this.state.values,
-                                                                        colors: ["#548BF4", "#ccc"],
-                                                                        min: MIN,
-                                                                        max: MAX
-                                                                    }),
-                                                                    alignSelf: "center"
-                                                                }}
-                                                            >
-                                                                {children}
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                    renderThumb={({ props, isDragged }) => (
-                                                        <div
-                                                            {...props}
-                                                            style={{
-                                                                ...props.style,
-                                                                height: "42px",
-                                                                width: "42px",
-                                                                borderRadius: "4px",
-                                                                backgroundColor: "#FFF",
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                boxShadow: "0px 2px 6px #AAA"
-                                                            }}
-                                                        >
-                                                            <div
-                                                                style={{
-                                                                    height: "16px",
-                                                                    width: "5px",
-                                                                    backgroundColor: isDragged ? "#548BF4" : "#CCC"
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    )}
-                                                />
-                                                <output style={{ marginTop: "30px" }} id="output">
-                                                    {this.state.values[0].toFixed(1)}
-                                                </output>
+                                    <div class="filter-content collapse show" id="collapse_3">
+                                        <div class="inner text-center">
+                                            <div class="form-row">
+                                                <div class="form-group text-left col-6">
+
+                                                    <label className=" badge badge-pill badge-light"><NumberFormat value={this.state.minValue} displayType={'text'} thousandSeparator={true} /></label>
+                                                </div>
+                                                <div class="form-group text-right col-6">
+
+                                                    <label className=" badge badge-pill badge-light"><NumberFormat value={this.state.maxValue} displayType={'text'} thousandSeparator={true} /></label>
+                                                </div>
                                             </div>
-                                            <div>
-                                        
-                                            </div>
+                                            <input className="form-control" style={{ width: `100%` }, { cursor: `pointer` }} type="range" value={this.state.firstValue} min={this.state.minValue} max={this.state.maxValue} step={this.state.step} onChange={this.handlePrice.bind(this, "first")} />
+
+                                            {/* <!-- form-row.// --> */}
+                                            <b className=" badge badge-pill badge-light mt-3"><NumberFormat value={this.state.firstValue} displayType={'text'} thousandSeparator={true} /></b>
+                                            {/* <!-- inner.// --> */}
                                         </div>
-                                        {/* <!-- inner.// --> */}
                                     </div>
                                 </article>
                                 {/* <!-- filter-group .// --> */}
@@ -1202,16 +1230,24 @@ class CategoryAllContainer extends Component {
                                 <header className="mb-3">
                                     <div className="form-inline">
                                         <strong className="mr-md-auto"> <i className="far fa-hand-point-right" style={{ color: `green` }}> </i> {n} / {totalElements} Sản phẩm </strong>
+
                                         <input title="Nhập sản phẩm cần tìm kiếm..." className="mr-2 form-control" style={{ width: `400px` }} type="text" placeholder="Nhập sản phẩm cần tìm kiếm..." onChange={(e) => this.searchSpace(e)} />
-                                        <button title="Reset" className="mr-2 form-control" onClick={() => this.refreshPage()} >
+                                        <button title="Làm mới" className="mr-2 form-control" onClick={() => this.refreshPage()} >
                                             Làm mới
                                         </button>
-                                        <select className="mr-2 form-control">
-                                            <option>Mới nhất</option>
-                                            <option>Xu hướng</option>
-                                            <option>Phổ biến nhất</option>
-                                            <option>Rẻ nhất</option>
+                                        <button title=" Giá giảm dần" className="mr-2 form-control" onClick={this.sortByPriceDesc}>
+                                            Giá giảm dần
+                                        </button>
+                                        <button title=" Giá tăng dần" className="mr-2 form-control" onClick={this.sortByPriceAsc}>
+                                            Giá tăng dần
+                                        </button>
+                                        <select className="mr-2 form-control" onChange={this.onChange}>
+                                            <option value={3200000000}>Mới nhất</option>
+                                            <option value={7700000000}>Xu hướng</option>
+                                            <option value={8000000}>Phổ biến nhất</option>
+                                            <option value={this.state.value1} >Rẻ nhất</option>
                                         </select>
+
                                         <div className="btn-group">
                                             <a href={`/danh-sach`} className="btn btn-light" data-toggle="tooltip" title="List view">
                                                 <i className="fa fa-bars"></i></a>
@@ -1256,5 +1292,4 @@ class CategoryAllContainer extends Component {
         );
     }
 }
-
 export default CategoryAllContainer;

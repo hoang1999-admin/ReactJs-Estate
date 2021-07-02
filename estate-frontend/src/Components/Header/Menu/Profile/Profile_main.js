@@ -86,7 +86,7 @@ class Profile_main extends Component {
 
 										<figure class="icontext">
 											<div class="icon">
-												<img class="rounded-circle img-sm border" src="/resources/images/avatars/avatar3.jpg" />
+												<img class="rounded-circle img-sm border" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
 											</div>
 											<div class="text">
 												<strong> {currentUser.username} </strong> <br />
@@ -103,7 +103,7 @@ class Profile_main extends Component {
 										</p>
 
 
-
+{/* 
 										<article class="card-group card-stat">
 											<figure class="card bg">
 												<div class="p-3">
@@ -130,13 +130,13 @@ class Profile_main extends Component {
 												</div>
 											</figure>
 										</article>
-
+ */}
 
 									</div>
 									{/* <!-- card-body .// --> */}
 								</article>
 								{/* <!-- card.// --> */}
-
+{/* 
 								<article class="card  mb-3">
 									<div class="card-body">
 										<h5 class="card-title mb-4">Recent orders </h5>
@@ -152,7 +152,7 @@ class Profile_main extends Component {
 													</figcaption>
 												</figure>
 											</div>
-											{/* <!-- col.// --> */}
+										
 											<div class="col-md-6">
 												<figure class="itemside  mb-3">
 													<div class="aside"><img src="/resources/images/items/2.jpg" class="border img-sm" /></div>
@@ -163,7 +163,7 @@ class Profile_main extends Component {
 													</figcaption>
 												</figure>
 											</div>
-											{/* <!-- col.// --> */}
+										
 											<div class="col-md-6">
 												<figure class="itemside mb-3">
 													<div class="aside"><img src="/resources/images/items/3.jpg" class="border img-sm" /></div>
@@ -174,15 +174,15 @@ class Profile_main extends Component {
 													</figcaption>
 												</figure>
 											</div>
-											{/* <!-- col.// --> */}
+										
 										</div>
-										{/* <!-- row.// --> */}
+										
 
 										<a href="#" class="btn btn-outline-primary btn-block"> See all orders <i class="fa fa-chevron-down"></i>  </a>
 									</div>
-									{/* <!-- card-body .// --> */}
+								
 								</article>
-								{/* <!-- card.// --> */}
+								 */}
 
 							</main>
 							{/* <!-- col.// --> */}

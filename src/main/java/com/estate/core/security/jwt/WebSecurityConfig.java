@@ -24,6 +24,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -104,7 +106,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/cart/addProduct/**",
 					"/api/v1/cart/updateQtyForCart/**",
 					"/api/v1/cart/removeProductFromCart/**", 
-					"/api/v1/cart/getCartsByUserId/**"
+					"/api/v1/cart/getCartsByUserId/**",
+					"/api/v1/blogs/**",
+					"/api/v1/posts/**",
+					"/api/v1/posts1/**",
+					"/api/v1/posts2/**",
+					"/api/v1/posts3/**",
+					"/api/v1/posts4/**",
+					"/api/v1/posts5/**",
+					"/api/v1/posts6/**",
+					"/api/v1/pages/**",
+					"/api/v1/pages1/**",
+					"/api/v1/pages2/**",
+					"/api/v1/pages3/**",
+					"/api/v1/pages4/**",
+					"/api/v1/pages5/**",
+					"/api/v1/pages6/**"
 					)
 			.permitAll()
 			.antMatchers(HttpMethod.POST,
@@ -144,7 +161,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/cart/addProduct/**",
 					"/api/v1/cart/updateQtyForCart/**",
 					"/api/v1/cart/removeProductFromCart/**",
-					"/api/v1/cart/getCartsByUserId/**")
+					"/api/v1/cart/getCartsByUserId/**",
+					"/api/v1/blogs/**",
+					"/api/v1/posts/**",
+					"/api/v1/pages/**"
+					)
 			.permitAll()
 			.antMatchers(HttpMethod.PUT,
 					"/api/v1/order/**",
@@ -183,7 +204,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/cart/addProduct/**",
 					"/api/v1/cart/updateQtyForCart/**",
 					"/api/v1/cart/removeProductFromCart/**",
-					"/api/v1/cart/getCartsByUserId/**")
+					"/api/v1/cart/getCartsByUserId/**",
+					"/api/v1/blogs/**",
+					"/api/v1/posts/**",
+					"/api/v1/pages/**"
+					)
 			.permitAll()
 			.antMatchers(HttpMethod.DELETE,
 					"/api/v1/order/**",
@@ -221,7 +246,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/cart/addProduct/**",
 					"/api/v1/cart/updateQtyForCart/**",
 					"/api/v1/cart/removeProductFromCart/**",
-					"/api/v1/cart/getCartsByUserId/**")
+					"/api/v1/cart/getCartsByUserId/**",
+					"/api/v1/blogs/**",
+					"/api/v1/posts/**",
+					"/api/v1/pages/**"
+					)
 			.permitAll()
 			// Admin
 			.antMatchers(HttpMethod.GET,
@@ -236,7 +265,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/requestadmin/**",
 					"/api/v1/areaadmin/**",
 					"/api/v1/emailadmin/**",
-					"/api/v1/productrelationadmin/**")
+					"/api/v1/productrelationadmin/**",
+					"/api/v1/blogadmin/**",
+					"/api/v1/postadmin/**",
+					"/api/v1/pageadmin/**"
+					)
 					
 			.permitAll()
 			.antMatchers(HttpMethod.POST,
@@ -251,7 +284,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/requestadmin/**",
 					"/api/v1/areaadmin/**",
 					"/api/v1/emailadmin/**",
-					"/api/v1/productrelationadmin/**")
+					"/api/v1/productrelationadmin/**",
+					"/api/v1/blogadmin/**",
+					"/api/v1/postadmin/**",
+					"/api/v1/pageadmin/**"
+					)
 			.permitAll()
 			.antMatchers(HttpMethod.PUT,
 					"/api/v1/user_roleadmin/**",
@@ -265,7 +302,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/requestadmin/**",
 					"/api/v1/areaadmin/**",
 					"/api/v1/emailadmin/**",
-					"/api/v1/productrelationadmin/**")
+					"/api/v1/productrelationadmin/**",
+					"/api/v1/blogadmin/**",
+					"/api/v1/postadmin/**",
+					"/api/v1/pageadmin/**"
+					)
 			.permitAll()
 			.antMatchers(HttpMethod.DELETE,
 					"/api/v1/user_roleadmin/**",
@@ -279,7 +320,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/requestadmin/**",
 					"/api/v1/areaadmin/**",
 					"/api/v1/emailadmin/**",
-					"/api/v1/productrelationadmin/**")
+					"/api/v1/productrelationadmin/**",
+					"/api/v1/blogadmin/**",
+					"/api/v1/postadmin/**",
+					"/api/v1/pageadmin/**"
+					)
 			.permitAll()
 			.anyRequest().authenticated();
 

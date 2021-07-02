@@ -9,6 +9,7 @@ class UpdateProduct extends Component {
         super(props)
         this.fileInput = React.createRef();
         this.state = {
+            errors: {},
             // step 2
             id: this.props.match.params.id,
             productidLong: '',
@@ -23,7 +24,7 @@ class UpdateProduct extends Component {
             discountInteger: '',
             positionString: '',
             directionString: '',
-            createdatTimestamp:moment().format(),
+            createdatTimestamp: moment().format(),
             imageString: '',
             areaString: '',
             addressString: '',
@@ -38,8 +39,8 @@ class UpdateProduct extends Component {
             itemcontainerBoolean: false,
             servicecontainerBoolean: false,
             regioncontainerBoolean: false,
-            statusString:1,
-            statusString2:2,
+            statusString: 1,
+            statusString2: 2,
 
         }
         this.changeProduct_idHandler = this.changeProduct_idHandler.bind(this);
@@ -88,7 +89,6 @@ class UpdateProduct extends Component {
                 discountInteger: productdata.discountInteger,
                 positionString: productdata.positionString,
                 directionString: productdata.directionString,
-               
                 imageString: productdata.imageString,
                 areaString: productdata.areaString,
                 addressString: productdata.addressString,
@@ -98,71 +98,66 @@ class UpdateProduct extends Component {
                 maincontainerBoolean: productdata.maincontainerBoolean,
                 dealcontainerBoolean: productdata.dealcontainerBoolean,
                 container1Boolean: productdata.container1Boolean,
-                container2Boolean : productdata.container2Boolean,
+                container2Boolean: productdata.container2Boolean,
                 servicecontainerBoolean: productdata.servicecontainerBoolean,
                 requestcontainerBoolean: productdata.requestcontainerBoolean,
                 itemcontainerBoolean: productdata.itemcontainerBoolean,
                 regioncontainerBoolean: productdata.regioncontainerBoolean,
-                statusString: this.state.statusString ? this.state.statusString:this.state.statusString2 ,
-           
-               
+                statusString: this.state.statusString ? this.state.statusString : this.state.statusString2,
+
+
             });
         });
     }
     saveProduct = (e) => {
         e.preventDefault();
        
-
-        let product = {
-            productidLong: this.state.productidLong,
-            categoryidLong: this.state.categoryidLong,
-            titleString: this.state.titleString,
-            descriptionString: this.state.descriptionString,
-            slugString: this.state.slugString,
-            metakeyString: this.state.metakeyString,
-            metadescString: this.state.metadescString,
-            priceDouble: this.state.priceDouble,
-            pricesaleDouble: this.state.pricesaleDouble,
-            discountInteger: this.state.discountInteger,
-            positionString: this.state.positionString,
-            directionString: this.state.directionString,
-            createdatTimestamp: this.state.createdatTimestamp,
-            imageString: this.fileInput.current.files[0].name,
-            areaString: this.state.areaString,
-            addressString: this.state.addressString,
-            phoneString: this.state.phoneString,
-            customerString: this.state.customerString,
-            roomInteger: this.state.roomInteger,
-            maincontainerBoolean: this.state.maincontainerBoolean,
-            dealcontainerBoolean: this.state.dealcontainerBoolean,
-            container1Boolean: this.state.container1Boolean,
-            container2Boolean: this.state.container2Boolean,
-            requestcontainerBoolean: this.state.requestcontainerBoolean,
-            itemcontainerBoolean: this.state.itemcontainerBoolean,
-            servicecontainerBoolean: this.state.servicecontainerBoolean,
-            regioncontainerBoolean: this.state.regioncontainerBoolean,
-            statusString: this.state.statusString ? this.state.statusString:this.state.statusString2 ,
-           
-
-
-        };
-    
-       
-        console.log('product => ' + JSON.stringify(product));
-        console.log('id => ' + JSON.stringify(this.state.id));
-        if(product == null || this.state.id == '')
-        {
-            alert('Lưu thất bại');
-        }else
-        {
-            this.productService.updateProduct(product, this.state.id).then( res => {
-                this.props.history.push('/list-product');
-                alert('Lưu thành công');
-            });
+        if (this.validateForm()) {
+            let product = {
+                productidLong: this.state.productidLong,
+                categoryidLong: this.state.categoryidLong,
+                titleString: this.state.titleString,
+                descriptionString: this.state.descriptionString,
+                slugString: this.state.slugString,
+                metakeyString: this.state.metakeyString,
+                metadescString: this.state.metadescString,
+                priceDouble: this.state.priceDouble,
+                pricesaleDouble: this.state.pricesaleDouble,
+                discountInteger: this.state.discountInteger,
+                positionString: this.state.positionString,
+                directionString: this.state.directionString,
+                createdatTimestamp: this.state.createdatTimestamp,
+                imageString: this.fileInput.current.files[0].name,
+                areaString: this.state.areaString,
+                addressString: this.state.addressString,
+                phoneString: this.state.phoneString,
+                customerString: this.state.customerString,
+                roomInteger: this.state.roomInteger,
+                maincontainerBoolean: this.state.maincontainerBoolean,
+                dealcontainerBoolean: this.state.dealcontainerBoolean,
+                container1Boolean: this.state.container1Boolean,
+                container2Boolean: this.state.container2Boolean,
+                requestcontainerBoolean: this.state.requestcontainerBoolean,
+                itemcontainerBoolean: this.state.itemcontainerBoolean,
+                servicecontainerBoolean: this.state.servicecontainerBoolean,
+                regioncontainerBoolean: this.state.regioncontainerBoolean,
+                statusString: this.state.statusString ? this.state.statusString : this.state.statusString2,
+            };
+            console.log('product => ' + JSON.stringify(product));
+            console.log('id => ' + JSON.stringify(this.state.id));
+            if (product == null || this.state.id == '') {
+                alert('Lưu thất bại');
+            } else {
+                this.productService.updateProduct(product, this.state.id).then(res => {
+                    this.props.history.push('/list-product');
+                    alert('Lưu thành công');
+                });
+            }
+        } else {
+            alert("Lỗi!!")
         }
-      
     }
-   
+
     changeProduct_idHandler = (event) => {
         this.setState({ productidLong: event.target.value });
     }
@@ -202,7 +197,13 @@ class UpdateProduct extends Component {
         this.setState({ directionString: event.target.value });
     }
     changeImageHandler = (event) => {
-        this.setState({ imageString: event.target.ref });
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.setState({ imageString: e.target.result });
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
     }
     changeAreaHandler = (event) => {
         this.setState({ areaString: event.target.value });
@@ -268,10 +269,9 @@ class UpdateProduct extends Component {
         this.setState({ [name]: value });
     }
     changeStatusHandler = (event) => {
-        if(this.state.statusString)
-        {
+        if (this.state.statusString) {
             this.setState({ statusString: event.target.value });
-        }else{
+        } else {
             this.setState({ statusString2: event.target.value });
         }
     }
@@ -279,9 +279,98 @@ class UpdateProduct extends Component {
     cancel() {
         this.props.history.push('/list-product');
     }
+    validateForm() {
 
+        let fieldsproductidLong = this.state.productidLong;
+        let fieldscategoryidLong = this.state.categoryidLong;
+        let fieldstitleString = this.state.titleString;
+        let fieldsslugString = this.state.slugString;
+        let fieldspriceDouble = this.state.priceDouble;
+        let fieldspricesaleDouble = this.state.pricesaleDouble;
+        let fieldsdiscountInteger = this.state.discountInteger;
+        let fieldspositionString = this.state.positionString;
+        let fieldsdirectionString = this.state.directionString;
+        let fieldsfileInput = this.state.imageString;
+        let fieldsareaString = this.state.areaString;
+        let fieldsaddressString = this.state.addressString;
+        let fieldsphoneString = this.state.phoneString;
+        let fieldscustomerString = this.state.customerString;
+        let fieldsroomInteger = this.state.roomInteger;
+        let errors = {};
+        let formIsValid = true;
+
+        if (!fieldsproductidLong) {
+            formIsValid = false;
+            errors['productidLong'] = "*Vui lòng nhập mã sản phẩm.";
+        }
+
+        if (!fieldscategoryidLong) {
+            formIsValid = false;
+            errors["categoryidLong"] = "*Vui lòng nhập mã loại sản phẩm.";
+        }
+        if (!fieldstitleString) {
+            formIsValid = false;
+            errors["titleString"] = "*Vui lòng nhập tên.";
+        }
+
+        if (!fieldsslugString) {
+            formIsValid = false;
+            errors["slugString"] = "*Vui lòng nhập tên gạch nối.";
+        }
+        if (!fieldspriceDouble) {
+            formIsValid = false;
+            errors["priceDouble"] = "*Vui lòng nhập giá .";
+        }
+        if (!fieldspricesaleDouble) {
+            formIsValid = false;
+            errors["pricesaleDouble"] = "*Vui lòng nhập giá giảm.";
+        }
+        if (!fieldsdiscountInteger) {
+            formIsValid = false;
+            errors["discountInteger"] = "*Vui lòng nhập số phần trăm giảm.";
+        }
+        if (!fieldspositionString) {
+            formIsValid = false;
+            errors["positionString"] = "*Vui lòng nhập vị trí.";
+        }
+        if (!fieldsdirectionString) {
+            formIsValid = false;
+            errors["directionString"] = "*Vui lòng nhập hướng.";
+        }
+        if (!fieldsfileInput) {
+            formIsValid = false;
+            errors["fileInput"] = "*Vui lòng chọn hình ảnh.";
+        }
+        if (!fieldsareaString) {
+            formIsValid = false;
+            errors["areaString"] = "*Vui lòng nhập khu vực .";
+        }
+        if (!fieldsaddressString) {
+            formIsValid = false;
+            errors["addressString"] = "*Vui lòng nhập địa chỉ.";
+        }
+        if (!fieldsphoneString) {
+            formIsValid = false;
+            errors["phoneString"] = "*Vui lòng nhập số điện thoại.";
+        }
+        if (!fieldscustomerString) {
+            formIsValid = false;
+            errors["customerString"] = "*Vui lòng nhập chủ đầu tư.";
+        }
+        if (!fieldsroomInteger) {
+            formIsValid = false;
+            errors["roomInteger"] = "*Vui lòng nhập số phòng.";
+        }
+
+        this.setState({
+            errors: errors
+        });
+        return formIsValid;
+
+
+    }
     render() {
-       
+
         return (
             <div class="wrapper">
                 {/* <!-- Navbar --> */}
@@ -325,18 +414,18 @@ class UpdateProduct extends Component {
                     <div className="col-3">
                         <div class="list-group">
                             <ul>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-product">Sản phẩm</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-category">Loại sản phẩm</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-email">E-mail</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-contact">Liên hệ</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-slider">slider</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-photo">Hình ảnh</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-area">Khu vực</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-productrelation">Sản phẩm liên quan</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-request">Yêu cầu</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-role">Vai trò thành viên</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-user">Thành viên</a></li>
-                                </ul>
+                                <li class="list-group-item list-group-item-action"><a href="/list-product">Sản phẩm</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-category">Loại sản phẩm</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-email">E-mail</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-contact">Liên hệ</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-slider">slider</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-photo">Hình ảnh</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-area">Khu vực</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-productrelation">Sản phẩm liên quan</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-request">Yêu cầu</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-role">Vai trò thành viên</a></li>
+                                <li class="list-group-item list-group-item-action"><a href="/list-user">Thành viên</a></li>
+                            </ul>
                         </div>
                     </div>
                     <div className="col-9">
@@ -359,20 +448,23 @@ class UpdateProduct extends Component {
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Mã sản phẩm</label>
-                                                        <input value={this.state.productidLong} onChange={this.changeProduct_idHandler} type="text" class="form-control" name="productidString"  />
-
+                                                        <input name="productidString" value={this.state.productidLong} onChange={this.changeProduct_idHandler} type="text" class="form-control" name="productidLong" placeholder="vd: BDHDSF23" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.productidLong}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Loại sản phẩm</label>
-                                                        <input value={this.state.categoryidLong} onChange={this.changeCategory_idHandler} type="number" min="1" class="form-control" name="categoryidLong"  />
+                                                        <input name="categoryidLong" value={this.state.categoryidLong} onChange={this.changeCategory_idHandler} type="number" min="1" class="form-control" name="categoryidLong" placeholder="vd: 1" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.categoryidLong}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Tên sản phẩm</label>
-                                                        <input value={this.state.titleString} onChange={this.changeTitleHandler} type="text" class="form-control" name="titleString" />
+                                                        <input name="titleString" value={this.state.titleString} onChange={this.changeTitleHandler} type="text" class="form-control" name="titleString" placeholder=" Tên sản phẩm" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.titleString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Tên gạch nối</label>
-                                                        <input value={this.state.slugString} onChange={this.changeSlugHandler} type="text" class="form-control" name="slugString" />
+                                                        <input name="slugString" value={this.state.slugString} onChange={this.changeSlugHandler} type="text" class="form-control" name="slugString" placeholder=" ten-san-pham" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.slugString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Mô tả sản phẩm</label>
@@ -380,11 +472,11 @@ class UpdateProduct extends Component {
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Từ khóa</label>
-                                                        <textarea value={this.state.metakeyString} onChange={this.changeMetakeyHandler} class="form-control" name="metakeyString" rows="3" ></textarea>
+                                                        <textarea value={this.state.metakeyString} onChange={this.changeMetakeyHandler} class="form-control" name="metakeyString" rows="3"></textarea>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Từ khóa mô tả</label>
-                                                        <textarea value={this.state.metadescString} onChange={this.changeMetadescHandler} class="form-control" name="metadescString" rows="3" ></textarea>
+                                                        <textarea value={this.state.metadescString} onChange={this.changeMetadescHandler} class="form-control" name="metadescString" rows="3"></textarea>
                                                     </div>
                                                     <p>Chọn loại quyền truy cập:</p>
                                                     <div className="row">
@@ -392,7 +484,7 @@ class UpdateProduct extends Component {
                                                             <div class="form-group text-muted">
 
                                                                 <label class="form-check form-check-inline" >
-                                                                    <input class="form-check-input" type="checkbox" name="maincontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.maincontainerBoolean} onChange={this.changeMainHandler}  />
+                                                                    <input class="form-check-input" type="checkbox" name="maincontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.maincontainerBoolean} onChange={this.changeMainHandler} />
                                                                     <span class="form-check-label">Main Container</span>
                                                                 </label>
 
@@ -400,7 +492,7 @@ class UpdateProduct extends Component {
                                                             <div class="form-group text-muted">
 
                                                                 <label class="form-check form-check-inline" >
-                                                                    <input class="form-check-input" type="checkbox" name="dealcontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.dealcontainerBoolean} onChange={this.changeDealHandler}  />
+                                                                    <input class="form-check-input" type="checkbox" name="dealcontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.dealcontainerBoolean} onChange={this.changeDealHandler} />
                                                                     <span class="form-check-label"> Deal Container</span>
                                                                 </label>
 
@@ -408,7 +500,7 @@ class UpdateProduct extends Component {
                                                             <div class="form-group text-muted">
 
                                                                 <label class="form-check form-check-inline" >
-                                                                    <input class="form-check-input" type="checkbox" name="container1Boolean" value="option1" ref="fieldPrice" checked={this.state.container1Boolean} onChange={this.change1Handler}  />
+                                                                    <input class="form-check-input" type="checkbox" name="container1Boolean" value="option1" ref="fieldPrice" checked={this.state.container1Boolean} onChange={this.change1Handler} />
                                                                     <span class="form-check-label">Container 1</span>
                                                                 </label>
 
@@ -435,7 +527,7 @@ class UpdateProduct extends Component {
                                                             <div class="form-group text-muted">
 
                                                                 <label class="form-check form-check-inline" >
-                                                                    <input class="form-check-input" type="checkbox" name="requestcontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.requestcontainerBoolean} onChange={this.changeRequestHandler}  />
+                                                                    <input class="form-check-input" type="checkbox" name="requestcontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.requestcontainerBoolean} onChange={this.changeRequestHandler} />
                                                                     <span class="form-check-label">Request Container</span>
                                                                 </label>
 
@@ -443,7 +535,7 @@ class UpdateProduct extends Component {
                                                             <div class="form-group text-muted">
 
                                                                 <label class="form-check form-check-inline" >
-                                                                    <input class="form-check-input" type="checkbox" name="itemcontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.itemcontainerBoolean} onChange={this.changeItemHandler}   />
+                                                                    <input class="form-check-input" type="checkbox" name="itemcontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.itemcontainerBoolean} onChange={this.changeItemHandler} />
                                                                     <span class="form-check-label">Item Container</span>
                                                                 </label>
 
@@ -451,7 +543,7 @@ class UpdateProduct extends Component {
                                                             <div class="form-group text-muted">
 
                                                                 <label class="form-check form-check-inline" >
-                                                                    <input class="form-check-input" type="checkbox" name="regioncontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.regioncontainerBoolean} onChange={this.changeRegionHandler}  />
+                                                                    <input class="form-check-input" type="checkbox" name="regioncontainerBoolean" value="option1" ref="fieldPrice" checked={this.state.regioncontainerBoolean} onChange={this.changeRegionHandler} />
                                                                     <span class="form-check-label">Region Container</span>
                                                                 </label>
 
@@ -464,52 +556,65 @@ class UpdateProduct extends Component {
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="">Giá</label>
-                                                        <input value={this.state.priceDouble} onChange={this.changePriceHandler} type="text" class="form-control" name="priceDouble" />
+                                                        <input name="priceDouble" value={this.state.priceDouble} onChange={this.changePriceHandler} type="text" class="form-control" name="priceDouble" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.priceDouble}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Giá giảm</label>
-                                                        <input value={this.state.pricesaleDouble} onChange={this.changePricesaleHandler} type="text" class="form-control" name="pricesaleDouble"  />
+                                                        <input name="pricesaleDouble" value={this.state.pricesaleDouble} onChange={this.changePricesaleHandler} type="text" class="form-control" name="pricesaleDouble" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.pricesaleDouble}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Phần trăm giảm</label>
-                                                        <input value={this.state.discountInteger} onChange={this.changeDiscountHandler} type="number" min="1" class="form-control" name="discountInteger" />
+                                                        <input name="discountInteger" value={this.state.discountInteger} onChange={this.changeDiscountHandler} type="number" min="1" class="form-control" name="discountInteger" />
+                                                        <span style={{ color: "red" }}>{this.state.errors.discountInteger}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Vị trí</label>
-                                                        <input value={this.state.positionString} onChange={this.changePositionHandler} type="text" class="form-control" name="positionString" rows="3" />
+                                                        <input name="positionString" value={this.state.positionString} onChange={this.changePositionHandler} type="text" class="form-control" name="positionString" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.positionString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Hướng</label>
-                                                        <input value={this.state.directionString} onChange={this.changeDirectionHandler} type="text" class="form-control" name="directionString" rows="3" />
+                                                        <input name="directionString" value={this.state.directionString} onChange={this.changeDirectionHandler} type="text" class="form-control" name="directionString" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.directionString}</span>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="img">Hình ảnh</label>
-                                                        <input id="img" ref={this.fileInput}  onChange={this.changeImageHandler}type="file" accept="image/*" class="form-control" name="image" rows="3"  />
-                                                       
+                                                        <label for="img">Hình ảnh
+                                                            <img style={{ marginLeft: `300px` }} title={`/resources/images/items/${this.state.imageString}`} src={`/resources/images/items/${this.state.imageString}`} width="100px" height="100px" />
+                                                        </label>
+                                                        <input name="fileInput" id="img" ref={this.fileInput} onChange={this.changeImageHandler} type="file" accept="image/*" class="form-control"/>
+                                                        <span style={{ color: "red" }}>{this.state.errors.fileInput}</span>
+
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Khu vực</label>
-                                                        <input value={this.state.areaString} onChange={this.changeAreaHandler} type="text" class="form-control" name="areaString" rows="3"  />
+                                                        <input name="areaString" value={this.state.areaString} onChange={this.changeAreaHandler} type="text" class="form-control" name="areaString" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.areaString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Địa chỉ</label>
-                                                        <input value={this.state.addressString} onChange={this.changeAddressHandler} type="text" class="form-control" name="addressString" rows="3"  />
+                                                        <input name="addressString" value={this.state.addressString} onChange={this.changeAddressHandler} type="text" class="form-control" name="addressString" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.addressString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Điện thoại</label>
-                                                        <input value={this.state.phoneString} onChange={this.changePhoneHandler} type="text" class="form-control" min="1" name="phoneString" rows="3"  />
+                                                        <input name="phoneString" value={this.state.phoneString} onChange={this.changePhoneHandler} type="text" class="form-control" min="1" name="phoneString" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.phoneString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Chủ đầu tư</label>
-                                                        <input value={this.state.customerString} onChange={this.changeCustomerHandler} name="customerString" class="form-control" rows="3"  />
+                                                        <input name="customerString" value={this.state.customerString} onChange={this.changeCustomerHandler} name="customerString" class="form-control" name="metakey" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.customerString}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Số Phòng</label>
-                                                        <input value={this.state.roomInteger} onChange={this.changeRoomHandler} type="number" min="1" class="form-control" name="roomInteger" rows="3"  />
+                                                        <input name="roomInteger" value={this.state.roomInteger} onChange={this.changeRoomHandler} type="number" min="1" class="form-control" name="roomInteger" rows="3"></input>
+                                                        <span style={{ color: "red" }}>{this.state.errors.roomInteger}</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Trạng thái</label>
-                                                        <select class="form-control" name="status"  onChange={this.changeStatusHandler}>
+                                                        <select class="form-control" name="status" onChange={this.changeStatusHandler}>
                                                             <option value={this.state.statusString} name="statusString">Xuất bản</option>
                                                             <option value={this.state.statusString2} name="statusString">Chưa xuất bản</option>
                                                         </select>
