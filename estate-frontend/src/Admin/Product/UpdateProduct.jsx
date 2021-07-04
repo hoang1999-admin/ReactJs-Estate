@@ -2,13 +2,14 @@
 import React, { Component } from 'react'
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
 import moment from 'moment';
-
+import Home from '../Home/Home';
 
 class UpdateProduct extends Component {
     constructor(props) {
         super(props)
         this.fileInput = React.createRef();
         this.state = {
+            categorys: [],
             errors: {},
             // step 2
             id: this.props.match.params.id,
@@ -74,6 +75,9 @@ class UpdateProduct extends Component {
         this.productService = new HomeServiceAdmin();
     }
     componentDidMount() {
+        this.productService.getCategorys().then(response => {
+            this.setState({ categorys: response.data });
+        });
         this.productService.getProductById(this.state.id).then((res) => {
             let productdata = res.data;
             this.setState({
@@ -111,7 +115,6 @@ class UpdateProduct extends Component {
     }
     saveProduct = (e) => {
         e.preventDefault();
-       
         if (this.validateForm()) {
             let product = {
                 productidLong: this.state.productidLong,
@@ -275,7 +278,15 @@ class UpdateProduct extends Component {
             this.setState({ statusString2: event.target.value });
         }
     }
+    rendercategorys = () => {
+        return this.state.categorys.map((category, key) => {
+            return (
+                <option key={key} value={category.idLong}>{category.titleString}</option>
 
+
+            );
+        });
+    };
     cancel() {
         this.props.history.push('/list-product');
     }
@@ -306,7 +317,7 @@ class UpdateProduct extends Component {
 
         if (!fieldscategoryidLong) {
             formIsValid = false;
-            errors["categoryidLong"] = "*Vui lòng nhập mã loại sản phẩm.";
+            errors["categoryidLong"] = "*Vui lòng chọn mã loại sản phẩm.";
         }
         if (!fieldstitleString) {
             formIsValid = false;
@@ -413,19 +424,7 @@ class UpdateProduct extends Component {
                 <div className="row">
                     <div className="col-3">
                         <div class="list-group">
-                            <ul>
-                                <li class="list-group-item list-group-item-action"><a href="/list-product">Sản phẩm</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-category">Loại sản phẩm</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-email">E-mail</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-contact">Liên hệ</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-slider">slider</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-photo">Hình ảnh</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-area">Khu vực</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-productrelation">Sản phẩm liên quan</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-request">Yêu cầu</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-role">Vai trò thành viên</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-user">Thành viên</a></li>
-                            </ul>
+                           <Home/>
                         </div>
                     </div>
                     <div className="col-9">
@@ -453,7 +452,10 @@ class UpdateProduct extends Component {
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Loại sản phẩm</label>
-                                                        <input name="categoryidLong" value={this.state.categoryidLong} onChange={this.changeCategory_idHandler} type="number" min="1" class="form-control" name="categoryidLong" placeholder="vd: 1" />
+                                                        <select name="categoryidLong" class="custom-select form-control" ref="fieldTittle" value={this.state.categoryidLong} onChange={this.changeCategory_idHandler}>
+                                                            <option>Chọn</option>
+                                                            {this.rendercategorys()}
+                                                        </select>
                                                         <span style={{ color: "red" }}>{this.state.errors.categoryidLong}</span>
                                                     </div>
                                                     <div class="form-group">

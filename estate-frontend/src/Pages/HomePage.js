@@ -8,7 +8,7 @@ import MainContainer from "./Container/MainContainer";
 import RegionContainer from "./Container/RegionContainer";
 import RequestContainer from "./Container/RequestContainer";
 import ServiceContainer from "./Container/ServiceContainer";
-
+import NewController from "./Container/NewController/NewController";
 import Header from '../Components/Header/Header';
 import Footer from '../Components/Footer/Footer';
 import Subcribe from '../Components/Subcribe/Subcribe';
@@ -26,6 +26,7 @@ class HomePage extends React.Component {
           <RequestContainer />
           <ItemContainer />
           <ServiceContainer />
+       <NewController/>
           <RegionContainer />
           <Image_backgroundContainer />
 

@@ -31,4 +31,6 @@ public interface PageReponsitory extends JpaRepository<Page,Long> {
 	public List<Page> findexpen();
 	@Query(value = "SELECT * FROM Pages WHERE category_id = 6 AND status = '1'", nativeQuery = true)
 	public List<Page> findbuld();
+	@Query(value = "SELECT * FROM Pages WHERE category_id = 7 AND status = '1'", nativeQuery = true)
+	public List<Page> findnew();
 }

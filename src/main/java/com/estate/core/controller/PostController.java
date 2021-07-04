@@ -65,6 +65,11 @@ public class PostController {
 	{
 		return postRepository.findbuld();
 	}
+	@GetMapping("/posts8")
+	public List<Post> getListPagePosts8()
+	{
+		return postRepository.findnew();
+	}
 	@GetMapping("/posts/index={id}")
 	public ResponseEntity<Post> getPostsId(@PathVariable Long id)
 	{

@@ -146,6 +146,7 @@ export default function Main() {
           <Route path="/chi-tiet/index=:id" component={BlogDetail} />
           <Route path="/chi-tiet-trang/index=:id" component={PageDetail} />
           <Route path="/chi-tiet-bai-viet/index=:id" component={PostDetail} />
+          <Route path="/tin-tuc" component={Blog} />
 
           {/*  Admin */}
 

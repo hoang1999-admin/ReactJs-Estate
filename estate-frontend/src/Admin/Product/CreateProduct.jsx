@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
 import moment from 'moment';
-
+import Home from '../Home/Home'
 class CreateProduct extends Component {
     constructor(props) {
         super(props)
         this.fileInput = React.createRef();
         this.state = {
+            categorys: [],
             products: [],
             errors: {},
             // step 2
@@ -72,6 +73,9 @@ class CreateProduct extends Component {
         this.productService = new HomeServiceAdmin();
     }
     componentDidMount() {
+        this.productService.getCategorys().then(response => {
+            this.setState({ categorys: response.data });
+        });
         this.productService.getProducts().then(response => {
             this.setState({ products: response.data });
         });
@@ -80,54 +84,53 @@ class CreateProduct extends Component {
         e.preventDefault();
         if (this.validateForm()) {
 
-        let product = {
-            productidLong: this.state.productidLong,
-            categoryidLong: this.state.categoryidLong,
-            titleString: this.state.titleString,
-            descriptionString: this.state.descriptionString,
-            slugString: this.state.slugString,
-            metakeyString: this.state.metakeyString,
-            metadescString: this.state.metadescString,
-            priceDouble: this.state.priceDouble,
-            pricesaleDouble: this.state.pricesaleDouble,
-            discountInteger: this.state.discountInteger,
-            positionString: this.state.positionString,
-            directionString: this.state.directionString,
-            createdatTimestamp: this.state.createdatTimestamp,
-            imageString: this.fileInput.current.files[0].name,
-            areaString: this.state.areaString,
-            addressString: this.state.addressString,
-            phoneString: this.state.phoneString,
-            customerString: this.state.customerString,
-            roomInteger: this.state.roomInteger,
-            maincontainerBoolean: this.state.maincontainerBoolean,
-            dealcontainerBoolean: this.state.dealcontainerBoolean,
-            container1Boolean: this.state.container1Boolean,
-            container2Boolean: this.state.container2Boolean,
-            requestcontainerBoolean: this.state.requestcontainerBoolean,
-            itemcontainerBoolean: this.state.itemcontainerBoolean,
-            servicecontainerBoolean: this.state.servicecontainerBoolean,
-            regioncontainerBoolean: this.state.regioncontainerBoolean,
-            statusString: this.state.statusString ? this.state.statusString : this.state.statusString2,
+            let product = {
+                productidLong: this.state.productidLong,
+                categoryidLong: this.state.categoryidLong,
+                titleString: this.state.titleString,
+                descriptionString: this.state.descriptionString,
+                slugString: this.state.slugString,
+                metakeyString: this.state.metakeyString,
+                metadescString: this.state.metadescString,
+                priceDouble: this.state.priceDouble,
+                pricesaleDouble: this.state.pricesaleDouble,
+                discountInteger: this.state.discountInteger,
+                positionString: this.state.positionString,
+                directionString: this.state.directionString,
+                createdatTimestamp: this.state.createdatTimestamp,
+                imageString: this.fileInput.current.files[0].name,
+                areaString: this.state.areaString,
+                addressString: this.state.addressString,
+                phoneString: this.state.phoneString,
+                customerString: this.state.customerString,
+                roomInteger: this.state.roomInteger,
+                maincontainerBoolean: this.state.maincontainerBoolean,
+                dealcontainerBoolean: this.state.dealcontainerBoolean,
+                container1Boolean: this.state.container1Boolean,
+                container2Boolean: this.state.container2Boolean,
+                requestcontainerBoolean: this.state.requestcontainerBoolean,
+                itemcontainerBoolean: this.state.itemcontainerBoolean,
+                servicecontainerBoolean: this.state.servicecontainerBoolean,
+                regioncontainerBoolean: this.state.regioncontainerBoolean,
+                statusString: this.state.statusString ? this.state.statusString : this.state.statusString2,
 
 
 
-        };
-        console.log('product => ' + JSON.stringify(product));
+            };
+            console.log('product => ' + JSON.stringify(product));
 
-        // step 5
-        if (product == '') {
-            alert('Lưu thất bại');
+            // step 5
+            if (product == '') {
+                alert('Lưu thất bại');
+            } else {
+                this.productService.createProduct(product).then(res => {
+                    this.props.history.push('/list-product');
+                    alert('Lưu thành công ');
+                });
+            }
         } else {
-            this.productService.createProduct(product).then(res => {
-                this.props.history.push('/list-product');
-                alert('Lưu thành công ');
-            });
+            alert("Lỗi!!")
         }
-    }else
-    {
-        alert("Lỗi!!")
-    }
 
     }
     changeProduct_idHandler = (event) => {
@@ -172,10 +175,10 @@ class CreateProduct extends Component {
         if (event.target.files && event.target.files[0]) {
             let reader = new FileReader();
             reader.onload = (e) => {
-              this.setState({imageString: e.target.result});
+                this.setState({ imageString: e.target.result });
             };
             reader.readAsDataURL(event.target.files[0]);
-          }
+        }
     }
     changeAreaHandler = (event) => {
         this.setState({ areaString: event.target.value });
@@ -247,6 +250,15 @@ class CreateProduct extends Component {
             this.setState({ statusString2: event.target.value });
         }
     }
+    rendercategorys = () => {
+        return this.state.categorys.map((category, key) => {
+            return (
+                <option key={key} value={category.idLong}>{category.titleString}</option>
+
+
+            );
+        });
+    };
     cancel() {
         this.props.history.push('/list-product');
     }
@@ -277,14 +289,8 @@ class CreateProduct extends Component {
 
         if (!fieldscategoryidLong) {
             formIsValid = false;
-            errors["categoryidLong"] = "*Vui lòng nhập mã loại sản phẩm.";
-        } else if (typeof fieldscategoryidLong !== "undefined" && !fieldscategoryidLong === false) {
-            if (!fieldscategoryidLong.match(/[0-9]/)) {
-                formIsValid = false;
-                errors['categoryidLong'] = "*Vui lòng chỉ nhập bảng chữ số.";
-            }
+            errors["categoryidLong"] = "*Vui lòng chọn mã loại sản phẩm.";
         }
-
         if (!fieldstitleString) {
             formIsValid = false;
             errors["titleString"] = "*Vui lòng nhập tên.";
@@ -344,13 +350,13 @@ class CreateProduct extends Component {
         if (!fieldsphoneString) {
             formIsValid = false;
             errors["phoneString"] = "*Vui lòng nhập số điện thoại.";
-          }else if (typeof fieldsphoneString !== "undefined") {
+        } else if (typeof fieldsphoneString !== "undefined") {
             if (!fieldsphoneString.match(/^[0-9]{10}$/)) {
-              formIsValid = false;
-              errors["phoneString"] = "*Vui lòng nhập số điện thoại hợp lệ.";
+                formIsValid = false;
+                errors["phoneString"] = "*Vui lòng nhập số điện thoại hợp lệ.";
             }
-           
-          }
+
+        }
         if (!fieldscustomerString) {
             formIsValid = false;
             errors["customerString"] = "*Vui lòng nhập chủ đầu tư.";
@@ -410,19 +416,7 @@ class CreateProduct extends Component {
                 <div className="row">
                     <div className="col-3">
                         <div class="list-group">
-                            <ul>
-                                <li class="list-group-item list-group-item-action"><a href="/list-product">Sản phẩm</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-category">Loại sản phẩm</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-email">E-mail</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-contact">Liên hệ</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-slider">slider</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-photo">Hình ảnh</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-area">Khu vực</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-productrelation">Sản phẩm liên quan</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-request">Yêu cầu</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-role">Vai trò thành viên</a></li>
-                                <li class="list-group-item list-group-item-action"><a href="/list-user">Thành viên</a></li>
-                            </ul>
+                           <Home/>
                         </div>
                     </div>
                     <div className="col-9">
@@ -450,7 +444,10 @@ class CreateProduct extends Component {
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Loại sản phẩm</label>
-                                                        <input name="categoryidLong" value={this.state.categoryidLong} onChange={this.changeCategory_idHandler} type="number" min="1" class="form-control" name="categoryidLong" placeholder="vd: 1" />
+                                                        <select name="categoryidLong" class="custom-select form-control" ref="fieldTittle" value={this.state.categoryidLong} onChange={this.changeCategory_idHandler}>
+                                                            <option>Chọn</option>
+                                                            {this.rendercategorys()}
+                                                        </select>
                                                         <span style={{ color: "red" }}>{this.state.errors.categoryidLong}</span>
                                                     </div>
                                                     <div class="form-group">

@@ -68,8 +68,6 @@ class RequestContainer extends Component {
         return this.state.products.map((product, key) => {
             return (
                 <option key={key}>{product.titleString}</option>
-
-
             );
         });
     };

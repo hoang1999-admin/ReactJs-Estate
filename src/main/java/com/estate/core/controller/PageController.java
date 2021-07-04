@@ -65,6 +65,11 @@ public class PageController {
 	{
 		return pageRepository.findbuld();
 	}
+	@GetMapping("/pages7")
+	public List<Page> getListPagepages7()
+	{
+		return pageRepository.findnew();
+	}
 	@GetMapping("/pages/index={id}")
 	public ResponseEntity<Page> getPagesId(@PathVariable Long id)
 	{

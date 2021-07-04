@@ -263,9 +263,7 @@ class ProductDetailContainer extends Component {
                                     <h5 class="title-description">Tin Tức</h5>
                                     <p>Giữ tiền hay tiếp tục đổ vào BĐS, đây là nhận định của một chuyên gia đã có 20 năm kinh nghiệm trong lĩnh vực địa ốc</p>
                                     <a href="#"><img width="100%" src="/resources/images/misc/photo1620574745039-16205747452751733040989.jpg" /></a>
-                                    <h5 class="title-description">Videos</h5>
-
-
+                                    <br/>
                                     <article class="media mb-3">
                                         <a href="#"><img class="img-sm mr-3" src="/resources/images/posts/1619075529-yoh.jpg" /></a>
                                         <div class="media-body">

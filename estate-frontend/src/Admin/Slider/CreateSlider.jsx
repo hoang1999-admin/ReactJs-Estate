@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import HomeServiceAdmin from '../../HomeServiceAdmin/HomeServiceAdmin';
 import moment from 'moment';
+import Home from '../Home/Home';
 const timestamp = Date.now();
 class CreateSlider extends Component {
     constructor(props) {
@@ -140,19 +141,7 @@ class CreateSlider extends Component {
                 <div className="row">
                     <div className="col-3">
                         <div class="list-group">
-             <ul>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-product">Sản phẩm</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-category">Loại sản phẩm</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-email">E-mail</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-contact">Liên hệ</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-slider">slider</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-photo">Hình ảnh</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-area">Khu vực</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-productrelation">Sản phẩm liên quan</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-request">Yêu cầu</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-role">Vai trò thành viên</a></li>
-                                    <li class="list-group-item list-group-item-action"><a href="/list-user">Thành viên</a></li>
-                                </ul>
+                            <Home />
                         </div>
                     </div>
                     <div className="col-9">
@@ -173,7 +162,7 @@ class CreateSlider extends Component {
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-6">
-                                                   
+
                                                     <div class="form-group">
                                                         <label for="">Tên slider</label>
                                                         <input value={this.state.titleString} onChange={this.changeTitleHandler} type="text" class="form-control" name="titleString" placeholder=" Tên slider" />
@@ -182,7 +171,7 @@ class CreateSlider extends Component {
                                                         <label for="">link</label>
                                                         <input value={this.state.linkString} onChange={this.changeLinkHandler} type="text" class="form-control" name="linkString" placeholder="mo_hinh_kinh_doanh_bds_05" />
                                                     </div>
-                                                   
+
                                                     <div class="form-group">
                                                         <label for="">Từ khóa</label>
                                                         <textarea value={this.state.metakeyString} onChange={this.changeMetakeyHandler} class="form-control" name="metakeyString" rows="3"></textarea>
@@ -191,24 +180,24 @@ class CreateSlider extends Component {
                                                         <label for="">Từ khóa mô tả</label>
                                                         <textarea value={this.state.metadescString} onChange={this.changeMetadescHandler} class="form-control" name="metadescString" rows="3"></textarea>
                                                     </div>
-                                                   
+
                                                 </div>
                                                 <div class="col-6">
-                                                <div class="form-group">
+                                                    <div class="form-group">
                                                         <label for="">Sắp xếp</label>
                                                         <input value={this.state.orderInteger} onChange={this.changeOrderHandler} type="number" class="form-control" name="orderInteger" rows="3"></input>
                                                     </div>
-                                                  
+
                                                     <div class="form-group">
                                                         <label for="">Vị trí</label>
                                                         <input value={this.state.positionString} onChange={this.changePositionHandler} type="text" class="form-control" name="positionString" rows="3"></input>
                                                     </div>
-                                                  
+
                                                     <div class="form-group">
                                                         <label for="img">Hình ảnh</label>
                                                         <input id="img" ref={this.fileInput} type="file" accept="image/*" class="form-control" name="image" rows="3"></input>
                                                     </div>
-                                                   
+
                                                     <div class="form-group">
                                                         <label for="">Trạng thái</label>
                                                         <select class="form-control" name="status" onChange={this.changeStatusHandler}>
