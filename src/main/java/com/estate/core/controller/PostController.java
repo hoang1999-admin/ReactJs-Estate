@@ -70,6 +70,21 @@ public class PostController {
 	{
 		return postRepository.findnew();
 	}
+	@GetMapping("/posts9")
+	public List<Post> getListPagePosts9()
+	{
+		return postRepository.findnew1();
+	}
+	@GetMapping("/posts10")
+	public List<Post> getListPagePosts10()
+	{
+		return postRepository.findnew2();
+	}
+	@GetMapping("/posts11")
+	public List<Post> getListPagePosts11()
+	{
+		return postRepository.findnew3();
+	}
 	@GetMapping("/posts/index={id}")
 	public ResponseEntity<Post> getPostsId(@PathVariable Long id)
 	{

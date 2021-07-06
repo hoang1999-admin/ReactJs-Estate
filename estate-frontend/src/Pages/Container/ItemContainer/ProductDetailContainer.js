@@ -1,3 +1,9 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable no-sequences */
+/* eslint-disable no-script-url */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
@@ -6,6 +12,7 @@ import Header from '../../../Components/Header/Header';
 import Footer from '../../../Components/Footer/Footer';
 import Subcribe from '../../../Components/Subcribe/Subcribe';
 import moment from 'moment';
+import 'moment/locale/vi'
 class ProductDetailContainer extends Component {
     constructor(props) {
         super(props);
@@ -18,18 +25,28 @@ class ProductDetailContainer extends Component {
             value: {
                 scale: 1,
                 translation: { x: 0, y: 0 }
-            }
+            },
+            show:true,
+          post:[],
+          post1:[],
         };
 
         this.productService = new HomeServices();
         this.photoService = new HomeServices();
         this.productrelationService = new HomeServices();
+        this.postService = new HomeServices();
         this.changeimage = this.changeimage.bind(this);
     }
 
     componentDidMount() {
         const id = this.props.match.params.id;
-
+       
+            this.postService.getAllPosts().then(response => {
+                this.setState({ post: response });
+            });
+            this.postService.getAllPosts1().then(response => {
+                this.setState({ post1: response });
+            });
         this.productService.getAllProductsId(this.state.id).then((res) => {
             let product = res.data;
             this.setState({ photo: product.photo, image: product.image, product: res.data });
@@ -41,7 +58,56 @@ class ProductDetailContainer extends Component {
         });
 
     }
+    renderpost = () => {
+        return this.state.post.map((post, key) => {
+            moment.locale('vi');
+            const dd = moment(post.createdatTimestamp).startOf('day').fromNow();
+            return (
+                <article class="media mb-3" key={key}>
+                                        <a href={`/chi-tiet-bai-viet/index=${post.idLong}`}><img class="img-sm mr-3" src={`/resources/images/posts/${post.imageString}`}/></a>
+                                        <div class="media-body">
+                                            <h6 class="mt-0" title={post.titleString}><a href={`/chi-tiet-bai-viet/index=${post.idLong}`}>{post.titleString}</a></h6>
+                                            <p class="mb-2">{`${post.descriptionString.substring(0,115)}...`}</p>
+                                        </div>
+                                    </article>
+            );
+        });
 
+    }
+    renderpost1 = () => {
+        if(this.state.id === this.state.post1.idLong)
+        {
+            return this.state.post1.map((post, key) => {
+                moment.locale('vi');
+                const dd = moment(post.createdatTimestamp).startOf('day').fromNow();
+                return (
+                  <div key={key}>
+                        <h5><a href={`/chi-tiet-bai-viet/index=${post.idLong}`}>{post.titleString}</a></h5>
+                        <p>{dd}</p>
+                                        <a href={`/chi-tiet-bai-viet/index=${post.idLong}`}><img width="100%" src={`/resources/images/posts/${post.imageString}`} /></a>
+                                        
+                  </div>
+                );
+            });
+    
+        }else
+        {
+            return this.state.post1.map((post, key) => {
+                moment.locale('vi');
+                const dd = moment(post.createdatTimestamp).startOf('day').fromNow();
+                return (
+                  <div key={key}>
+                        <h5><a href={`/chi-tiet-bai-viet/index=${post.idLong}`}>{post.titleString}</a></h5>
+                        <p>{dd}</p>
+                                        <a href={`/chi-tiet-bai-viet/index=${post.idLong}`}><img width="100%" src={`/resources/images/posts/${post.imageString}`} /></a>
+                                        
+                  </div>
+                );
+            });
+    
+        }
+       
+    }
     changeimage(change) {
         this.setState({ image: change });
     }
@@ -56,26 +122,33 @@ class ProductDetailContainer extends Component {
         });
     }
     renderproductrelation = () => {
-        return this.state.productrelation.map((productrelations, key) => {
-
+        return this.state.productrelation.map((product, key) => {
+            moment.locale('vi');
+            const dd = moment(product.createdatTimestamp).startOf('day').fromNow();
             return (
-
                 <li class="col-6 col-lg-4 col-md-3" key={key}>
-                    <a href={`/index=${productrelations.idLong}`} class="item">
+                    <a href={`/index=${product.idLong}`} class="item">
                         <div class="card-body">
-                            <h5 class="title">{productrelations.titleString}</h5>
-                            <img class="img-sm float-right" src={`/resources/images/items/${productrelations.imageString}`} />
-                            <p class="text-muted"><i class="fa fa-map-marker-alt"></i>{productrelations.positionString}</p>
+                            <h5 class="title"style={{color:`#004e7f`}}>{product.titleString}</h5>
+                            <img class="img-sm float-right" src={`/resources/images/items/${product.imageString}`} alt=""/>
+                            <p class="text-muted"><i class="fa fa-map-marker-alt"></i>{product.positionString}</p>
+                            <div class="price mt-1 "style={{fontWeight:`bold`}} >{product.pricesaleDouble} <sup> . </sup> {product.areaString} m<sup>2</sup></div>
+                            <div className="row">
+                    <div class=" col-9">{dd}</div>
+                    <div class="col-3" style={{fontSize:`22px`}}><a href={`/luu`} title="Bấm để lưu tin" style={{color:`#004e7f`}}><i class="far fa-heart"></i></a></div>                    </div>
                         </div>
                     </a>
                 </li>
+
             );
         });
     }
+    
     render() {
         const product = this.state.product;
         const { scale, translation } = this.state;
         const dd = moment(product.createdatTimestamp).format("LLLL");
+        const ddd = moment(product.createdatTimestamp).subtract(10, 'days').calendar();
         return (
             <div>
                 <Header />
@@ -94,11 +167,11 @@ class ProductDetailContainer extends Component {
 
                         {/* <!-- ============================ ITEM DETAIL ======================== --> */}
                         <div class="row">
-                            <aside class="col-md-6">
+                            <aside class="col-md-8">
                                 <div class="card">
                                     <article class="gallery-wrap">
                                         <div class="img-big-wrap">
-                                            <div >
+                                            <div>
                                                 <a >
                                                     <MapInteractionCSS value={this.state.value}
                                                         onChange={(value) => this.setState({ value })}>
@@ -124,94 +197,32 @@ class ProductDetailContainer extends Component {
                                 </div>
                                 {/* <!-- card.// --> */}
                             </aside>
-                            <main class="col-md-6">
-                                <article class="product-info-aside">
-
-                                    <h2 class="title mt-3">{product.titleString}</h2>
-
-                                    <div class="rating-wrap my-3">
-                                        <div id="rating" >
-                                            <input type="radio" id="star5" name="rating" value="5" />
-                                            <label class="full" for="star5" title="Awesome - 5 stars"></label>
-
-                                            <input type="radio" id="star4half" name="rating" value="4 and a half" />
-                                            <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-
-                                            <input type="radio" id="star4" name="rating" value="4" />
-                                            <label class="full" for="star4" title="Pretty good - 4 stars"></label>
-
-                                            <input type="radio" id="star3half" name="rating" value="3 and a half" />
-                                            <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-
-                                            <input type="radio" id="star3" name="rating" value="3" />
-                                            <label class="full" for="star3" title="Meh - 3 stars"></label>
-
-                                            <input type="radio" id="star2half" name="rating" value="2 and a half" />
-                                            <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-
-                                            <input type="radio" id="star2" name="rating" value="2" />
-                                            <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
-
-                                            <input type="radio" id="star1half" name="rating" value="1 and a half" />
-                                            <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-
-                                            <input type="radio" id="star1" name="rating" value="1" />
-                                            <label class="full" for="star1" title="Sucks big time - 1 star"></label>
-
-                                            <input type="radio" id="starhalf" name="rating" value="half" />
-                                            <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-                                        </div>
-                                        {/* <small class="label-rating text-muted">132 nhận xét</small>
-                                        <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 đơn đặt hàng </small> */}
-                                        <small class="label-rating text-success ml-3" style={{fontSize:`20px` }}> <i class="fa fa-clipboard-check"></i> {dd}</small>
-
-                                    </div>
-                                    {/* <!-- rating-wrap.// --> */}
-                                            <br/>
-                                    <div class="mb-3">
-                                        <var class="price h4" style={{ color: `red` }}>Giá: <NumberFormat value={this.state.product.priceDouble} displayType={'text'} thousandSeparator={true} /> VNĐ</var>
-                                        {/* <span class="text-muted">USD 562.65 incl. VAT</span> */}
-                                    </div>
-                                    {/* <!-- price-detail-wrap .// --> */}
-                                    <p>{product.descriptionString}</p>
-                                    <dl class="row">
-                                        <dt class="col-sm-3">Nhà cung cấp</dt>
-                                        <dd class="col-sm-9"><a href="#">{product.customerString}</a></dd>
-
-                                        <dt class="col-sm-3">Số bài viết</dt>
-                                        <dd class="col-sm-9">{this.state.productrelation.length}</dd>
-
-                                        <dt class="col-sm-3">Tình trạng</dt>
-                                        <dd class="col-sm-9">vẫn còn</dd>
-                                    </dl>
-
-                                    <div class="form-row  mt-4">
-                                        {/* <div class="form-group col-md flex-grow-0">
-                                            <div class="input-group mb-3 input-spinner">
-                                                <div class="input-group-prepend">
-                                                    <button class="btn btn-light" type="button" id="button-plus"> + </button>
-                                                </div>
-                                                <input type="text" class="form-control" value="1" />
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-light" type="button" id="button-minus"> &minus; </button>
-                                                </div>
-                                            </div>
-                                        </div> */}
-                                        {/* <!-- col.// --> */}
-                                        <div class="form-group col-md">
-                                            <a href="#" class="btn  btn-primary">
-                                                <i class="fas fa-shopping-cart"></i> <span class="text">Lưu</span>
-                                            </a>
-                                            <a href={`lien-he`} class="btn btn-light">
-                                                <i class="fas fa-envelope"></i> <span class="text">Liên Hệ với nhà cung cấp</span>
-                                            </a>
-                                        </div>
-                                        {/* <!-- col.// --> */}
-                                    </div>
-                                    {/* <!-- row.// --> */}
-
+                            <main class="col-md-4">
+                                <article class="product-info-aside border text-center">
+                                <img src={"/resources/images/avatars/facebook.jpg"} width="70px" height="70px"style={{borderRadius:`20px 20px 20px 20px `}} />
+                                    <h2 class="title mt-3">{product.customerString}</h2>  
+                                    <br/>                            
+                                  <div>
+                                  <button class="btn btn-light" onClick={() => {navigator.clipboard.writeText(this.state.product.phoneString,this.setState({ show:!this.state.show}))} }>
+                                  <a href={`tel:${product.phoneString}`}><i class="fas fa-phone"></i> <span class="text">{`${this.state.show ? `0********* `: product.phoneString} ${ this.state.show? 'Sao chép' : 'Hiện số'}`}</span></a>
+                                             
+                                            </button>
+                                  </div>  <br/>         
+                                  <div>
+                                  <button class="btn btn-light">
+                                                <a href={`mailto:${product.phoneString}`}><i class="fas fa-envelope"></i> <span class="text">Gửi mail</span></a>
+                                            </button>
+                                  </div>  <br/>         
+                
+                                        <div>
+                                        <button class="btn btn-light">
+                                                <a  href={`/lien-he`}><i class="fas fa-envelope"></i> <span class="text">Liên Hệ với nhà cung cấp</span></a>
+                                            </button>
+                                            </div>   
+                                          
+                                   
                                 </article>
-                                {/* <!-- product-info-aside .// --> */}
+                               
                             </main>
                             {/* <!-- col.// --> */}
                         </div>
@@ -232,8 +243,24 @@ class ProductDetailContainer extends Component {
                         <div class="row">
                             <div class="col-md-8">
 
-                                <h5 class="title-description"><a href="javascript:void(0)" title={product.descriptionString}>Mô tả</a> <i className="far fa-hand-point-left ml-4" style={{ color: `green` }}> </i></h5>
-                                <p>{product.metadescString}</p>
+<h1>{product.titleString}</h1>
+<h6>{product.positionString}</h6>
+<div className="label-rating"><i className="fas fa-history" style={{ color: `green` }}></i> {dd}</div>
+<hr/>
+<div className="mt-5 mb-5">
+    <div className="row">
+    <div class="price mt-1 col-3 "style={{fontWeight:`bold`}} > Mức Giá: {product.pricesaleDouble} </div>
+<div class="price mt-1 col-3"style={{fontWeight:`bold`}} > Diện tích: {product.areaString} m<sup>2</sup> </div>
+<div class="price mt-1 col-3 "style={{fontWeight:`bold`}} > <a href="" style={{color:`#004e7f`}} ><i class="fa fa-share"></i> Chia sẽ </a> </div>
+<div class="price mt-1 col-3"style={{fontWeight:`bold`}} ><a href="" style={{color:`#004e7f`}}><i class="far fa-heart"></i> Lưu tin </a> </div>
+
+
+    </div>
+
+</div>
+<hr/>
+                                <h5 class="title-description"><a href="javascript:void(0)" title={product.descriptionString}>Thông tin mô tả</a> <i className="far fa-hand-point-left ml-4" style={{ color: `green` }}> </i></h5>
+                                <p>{product.descriptionString}</p>
                                 <table class="table table-bordered">
                                     <tr> <th colspan="2">Mã </th> </tr>
                                     <tr> <td>Mã Sản Phẩm</td><td>{product.productidLong}</td> </tr>
@@ -253,6 +280,33 @@ class ProductDetailContainer extends Component {
                                     <tr> <td>Số Phòng</td><td>{product.roomInteger}</td> </tr>
 
                                 </table>
+                                <h5 class="title-description"><a href="javascript:void(0)" title={product.descriptionString}>Đặc điểm bất động sản</a></h5>
+ 
+<div  style={{border:`1px solid #ebedf0`}}>
+
+    <div class="price mt-4 ml-2" > Loại bài đăng: {product.metakeyString} </div><br/>
+<div class="price mb-4 ml-2" >Địa chỉ: {product.positionString}  </div>
+
+</div>
+<h5 class="title-description"><a href="javascript:void(0)" title={product.descriptionString}>Xem trên bản đồ</a></h5>
+ <div>
+ <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.3487508493586!2d105.7902835142451!3d21.018727193498165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDAxJzA3LjQiTiAxMDXCsDQ3JzMyLjkiRQ!5e0!3m2!1sen!2s!4v1625501633715!5m2!1sen!2s" width="100%" height="300" style={{border:`0`}} allowfullscreen="" loading="lazy"></iframe>
+     </div>
+     <hr/>
+<div className="mt-5 mb-5">
+    <div className="row">
+    <div class="price mt-1 col-2 " >Ngày đăng: {ddd} </div>
+<div class="price mt-1 col-2"> Ngày hết hạn: vẫn còn  </div>
+<div class="price mt-1 col-4">Loại tin: {product.metadescString} </div>
+<div class="price mt-1 col-2">Mã tin: {product.productidLong} </div>
+<div class="price mt-1 col-2"><a href=""><i class="fas fa-exclamation-triangle"></i> Báo cáo </a> </div>
+
+
+    </div>
+
+</div>
+<hr/>
+<p>Quý vị đang xem nội dung tin rao "{product.titleString}" - Mã tin {product.productidLong}. Mọi thông tin, nội dung liên quan tới tin rao này là do người đăng tin đăng tải và chịu trách nhiệm. Batdongsan.com luôn cố gắng để các thông tin được hữu ích nhất cho quý vị tuy nhiên Batdongsan.com không đảm bảo và không chịu trách nhiệm về bất kỳ thông tin, nội dung nào liên quan tới tin rao này. Trường hợp phát hiện nội dung tin đăng không chính xác, Quý vị hãy thông báo và cung cấp thông tin cho Ban quản trị Batdongsan.com theo Hotline 19001881 để được hỗ trợ nhanh và kịp thời nhất.</p>
                             </div>
                             {/* <!-- col.// --> */}
 
@@ -260,40 +314,10 @@ class ProductDetailContainer extends Component {
 
                                 <div class="box">
 
-                                    <h5 class="title-description">Tin Tức</h5>
-                                    <p>Giữ tiền hay tiếp tục đổ vào BĐS, đây là nhận định của một chuyên gia đã có 20 năm kinh nghiệm trong lĩnh vực địa ốc</p>
-                                    <a href="#"><img width="100%" src="/resources/images/misc/photo1620574745039-16205747452751733040989.jpg" /></a>
-                                    <br/>
-                                    <article class="media mb-3">
-                                        <a href="#"><img class="img-sm mr-3" src="/resources/images/posts/1619075529-yoh.jpg" /></a>
-                                        <div class="media-body">
-                                            <h6 class="mt-0"><a href="#">Khu đô thị Việt Hàn Phổ Yên</a></h6>
-                                            <p class="mb-2">Dự án tọa lạc tại vị trí vàng trong làng Khu công nghiệp ( KCN ) xung quanh là Samsung, KCN Yên...</p>
-                                        </div>
-                                    </article>
-
-                                    <article class="media mb-3">
-                                        <a href="#"><img class="img-sm mr-3" src="/resources/images/posts/1619507628-ljq.jpg" /></a>
-                                        <div class="media-body">
-                                            <h6 class="mt-0"><a href="#">Khu Đô Thị Chợ Đêm Tân An</a></h6>
-                                            <p class="mb-2">Tên dự án: Khu Đô Thị – Thương Mại – Dịch Vụ Đông Bắc Cầu Tân An Chủ đầu tư: Tân An Land Vị trí: Nằm...</p>
-                                        </div>
-                                    </article>
-
-                                    <article class="media mb-3">
-                                        <a href="#"><img class="img-sm mr-3" src="/resources/images/posts/1620201738-ssz.jpg" /></a>
-                                        <div class="media-body">
-                                            <h6 class="mt-0"><a href="#">Epic Town - Khu Đô Thị Số 1 Điện Thắng</a></h6>
-                                            <p class="mb-2">Tên thương mại: Epic Town Vị trí: Quốc lộ 1A, Trạm thu phí, phường Điện Thắng, thị xã Điện Bàn, tỉnh...</p>
-                                        </div>
-                                    </article>
-                                    <article class="media mb-3">
-                                        <a href="#"><img class="img-sm mr-3" src="/resources/images/posts/1619580118-fne.jpeg" /></a>
-                                        <div class="media-body">
-                                            <h6 class="mt-0"><a href="#">Verosa Park</a></h6>
-                                            <p class="mb-2">Sau thành công ở các dự án nhà phố liền kề, biệt thự cao cấp, và gần đây là căn hộ cao cấp Jamila và...</p>
-                                        </div>
-                                    </article>
+                                
+                                  {this.renderpost1()}
+                                  <br/>
+                                    {this.renderpost()}
                                 </div>
                                 {/* <!-- box.// --> */}
                             </aside>

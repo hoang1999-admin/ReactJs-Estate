@@ -1,3 +1,9 @@
+/* eslint-disable react/no-direct-mutation-state */
+/* eslint-disable no-sequences */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable eqeqeq */
+/* eslint-disable array-callback-return */
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import NumberFormat from 'react-number-format';
@@ -348,7 +354,7 @@ class Listing_gridCategory extends Component {
 						<figure class="card card-product-grid" style={{ height: `850px` }} >
 							<div class="img-wrap">
 								{/* <span class="badge badge-danger"> Mới </span> */}
-								<img src={`/resources/images/items/${products.imageString}`} />
+								<img src={`/resources/images/items/${products.imageString}`} alt="" />
 							</div>
 							{/* <!-- img-wrap.// --> */}
 							<figcaption class="info-wrap" >
@@ -356,9 +362,7 @@ class Listing_gridCategory extends Component {
 								<h6 ><i className="fas fa-history" style={{ color: `green` }}></i> {dd}</h6>
 								<div class="price-wrap">
 									{/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
-									<span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble.toLocaleString('vi-VN')} VNĐ</span>
-
-									<small class="text-muted"> / Sản phẩm</small>
+									<span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble}</span>
 								</div>
 								{/* <!-- price-wrap.// --> */}
 
@@ -425,9 +429,8 @@ class Listing_gridCategory extends Component {
 								<h6 ><i className="fas fa-history" style={{ color: `green` }}></i> {dd}</h6>
 								<div class="price-wrap">
 									{/* <span class="h5 price" style={{ color: `red` }}>Giá: <NumberFormat value={products.priceDouble} displayType={'text'} thousandSeparator={true} /></span> */}
-									<span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble.toLocaleString('vi-VN')} VNĐ</span>
+									<span class="h5 price" style={{ color: `red` }}>Giá: {products.pricesaleDouble}</span>
 
-									<small class="text-muted"> / Sản phẩm</small>
 								</div>
 								{/* <!-- price-wrap.// --> */}
 

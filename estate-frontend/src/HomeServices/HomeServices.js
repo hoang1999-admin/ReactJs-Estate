@@ -50,6 +50,9 @@ const API_URL_Post4 = "http://localhost:8080/api/v1/posts4";
 const API_URL_Post5 = "http://localhost:8080/api/v1/posts5";
 const API_URL_Post6 = "http://localhost:8080/api/v1/posts6";
 const API_URL_Post8 = "http://localhost:8080/api/v1/posts8";
+const API_URL_Post9 = "http://localhost:8080/api/v1/posts9";
+const API_URL_Post10 = "http://localhost:8080/api/v1/posts10";
+const API_URL_Post11 = "http://localhost:8080/api/v1/posts11";
 
 
 const API_URL_Page = "http://localhost:8080/api/v1/pages";
@@ -60,6 +63,11 @@ const API_URL_Page4 = "http://localhost:8080/api/v1/pages4";
 const API_URL_Page5 = "http://localhost:8080/api/v1/pages5";
 const API_URL_Page6 = "http://localhost:8080/api/v1/pages6";
 const API_URL_Page7 = "http://localhost:8080/api/v1/pages7";
+const API_URL_Page8 = "http://localhost:8080/api/v1/pages8";
+const API_URL_Page9 = "http://localhost:8080/api/v1/pages9";
+const API_URL_Page10 = "http://localhost:8080/api/v1/pages10";
+
+const API_URL_PageDetail = "http://localhost:8080/api/v1/pagedetails";
 
 class HomeServices {
 
@@ -291,6 +299,36 @@ class HomeServices {
     const url = `${API_URL_Post8}/index=${id}`;
     return axios.get(url).then(response => response.data);
   }
+   // post9
+   async getAllPosts9() {
+    const url = `${API_URL_Post9}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts9Id(id) {
+    const url = `${API_URL_Post9}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+   // post10
+   async getAllPosts10() {
+    const url = `${API_URL_Post10}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts10Id(id) {
+    const url = `${API_URL_Post10}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
+   // post8
+   async getAllPosts11() {
+    const url = `${API_URL_Post11}/`;
+    return axios.get(url).then(response => response.data);
+  }
+
+  async getAllPosts11Id(id) {
+    const url = `${API_URL_Post11}/index=${id}`;
+    return axios.get(url).then(response => response.data);
+  }
   // page
   async getAllPages() {
     const url = `${API_URL_Page}/`;
@@ -369,6 +407,44 @@ async getAllPages7() {
 
 async getAllPages7Id(id) {
   const url = `${API_URL_Page7}/index=${id}`;
+  return axios.get(url).then(response => response.data);
+}
+// page8
+async getAllPages8() {
+  const url = `${API_URL_Page8}/`;
+  return axios.get(url).then(response => response.data);
+}
+async getAllPages8Id(id) {
+  const url = `${API_URL_Page8}/index=${id}`;
+  return axios.get(url).then(response => response.data);
+}
+// page9
+async getAllPages9() {
+  const url = `${API_URL_Page9}/`;
+  return axios.get(url).then(response => response.data);
+}
+async getAllPages9Id(id) {
+  const url = `${API_URL_Page9}/index=${id}`;
+  return axios.get(url).then(response => response.data);
+}
+// page10
+async getAllPages10() {
+  const url = `${API_URL_Page10}/`;
+  return axios.get(url).then(response => response.data);
+}
+
+async getAllPages10Id(id) {
+  const url = `${API_URL_Page10}/index=${id}`;
+  return axios.get(url).then(response => response.data);
+}
+// pagedetail
+async getAllPageDetail() {
+  const url = `${API_URL_PageDetail}/`;
+  return axios.get(url).then(response => response.data);
+}
+
+async getAllPageDetailsId(id) {
+  const url = `${API_URL_PageDetail}/index=${id}`;
   return axios.get(url).then(response => response.data);
 }
   // contact

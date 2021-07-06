@@ -70,6 +70,21 @@ public class PageController {
 	{
 		return pageRepository.findnew();
 	}
+	@GetMapping("/pages8")
+	public List<Page> getListPagepages8()
+	{
+		return pageRepository.findnew1();
+	}
+	@GetMapping("/pages9")
+	public List<Page> getListPagepages9()
+	{
+		return pageRepository.findnew2();
+	}
+	@GetMapping("/pages10")
+	public List<Page> getListPagepages10()
+	{
+		return pageRepository.findnew3();
+	}
 	@GetMapping("/pages/index={id}")
 	public ResponseEntity<Page> getPagesId(@PathVariable Long id)
 	{

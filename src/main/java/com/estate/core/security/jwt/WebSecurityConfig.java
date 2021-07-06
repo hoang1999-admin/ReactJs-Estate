@@ -116,6 +116,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/posts5/**",
 					"/api/v1/posts6/**",
 					"/api/v1/posts8/**",
+					"/api/v1/posts9/**",
+					"/api/v1/posts10/**",
+					"/api/v1/posts11/**",
 					"/api/v1/pages/**",
 					"/api/v1/pages1/**",
 					"/api/v1/pages2/**",
@@ -123,7 +126,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 					"/api/v1/pages4/**",
 					"/api/v1/pages5/**",
 					"/api/v1/pages6/**",
-					"/api/v1/pages7/**"
+					"/api/v1/pages7/**",
+					"/api/v1/pages8/**",
+					"/api/v1/pages9/**",
+					"/api/v1/pages10/**",
+					"/api/v1/pagedetails/**"
 					)
 			.permitAll()
 			.antMatchers(HttpMethod.POST,

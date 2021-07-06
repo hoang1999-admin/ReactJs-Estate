@@ -20,13 +20,13 @@ class DealContainer extends Component {
     return this.state.products.map((product, key) => {
       return (
         <div class="col-md col-6 " key={key}>
-          <figure class="card-product-grid card-sm">
+          <figure class="card-product-grid card-sm" title={`${product.titleString}`}>
             <a href={`/index=${product.idLong}`} class="img-wrap">
-              <img src={`/resources/images/items/${product.imageString}`} />
+              <img src={`/resources/images/items/${product.imageString}`} alt=""/>
             </a>
             <div class="text-wrap p-3">
-              <a href={`/index=${product.idLong}`} class="title">{product.titleString}</a>
-              <span class="badge badge-danger"> -{product.discountInteger}% </span>
+            <h5 style={{fontSize:`15px`}} ><a href={`/index=${product.idLong}`} class="title" style={{color:`#004e7f`}}>{`${product.titleString.substring(0, 40)}... `}</a></h5>
+            <div class="price mt-1 "style={{fontWeight:`bold`}} >{product.pricesaleDouble} <sup> . </sup> {product.areaString} m<sup>2</sup></div>
             </div>
           </figure>
         </div>

@@ -35,7 +35,7 @@ public class Blog implements Serializable{
 	private String slugString;@Column(name = "metakey")
 	private String metakeyString;@Column(name = "metadesc")
 	private String metadescString;@Column(name = "price")
-	private Double priceDouble;@Column(name = "position")
+	private String priceDouble;@Column(name = "position")
 	private String positionString;@Column(name = "created_at")
 	private Timestamp createdatTimestamp;@Column(name = "image")
 	private String imageString;@Column(name = "area")
@@ -93,10 +93,10 @@ public class Blog implements Serializable{
 	public void setMetadescString(String metadescString) {
 		this.metadescString = metadescString;
 	}
-	public Double getPriceDouble() {
+	public String getPriceDouble() {
 		return priceDouble;
 	}
-	public void setPriceDouble(Double priceDouble) {
+	public void setPriceDouble(String priceDouble) {
 		this.priceDouble = priceDouble;
 	}
 	public String getPositionString() {

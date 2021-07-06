@@ -42,8 +42,8 @@ public class Product implements Serializable{
 	private String slugString;@Column(name = "metakey")
 	private String metakeyString;@Column(name = "metadesc")
 	private String metadescString;@Column(name = "price")
-	private Double priceDouble;@Column(name = "pricesale")
-	private Double pricesaleDouble;@Column(name = "discount")
+	private String priceDouble;@Column(name = "pricesale")
+	private String pricesaleDouble;@Column(name = "discount")
 	private Integer discountInteger;@Column(name = "position")
 	private String positionString;@Column(name = "direction")
 	private String directionString;@Column(name = "created_at")
@@ -158,16 +158,17 @@ public class Product implements Serializable{
 	public void setMetadescString(String metadescString) {
 		this.metadescString = metadescString;
 	}
-	public Double getPriceDouble() {
+
+	public String getPriceDouble() {
 		return priceDouble;
 	}
-	public void setPriceDouble(Double priceDouble) {
+	public void setPriceDouble(String priceDouble) {
 		this.priceDouble = priceDouble;
 	}
-	public Double getPricesaleDouble() {
+	public String getPricesaleDouble() {
 		return pricesaleDouble;
 	}
-	public void setPricesaleDouble(Double pricesaleDouble) {
+	public void setPricesaleDouble(String pricesaleDouble) {
 		this.pricesaleDouble = pricesaleDouble;
 	}
 	public Integer getDiscountInteger() {

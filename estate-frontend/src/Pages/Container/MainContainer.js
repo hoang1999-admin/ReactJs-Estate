@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+/* eslint-disable jsx-a11y/no-distracting-elements */
+import React from 'react';
 import HomeServices from '../../HomeServices/HomeServices';
 
 class MainContainer extends React.Component {
@@ -44,11 +45,11 @@ class MainContainer extends React.Component {
         return this.state.producttops.map((product, key) => {
             return (
                 <div class="card-banner border-bottom" key={key}>
-                    <div class="py-3" style={{ width: `100%` }}>
-                        <h6 class="card-title"><a href={`/index=${product.idLong}`}>{product.titleString}</a></h6>
+                    <div class="py-3" style={{ width: `100%` }} title={`${product.titleString}`}>
+                        <h6 class="card-title" ><a href={`/index=${product.idLong}`} style={{color:`#004e7f`}}>{product.titleString}</a></h6>
                         <a href={`/index=${product.idLong}`} class="btn btn-secondary btn-sm"> Chi tiết </a>
                     </div>
-                    <a href={`/index=${product.idLong}`}><img src={`/resources/images/items/${product.imageString}`} height="60" class="img-bg" /></a>
+                    <a href={`/index=${product.idLong}`}><img src={`/resources/images/items/${product.imageString}`} height="60" class="img-bg" alt="" /></a>
 
                 </div>
 

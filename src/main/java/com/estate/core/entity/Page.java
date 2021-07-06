@@ -11,12 +11,17 @@ package com.estate.core.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -41,6 +46,18 @@ public class Page implements Serializable{
 	private String description1String;@Column(name = "description2")
 	private String description2String;@Column(name = "description3")
 	private String description3String;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="page_id")
+
+	private PageDetail pageDetail;
+	
+	
+	public PageDetail getPageDetail() {
+		return pageDetail;
+	}
+	public void setPageDetail(PageDetail pageDetail) {
+		this.pageDetail = pageDetail;
+	}
 	public Long getIdLong() {
 		return idLong;
 	}

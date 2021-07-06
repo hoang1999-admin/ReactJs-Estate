@@ -33,4 +33,10 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 	public List<Post> findbuld();
 	@Query(value = "SELECT * FROM posts WHERE category_id = 8 AND status = '1'", nativeQuery = true)
 	public List<Post> findnew();
+	@Query(value = "SELECT * FROM posts WHERE category_id = 9 AND status = '1'", nativeQuery = true)
+	public List<Post> findnew1();
+	@Query(value = "SELECT * FROM posts WHERE category_id = 10 AND status = '1'", nativeQuery = true)
+	public List<Post> findnew2();
+	@Query(value = "SELECT * FROM posts WHERE category_id = 11 AND status = '1'", nativeQuery = true)
+	public List<Post> findnew3();
 }

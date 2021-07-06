@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import HomeServices from '../../HomeServices/HomeServices';
-
+import moment from 'moment';
+import 'moment/locale/vi' 
 class Container2 extends Component {
     constructor() {
         super();
@@ -19,14 +21,21 @@ class Container2 extends Component {
 
     renderproducts = () => {
         return this.state.products.map((product, key) => {
+            moment.locale('vi');
+            const dd = moment(product.createdatTimestamp).startOf('day').fromNow();
             return (
                 <li class="col-6 col-lg-4 col-md-3" key={key}>
                     <a href={`/index=${product.idLong}`} class="item">
                         <div class="card-body">
-                            <h5 class="title">{product.titleString}</h5>
-                            <img class="img-sm float-right" src={`/resources/images/items/${product.imageString}`} />
-                            <p class="text-muted"><i class="fa fa-map-marker-alt"></i>{product.positionString}</p>
+                            <h5 class="title" style={{color:`#004e7f`}}>{product.titleString}</h5>
+                            <img class="img-sm float-right" src={`/resources/images/items/${product.imageString}`} alt=""/>
+                            <p class="text-muted"> <i class="fa fa-map-marker-alt"> </i> {product.positionString} </p>
+                            <div class="price mt-1 "style={{fontWeight:`bold`}} >{product.pricesaleDouble} <sup> . </sup> {product.areaString} m<sup>2</sup></div>
+                            <div className="row">
+                    <div class=" col-9">{dd}</div>
+                    <div class="col-3" style={{fontSize:`22px`}}><a href={`/luu`} title="Bấm để lưu tin" style={{color:`#004e7f`}}><i class="far fa-heart"></i></a></div>                    </div>
                         </div>
+                        
                     </a>
                 </li>
 
@@ -51,7 +60,7 @@ class Container2 extends Component {
                                 <h5 class="title">"Vì cộng đồng - Kiến tạo an cư" - TTC Land</h5>
                                 <p>Diễn viên Will Rogers: "Đừng chờ đợi để mua bất động sản. Hãy mua bất động sản và chờ đợi".   </p>
                                 <a href="#" class="btn btn-outline-primary rounded-pill">Nguồn bây giờ</a>
-                                <img src="/resources/images/items/1603683085-picture81518ff.jpg" class="img-bg" style={{ width: `400px`, height:`247px` }} />
+                                <img src="/resources/images/items/1603683085-picture81518ff.jpg" class="img-bg" style={{ width: `400px`, height:`268px` }} alt=""/>
                             </div>
 
                         </div>

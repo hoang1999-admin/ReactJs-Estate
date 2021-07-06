@@ -1,9 +1,14 @@
+/* eslint-disable no-sequences */
+/* eslint-disable no-script-url */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import HomeServices from '../../../../HomeServices/HomeServices';
 import Header from '../../../../Components/Header/Header';
 import Footer from '../../../../Components/Footer/Footer';
 import Subcribe from '../../../../Components/Subcribe/Subcribe';
 import './blog.css'
+
 class Blog extends Component {
 
     constructor(props) {
@@ -112,22 +117,6 @@ class Blog extends Component {
         });
 
     }
-    renderproducts = () => {
-        return this.state.products.map((product, key) => {
-            return (
-                <li class="col-6 col-lg-4 col-md-3" key={key}>
-                    <a href={`/index=${product.idLong}`} class="item">
-                        <div class="card-body">
-                            <h5 class="title">{product.titleString}</h5>
-                            <img class="img-sm float-right" src={`/resources/images/items/${product.imageString}`} />
-                            <p class="text-muted"><i class="fa fa-map-marker-alt"></i>{product.positionString}</p>
-                        </div>
-                    </a>
-                </li>
-
-            );
-        });
-    };
     rendercategorysale = () => {
 
         return this.state.categorysale.map((categorys, key) => {
@@ -497,6 +486,8 @@ class Blog extends Component {
                                 </div>
                             </div>
                         </section>
+                       <hr/>
+                       <p>Trong chuyên mục Tin tức bất động sản, nếu quý vị chưa tìm thấy thông tin cần tìm hoặc muốn tham khảo thêm thông tin liên quan đến lĩnh vực Tin tức bất động sản thì hãy thử tìm thêm thông tin ở mục Hỏi đáp hoặc gửi email cho chúng tôi theo địa chỉ: hotro@batdongsan.com</p>
                     </div>
                     <div className="col-lg-3">
                         <div class="box-center fa-border">

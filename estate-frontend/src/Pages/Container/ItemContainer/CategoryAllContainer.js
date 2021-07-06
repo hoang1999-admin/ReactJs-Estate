@@ -1,3 +1,10 @@
+/* eslint-disable no-script-url */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-redeclare */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
+/* eslint-disable react/no-direct-mutation-state */
 import React, { Component } from 'react';
 import HomeServices from '../../../HomeServices/HomeServices';
 import axios from "axios";
@@ -215,7 +222,7 @@ class CategoryAllContainer extends Component {
                             <aside className="col-md-3">
                                 <a href={`/index=${products.idLong}`} className="img-wrap" style={{ width: `100%` }}>
                                     {/* <span  className ="badge badge-danger"> NEW </span> */}
-                                    <img src={`/resources/images/items/${products.imageString}`} title={products.imageString} />
+                                    <img src={`/resources/images/items/${products.imageString}`} title={products.imageString} alt=""/>
                                 </a>
                             </aside>
                             {/* <!-- col.// --> */}
@@ -1054,7 +1061,7 @@ class CategoryAllContainer extends Component {
                                                     <label className=" badge badge-pill badge-light"><NumberFormat value={this.state.maxValue} displayType={'text'} thousandSeparator={true} /></label>
                                                 </div>
                                             </div>
-                                            <input className="form-control" style={{ width: `100%` }, { cursor: `pointer` }} type="range" value={this.state.firstValue} min={this.state.minValue} max={this.state.maxValue} step={this.state.step} onChange={this.handlePrice.bind(this, "first")} />
+                                            <input className="form-control" style={{ width: `100%` ,cursor: `pointer` }} type="range" value={this.state.firstValue} min={this.state.minValue} max={this.state.maxValue} step={this.state.step} onChange={this.handlePrice.bind(this, "first")} />
 
                                             {/* <!-- form-row.// --> */}
                                             <b className=" badge badge-pill badge-light mt-3"><NumberFormat value={this.state.firstValue} displayType={'text'} thousandSeparator={true} /></b>
