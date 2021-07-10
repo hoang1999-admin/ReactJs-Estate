@@ -238,12 +238,12 @@ class Blog extends Component {
             return (
                 <div className="row" key={key}>
                     <div className="col-6">
-                        <a href={`/chi-tiet-bai-viet/index=${post.idLong}`}><img src={`/resources/images/posts/${post.imageString}`} width="150px" height="150px" /></a>
+                        <a href={`/chi-tiet-trang/index=${post.idLong}`}><img src={`/resources/images/posts/${post.imageString}`} width="150px" height="150px" /></a>
                     </div>
                     <div className="col-6">
-                        <b><a title={post.titleString} href={`/chi-tiet-bai-viet/index=${post.idLong}`}>{post.titleString}</a></b>
+                        <b><a title={post.titleString} href={`/chi-tiet-trang/index=${post.idLong}`}>{post.titleString}</a></b>
                     </div>
-                    <p><a title={post.titleString} href={`/chi-tiet-bai-viet/index=${post.idLong}`}>{post.descriptionString}</a></p>
+                    <p><a title={post.titleString} href={`/chi-tiet-trang/index=${post.idLong}`}>{post.descriptionString}</a></p>
                 </div>
             );
         });
